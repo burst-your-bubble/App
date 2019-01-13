@@ -4,3 +4,5 @@ env/
 
 # Ignore compiled javascript files (run webpack to generate)
 static/dist/
+
+.DS_Store
