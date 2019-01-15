@@ -10,5 +10,9 @@ def index():
 def hello():
     return "Hello World!"
 
+@app.route("/mock-response")
+def mock_response():
+    return render_template('mock-response.json')
+
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

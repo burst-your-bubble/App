@@ -1,0 +1,51 @@
+{
+    "topics": [
+        {
+            "headline": "Headline 1",
+            "summary": "Lorem ipsum...",
+            "articles": [
+                {
+                    "title": "Article 1 For Headline 1",
+                    "summary": "Lorem ipsum...",
+                    "read": false,
+                    "stance": "L",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "title": "Article 2 For Headline 1",
+                    "summary": "Lorem ipsum...",
+                    "read": true,
+                    "stance": "R",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "title": "Article 3 For Headline 1",
+                    "summary": "Lorem ipsum...",
+                    "read": false,
+                    "stance": "C",
+                    "url": "https://www.google.com/"
+                }
+            ]
+        },
+        {
+            "headline": "Headline 2",
+            "summary": "Lorem ipsum...",
+            "articles": [
+                {
+                    "title": "Article 1 For Headline 2",
+                    "summary": "Lorem ipsum...",
+                    "read": true,
+                    "stance": "L",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "title": "Article 2 For Headline 2",
+                    "summary": "Lorem ipsum...",
+                    "read": false,
+                    "stance": "C",
+                    "url": "https://www.google.com/"
+                }
+            ]
+        }
+    ]
+}

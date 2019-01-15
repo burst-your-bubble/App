@@ -1,27 +1,35 @@
 import React from 'react';
 
 import { Topic } from './Topic';
+import { Loading } from './Loading';
 
 export class App extends React.Component {
+
     constructor(props) {
         super(props);
-
-        // Hard code sample data that will eventually come from the server
+        this.jsonUrl = '/mock-response';
         this.state = {
-            articles: [
-                {
-                    headline: "News Story 1",
-                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ante eros, aliquet ac magna et, congue luctus est. Cras et augue imperdiet, faucibus magna non, rutrum eros. Nunc aliquet, odio nec mattis pharetra, nisi tellus hendrerit est, sit amet cursus dui metus nec tortor." 
-                },
-                {
-                    headline: "News Story 2",
-                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ante eros, aliquet ac magna et, congue luctus est. Cras et augue imperdiet, faucibus magna non, rutrum eros. Nunc aliquet, odio nec mattis pharetra, nisi tellus hendrerit est, sit amet cursus dui metus nec tortor." 
-                }
-            ]
+            loading: true,
+            topics: null
         }
+
+        this.componentDidMount.bind(this);
     }
+
+    componentDidMount() {
+        // GET mock json data, when it comes back put it into state.
+        fetch(this.jsonUrl).then(res => {
+            res.json().then(data =>
+                this.setState({loading: false, topics: data.topics})
+            );
+        });
+    }
+
     render() {
-        var topics = this.state.articles.map(item => {
+        // Display a loading screen until the json data comes back from server
+        if (this.state.loading) return <Loading />;
+
+        var topics = this.state.topics.map(item => {
             return <Topic headline={item.headline} summary={item.summary} />;
         });
         return (
