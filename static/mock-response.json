@@ -1,26 +1,26 @@
 {
     "topics": [
         {
-            "headline": "Headline 1",
-            "summary": "Lorem ipsum...",
+            "story": "Story 1",
+            "summary": "This is the summary for story 1",
             "articles": [
                 {
-                    "title": "Article 1 For Headline 1",
-                    "summary": "Lorem ipsum...",
+                    "headline": "Article 1 For Story 1",
+                    "summary": "This is the summary for story 1 article 1",
                     "read": false,
                     "stance": "L",
                     "url": "https://www.google.com/"
                 },
                 {
-                    "title": "Article 2 For Headline 1",
-                    "summary": "Lorem ipsum...",
+                    "headline": "Article 2 For Story 1",
+                    "summary": "This is the summary for story 1 article 2",
                     "read": true,
                     "stance": "R",
                     "url": "https://www.google.com/"
                 },
                 {
-                    "title": "Article 3 For Headline 1",
-                    "summary": "Lorem ipsum...",
+                    "headline": "Article 3 For Story 1",
+                    "summary": "This is the summary for story 1 article 3",
                     "read": false,
                     "stance": "C",
                     "url": "https://www.google.com/"
@@ -28,19 +28,26 @@
             ]
         },
         {
-            "headline": "Headline 2",
-            "summary": "Lorem ipsum...",
+            "story": "Story 2",
+            "summary": "This is the summary for story 2",
             "articles": [
                 {
-                    "title": "Article 1 For Headline 2",
-                    "summary": "Lorem ipsum...",
+                    "headline": "Article 1 For Story 2",
+                    "summary": "This is the summary for story 2 article 1",
                     "read": true,
                     "stance": "L",
                     "url": "https://www.google.com/"
                 },
                 {
-                    "title": "Article 2 For Headline 2",
-                    "summary": "Lorem ipsum...",
+                    "headline": "Article 2 For Story 2",
+                    "summary": "This is the summary for story 2 article 2",
+                    "read": false,
+                    "stance": "C",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "headline": "Article 3 For Story 2",
+                    "summary": "This is the summary for story 2 article 3",
                     "read": false,
                     "stance": "C",
                     "url": "https://www.google.com/"

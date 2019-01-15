@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Topic } from './Topic';
 import { Loading } from './Loading';
+import { Story } from './Story';
 
 export class App extends React.Component {
 
@@ -20,7 +20,7 @@ export class App extends React.Component {
         // GET mock json data, when it comes back put it into state.
         fetch(this.jsonUrl).then(res => {
             res.json().then(data =>
-                this.setState({loading: false, topics: data.topics})
+                this.setState({ loading: false, topics: data.topics })
             );
         });
     }
@@ -29,15 +29,18 @@ export class App extends React.Component {
         // Display a loading screen until the json data comes back from server
         if (this.state.loading) return <Loading />;
 
-        var topics = this.state.topics.map(item => {
-            return <Topic headline={item.headline} summary={item.summary} />;
-        });
+        var stories = this.state.topics.map(story => {
+            return (
+                <Story topic={story.story}
+                    summary={story.summary}
+                    articles={story.articles} />)
+        })
+
         return (
             <div>
-                <h2>Headlines</h2>
-                <hr />
+                <h1>Burst Your Bubble</h1>
                 <div>
-                    {topics}
+                    {stories}
                 </div>
             </div>
         );
