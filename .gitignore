@@ -1,5 +1,6 @@
 # Ignore node packages and python virtualenv
 static/node_modules/
+node_modules/
 env/
 
 # Ignore compiled javascript files (run webpack to generate)
