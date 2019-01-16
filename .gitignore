@@ -2,6 +2,7 @@
 static/node_modules/
 node_modules/
 env/
+.env/
 
 # Ignore compiled javascript files (run webpack to generate)
 static/dist/
