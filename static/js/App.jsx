@@ -28,7 +28,7 @@ export class App extends React.Component {
     render() {
         // Display a loading screen until the json data comes back from server
         if (this.state.loading) return <Loading />;
-
+        
         var stories = this.state.topics.map(story => {
             return (
                 <Story topic={story.story}

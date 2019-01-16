@@ -35,5 +35,9 @@
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.6",
+    "react-column-layout": "^1.0.7",
+    "react-columns": "^1.2.0"
+  }
 }

@@ -13,3 +13,17 @@ h1, h2, h3 {
     padding: 0.5rem;
     margin: 0.5rem;
 }
+
+.story-box {
+    border: 10px solid grey;
+    padding: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.article-box:hover, a:hover {
+    background-color: rgb(206, 206, 206);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+  
