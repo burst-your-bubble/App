@@ -1,7 +1,9 @@
 import React from 'react';
 import { Article } from './Article';
 
-export class Story extends React.Component {    
+import { Panel } from 'react-bootstrap';
+
+export class Story extends React.Component {
     render() {
         var articles = this.props.articles.map(article => {
             return (
@@ -10,16 +12,21 @@ export class Story extends React.Component {
                     stance={article.stance}
                     url={article.url}
                 />)
-        })
+        });
 
         return (
-            <div className="story-box">
-                <h2>{this.props.topic}</h2>
-                <p>
-                    {this.props.summary}
-                    {articles}
-                </p>
-            </div>
+            <Panel id="story-box" defaultExpanded>
+                <Panel.Heading>
+                    <Panel.Title componentClass="h3">{this.props.topic}</Panel.Title>
+                    <Panel.Body>{this.props.summary}</Panel.Body>
+                    <Panel.Toggle componentClass="a">Read More...</Panel.Toggle>
+                </Panel.Heading>
+                <Panel.Collapse>
+                    <Panel.Body>
+                        {articles}
+                    </Panel.Body>
+                </Panel.Collapse>
+            </Panel>
         );
     }
 }

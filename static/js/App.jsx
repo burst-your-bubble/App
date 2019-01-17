@@ -3,6 +3,9 @@ import React from 'react';
 import { Loading } from './Loading';
 import { Story } from './Story';
 
+import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
+
+
 export class App extends React.Component {
 
     constructor(props) {
@@ -46,16 +49,18 @@ export class App extends React.Component {
         })
 
         return (
-            <div class="container">
-                <h1>Burst Your Bubble</h1>
-                <div class="row">
-                    <div class="col-sm">
-                        {storiesL}
-                    </div>
-                    <div class="col-sm">
-                        {storiesR}
-                    </div>
-                </div>
+            <div>
+                <PageHeader>Burst Your Bubble</PageHeader>
+                <Grid>
+                    <Row className="show-grid">
+                        <Col md={6} mdPush={6}>
+                            {storiesL}
+                        </Col>
+                        <Col md={6} mdPull={6}>
+                            {storiesR}
+                        </Col>
+                    </Row>
+                </Grid>
             </div>
         );
     }
