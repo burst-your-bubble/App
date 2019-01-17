@@ -28,8 +28,17 @@ export class App extends React.Component {
     render() {
         // Display a loading screen until the json data comes back from server
         if (this.state.loading) return <Loading />;
-        
-        var stories = this.state.topics.map(story => {
+
+        const secondColumnStart = Math.floor(this.state.topics.length / 2);
+
+        var storiesL = this.state.topics.slice(0, secondColumnStart).map(story => {
+            return (
+                <Story topic={story.story}
+                    summary={story.summary}
+                    articles={story.articles} />)
+        })
+
+        var storiesR = this.state.topics.slice(secondColumnStart).map(story => {
             return (
                 <Story topic={story.story}
                     summary={story.summary}
@@ -37,10 +46,15 @@ export class App extends React.Component {
         })
 
         return (
-            <div>
+            <div class="container">
                 <h1>Burst Your Bubble</h1>
-                <div>
-                    {stories}
+                <div class="row">
+                    <div class="col-sm">
+                        {storiesL}
+                    </div>
+                    <div class="col-sm">
+                        {storiesR}
+                    </div>
                 </div>
             </div>
         );
