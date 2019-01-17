@@ -1,13 +1,13 @@
 import React from 'react';
-import { Article } from './Article';
+import { ArticleBox } from './ArticleBox';
 
 import { Panel } from 'react-bootstrap';
 
-export class Story extends React.Component {
+export class TopicBox extends React.Component {
     render() {
         var articles = this.props.articles.map(article => {
             return (
-                <Article headline={article.headline}
+                <ArticleBox headline={article.headline}
                     summary={article.summary}
                     stance={article.stance}
                     url={article.url}

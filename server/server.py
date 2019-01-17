@@ -6,9 +6,9 @@ app = Flask(__name__, static_folder="../static", template_folder="../static")
 def index():
     return render_template("index.html")
 
-@app.route("/hello")
-def hello():
-    return "Hello World!"
+@app.route("/article")
+def article():
+    return render_template("index.html")
 
 @app.route("/mock-response")
 def mock_response():

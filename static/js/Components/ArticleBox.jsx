@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Media } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-export class Article extends React.Component {
+export class ArticleBox extends React.Component {
     render() {
         return (
             <div>
@@ -11,7 +12,7 @@ export class Article extends React.Component {
                         <img width={64} height={64} src="../../assets/thumbnail.png" alt="thumbnail" />
                     </Media.Left>
                     <Media.Body>
-                        <Media.Heading><a href={this.props.url} target="_blank">{this.props.headline}</a></Media.Heading>
+                        <Media.Heading><Link to="/article">{this.props.headline}</Link></Media.Heading>
                         <p>
                             {this.props.summary} - {this.props.stance}
                         </p>
