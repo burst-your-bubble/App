@@ -12,7 +12,7 @@ export class ArticleBox extends React.Component {
                         <img width={64} height={64} src="../../assets/thumbnail.png" alt="thumbnail" />
                     </Media.Left>
                     <Media.Body>
-                        <Media.Heading><Link to="/article">{this.props.headline}</Link></Media.Heading>
+                        <Media.Heading><Link to={this.props.url}>{this.props.headline}</Link></Media.Heading>
                         <p>
                             {this.props.summary} - {this.props.stance}
                         </p>
