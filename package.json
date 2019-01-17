@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
+    "react-bootstrap": "^0.32.4",
     "react-column-layout": "^1.0.7",
     "react-columns": "^1.2.0"
   }

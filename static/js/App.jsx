@@ -3,6 +3,8 @@ import React from 'react';
 import { Loading } from './Loading';
 import { Story } from './Story';
 
+import { Alert } from 'react-bootstrap';
+
 export class App extends React.Component {
 
     constructor(props) {
@@ -37,8 +39,13 @@ export class App extends React.Component {
         })
 
         return (
-            <div>
+            <div className="container">
                 <h1>Burst Your Bubble</h1>
+                <div>
+                    <Alert bsStyle="success">
+                        <strong>Holy guacamole!</strong> Bootstrap components are working!
+                    </Alert>
+                </div>
                 <div>
                     {stories}
                 </div>
