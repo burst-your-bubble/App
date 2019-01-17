@@ -10,9 +10,13 @@ def index():
 def article(id):
     return render_template("index.html")
 
-@app.route("/mock-response")
+@app.route("/json/mock-topics")
 def mock_response():
-    return render_template('mock-response.json')
+    return render_template('mock-topics.json')
+
+@app.route("/json/mock-article/<id>")
+def mock_article(id):
+    return render_template('mock-article.json')
 
 if __name__ == "__main__":
-    app.run(debug=True, host= '0.0.0.0')
+    app.run(debug=True)

@@ -1,22 +1,31 @@
 import React from 'react';
 
-//export const Article = ({ match }) => <h1>This is the article page! This is article {match.params.id}</h1>;
+import { Loading } from '../Components/Loading';
 
 export class Article extends React.Component {
 
     constructor(props) {
         super(props);
         this.id = props.match.params.id;
+        this.jsonUrl = `/json/mock-article/${this.id}`;
         this.state = {
             loading: true,
+            article: null
         };
     }
 
     componentDidMount() {
         // fetch actual article data from server based on article id
+        fetch(this.jsonUrl).then(res => {
+            res.json().then(article => {
+                this.setState({article: article, loading: false});
+            });
+        });
     }
 
     render() {
-        return <h1>Article Page! This is article {this.id}</h1>;
+        if (this.state.loading) return <Loading />;
+
+        return <h1>{this.state.article.title}</h1>;
     }
 }
