@@ -45,6 +45,7 @@ protobuf==3.6.1
 psycopg2==2.7.1
 pydub==0.20.0
 pylint==1.8.2
+PyMySQL==0.9.3
 python-dateutil==2.7.3
 pytz==2017.2
 PyYAML==3.12
