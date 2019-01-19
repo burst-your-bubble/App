@@ -1,0 +1,8 @@
+files:
+  - source: /
+    destination: /srv/comps
+hooks:
+  AfterInstall:
+    - location: ./install.sh
+      timeout: 300
+      runas: root
