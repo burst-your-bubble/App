@@ -29,3 +29,10 @@ body {
     height:60px;   /* Height of the footer */
     background:#6cf;
  }
+
+ .modal-container {
+    position: relative;
+  }
+  .modal-container .modal, .modal-container .modal-backdrop {
+    position: absolute;
+  }
