@@ -6,6 +6,10 @@ app = Flask(__name__, static_folder="./static", template_folder="./static")
 def index():
     return render_template("index.html")
 
+@app.route("/home")
+def home():
+    return render_template("index.html")
+
 @app.route("/article/<id>")
 def article(id):
     return render_template("index.html")
