@@ -3,8 +3,17 @@ static/node_modules/
 node_modules/
 env/
 .env/
+venv/
+
+news/config.py
 
 # Ignore compiled javascript files (run webpack to generate)
 static/dist/
 
+*/__pycache__/*
+*.pyc
+
+.vscode/
+
 .DS_Store
+
