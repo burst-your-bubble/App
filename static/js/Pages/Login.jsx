@@ -14,7 +14,7 @@ export class Login extends React.Component {
     }
 
     handleLogin() {
-        {/* Capture what button is clicked into 'response' */}
+        {/* Send the response here back to home */}
         window.location.href = "/home";
     }
 

@@ -36,3 +36,10 @@ body {
   .modal-container .modal, .modal-container .modal-backdrop {
     position: absolute;
   }
+
+.fas_fa_circle_blue {
+    background: blue;
+    border-radius: 50%;
+    height: 1em;
+    width: 1em;
+}  
