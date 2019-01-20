@@ -5,6 +5,8 @@ env/
 .env/
 venv/
 
+news/config.py
+
 # Ignore compiled javascript files (run webpack to generate)
 static/dist/
 
