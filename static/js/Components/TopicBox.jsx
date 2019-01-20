@@ -7,15 +7,16 @@ export class TopicBox extends React.Component {
     render() {
         var articles = this.props.articles.map(article => {
             return (
-                <ArticleBox headline={article.headline}
+                <ArticleBox title={article.title}
                     summary={article.summary}
                     stance={article.stance}
                     url={article.url}
+                    id={article.id}
                 />)
         });
 
         return (
-            <Panel id="story-box" defaultExpanded>
+            <Panel id="story-box" defaultExpanded={false}>
                 <Panel.Heading>
                     <Panel.Title componentClass="h3">{this.props.topic}</Panel.Title>
                     <Panel.Body>{this.props.summary}</Panel.Body>
