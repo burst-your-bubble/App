@@ -6,7 +6,7 @@
         {
             "label": "Start Server",
             "type": "shell",
-            "command": "source .env/bin/activate && python3 server/server.py"
+            "command": "source server/env/bin/activate && python3 server/server.py"
         },
         {
             "label": "Static Build",

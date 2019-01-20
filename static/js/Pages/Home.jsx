@@ -50,7 +50,7 @@ export class Home extends React.Component {
 
         return (
             <div>
-                <PageHeader>Burst Your Bubble</PageHeader>
+                <PageHeader className = "homeTitle">Burst Your Bubble</PageHeader>
                 <Grid>
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}>

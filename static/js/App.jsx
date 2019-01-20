@@ -5,7 +5,6 @@ import { Article }from './Pages/Article';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-
 export class App extends React.Component {
 
     render() {

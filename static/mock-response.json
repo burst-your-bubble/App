@@ -1,0 +1,58 @@
+{
+    "topics": [
+        {
+            "story": "Story 1",
+            "summary": "This is the summary for story 1",
+            "articles": [
+                {
+                    "headline": "Article 1 For Story 1",
+                    "summary": "This is the summary for story 1 article 1",
+                    "read": false,
+                    "stance": "L",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "headline": "Article 2 For Story 1",
+                    "summary": "This is the summary for story 1 article 2",
+                    "read": true,
+                    "stance": "R",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "headline": "Article 3 For Story 1",
+                    "summary": "This is the summary for story 1 article 3",
+                    "read": false,
+                    "stance": "C",
+                    "url": "https://www.google.com/"
+                }
+            ]
+        },
+        {
+            "story": "Story 2",
+            "summary": "This is the summary for story 2",
+            "articles": [
+                {
+                    "headline": "Article 1 For Story 2",
+                    "summary": "This is the summary for story 2 article 1",
+                    "read": true,
+                    "stance": "L",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "headline": "Article 2 For Story 2",
+                    "summary": "This is the summary for story 2 article 2",
+                    "read": false,
+                    "stance": "C",
+                    "url": "https://www.google.com/"
+                },
+                {
+                    "headline": "Article 3 For Story 2",
+                    "summary": "This is the summary for story 2 article 3",
+                    "read": false,
+                    "stance": "C",
+                    "url": "https://www.google.com/"
+                }
+            ]
+        }
+    ]
+}
