@@ -2,6 +2,8 @@ from __future__ import unicode_literals, absolute_import
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey,create_engine
 from sqlalchemy.orm import relationship,sessionmaker
+from config import username, pw, host, db
+
 ModelBase = declarative_base()
 
 class User(ModelBase):
@@ -127,7 +129,7 @@ def uploadArticle(DBSession, article, topicID):
    session.close()
 
 def main():
-    connection_string = "mysql+mysqlconnector://mastercomps:doe_a_deer_a_rainbow_deer@mysql-production.cdosgqjv22py.us-west-2.rds.amazonaws.com:3306/mydatabase"
+    connection_string = "mysql+mysqlconnector://{0}:{1}@{2}:3306/{3}".format(username, pw, host, db)
     engine = create_engine(connection_string)
     DBSession = sessionmaker(bind=engine)   
     responseTest(DBSession)
