@@ -7,4 +7,6 @@ env/
 # Ignore compiled javascript files (run webpack to generate)
 static/dist/
 
+*/__pycache__/*
+
 .DS_Store
