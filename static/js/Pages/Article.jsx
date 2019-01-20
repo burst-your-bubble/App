@@ -14,7 +14,8 @@ export class Article extends React.Component {
         this.state = {
             loading: true,
             article: null,
-            show: false
+            show: false,
+            response: ""
         };
     }
 
@@ -35,6 +36,10 @@ export class Article extends React.Component {
         this.setState({ show: true });
     }
 
+    handleResponse() {
+        {/* Send the response here back to home */}
+        window.location.href = "/home";
+    }
 
     render() {
         if (this.state.loading) return <Loading />;
@@ -64,9 +69,10 @@ export class Article extends React.Component {
                             {this.state.article.summary}
                         </p>
                         <ButtonToolbar>
-                            <Button bsStyle="success" onClick={this.handleShow}>Agree</Button>
-                            <Button bsStyle="warning" onClick={this.handleShow}>Neutral</Button>
-                            <Button bsStyle="danger" onClick={this.handleShow}>Disagree</Button>
+                            {/* Capture what button is clicked into 'response' */}
+                            <Button bsStyle="success" onClick={this.handleResponse}>Agree</Button>
+                            <Button bsStyle="warning" onClick={this.handleResponse}>Neutral</Button>
+                            <Button bsStyle="danger" onClick={this.handleResponse}>Disagree</Button>
                         </ButtonToolbar>
                     </Modal.Body>
                     <Modal.Footer>

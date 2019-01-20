@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox } from 'react-bootstrap';
+import { Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
 
 export class Login extends React.Component {
 
@@ -14,12 +14,14 @@ export class Login extends React.Component {
     }
 
     handleLogin() {
+        {/* Capture what button is clicked into 'response' */}
         window.location.href = "/home";
     }
 
     render() {
         return (
             <Form horizontal>
+                <PageHeader className="homeTitle">Burst Your Bubble</PageHeader>
                 <FormGroup>
                     <Col componentClass={ControlLabel} sm={2}>
                         Email
@@ -28,7 +30,7 @@ export class Login extends React.Component {
                         <FormControl
                             type="email"
                             placeholder="Email"
-                            password={this.state.email}
+                            email={this.state.email}
                         />
                     </Col>
                 </FormGroup>
