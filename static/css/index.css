@@ -2,6 +2,44 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-h1 {
+.homeTitle{
     text-align: center;
 }
+
+.articlePage {
+    text-align: left;
+    padding: 80px 264px;
+}
+
+.articleSummary{
+    color: #000000;
+    font-weight: bold;
+    font-style: italic;
+    size: 16px;
+}
+
+.articleText {
+    size: 14px
+}
+
+.footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:60px;   /* Height of the footer */
+    background:#6cf;
+ }
+
+ .modal-container {
+    position: relative;
+  }
+  .modal-container .modal, .modal-container .modal-backdrop {
+    position: absolute;
+  }
+
+.fas_fa_circle_blue {
+    background: blue;
+    border-radius: 50%;
+    height: 1em;
+    width: 1em;
+}  

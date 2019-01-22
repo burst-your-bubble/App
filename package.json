@@ -43,6 +43,7 @@
     "react-column-layout": "^1.0.7",
     "react-columns": "^1.2.0",
     "react-foundation": "^0.9.6",
+    "react-router-dom": "^4.3.1",
     "reactstrap": "^7.1.0"
   }
 }
