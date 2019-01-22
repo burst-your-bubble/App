@@ -10,7 +10,7 @@ export class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        this.jsonUrl = '/json/mock-topics';
+        this.jsonUrl = '/json/topics';
         this.state = {
             loading: true,
             topics: null

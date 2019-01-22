@@ -5,14 +5,20 @@ import { Link } from 'react-router-dom';
 
 export class ArticleBox extends React.Component {
     render() {
+        let url = `/article/${this.props.id}`;
+
+        let styles = {
+            color: '#4285F4',
+          };
+        
         return (
             <div>
                 <Media>
-                    <Media.Left align="top">
-                        <img width={64} height={64} src="../../assets/thumbnail.png" alt="thumbnail" />
+                    <Media.Left align="top" >
+                        <i className="fas fa-circle" style={styles}></i>
                     </Media.Left>
                     <Media.Body>
-                        <Media.Heading><Link to={this.props.url}>{this.props.headline}</Link></Media.Heading>
+                        <Media.Heading><Link to={url}>{this.props.title}</Link></Media.Heading>
                         <p>
                             {this.props.summary} - {this.props.stance}
                         </p>
