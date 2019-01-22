@@ -2,7 +2,7 @@ from __future__ import unicode_literals, absolute_import
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey,create_engine
 from sqlalchemy.orm import relationship,sessionmaker
-from config import username, pw, host, db
+from .config import username, pw, host, db
 
 ModelBase = declarative_base()
 
