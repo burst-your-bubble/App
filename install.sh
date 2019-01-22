@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /srv/comps
 
-cp activate_this.py venv/bin/activate_this.py
+sudo python3 -m virtualenv venv
 npm install
 npm run build
 . ./venv/bin/activate
