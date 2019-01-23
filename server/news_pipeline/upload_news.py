@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ORM import uploadArticle, uploadTopic
-from config import username, pw, host, db
+from server.ORM import uploadArticle, uploadTopic
+from server.config import username, pw, host, db
 from news_classifier import NewsClassifier
 from gather_news import get_classified_news 
 import datetime

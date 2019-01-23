@@ -3,7 +3,7 @@ import json
 import time
 from sklearn.externals import joblib
 import newspaper
-from config import api_key
+from server.config import api_key
 from news_classifier import NewsClassifier
 import datetime
 
