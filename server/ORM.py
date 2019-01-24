@@ -1,8 +1,7 @@
-from __future__ import unicode_literals, absolute_import
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey,create_engine
 from sqlalchemy.orm import relationship,sessionmaker
-from .config import username, pw, host, db
+from burst_your_bubble.news.config import username, pw, host, db
 
 ModelBase = declarative_base()
 
@@ -85,7 +84,7 @@ def addTest(DBSession):
     user = session.query(User).all()
     for item in user:
         print(item.name)
-        
+
 def responseTest(DBSession):
     name = 'carleton'
     articleID = 1
@@ -133,7 +132,7 @@ def getArticleByID(DBSession, articleID):
         'url': article.url,
         'imageUrl': article.imageUrl,
         'datePublished': str(article.datePublished)
-    } 
+    }
 
     return article
 
@@ -180,7 +179,7 @@ def uploadArticle(DBSession, article, topicID):
 def main():
     connection_string = "mysql+mysqlconnector://{0}:{1}@{2}:3306/{3}".format(username, pw, host, db)
     engine = create_engine(connection_string)
-    DBSession = sessionmaker(bind=engine)   
+    DBSession = sessionmaker(bind=engine)
     responseTest(DBSession)
 
 if __name__ == "__main__":
