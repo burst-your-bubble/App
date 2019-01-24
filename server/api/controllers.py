@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from server.data.models import Article, Topic, User
-from server.config import username, pw, host, db
+from server.config import mysql_connection_string
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import json
@@ -21,8 +21,7 @@ def json_article(id):
     return json.dumps(article)
 
 def get_db_session():
-    connection_string = "mysql+mysqlconnector://{0}:{1}@{2}:3306/{3}".format(username, pw, host, db)
-    engine = create_engine(connection_string)
+    engine = create_engine(mysql_connection_string)
     DBSession = sessionmaker(bind=engine)
     return DBSession
 
@@ -49,6 +48,8 @@ def getArticles(DBSession, topicID = None):
 
     return articles
 
+# Better way to json-ify objects?
+# https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json
 def getArticleByID(DBSession, articleID):
     session = DBSession()
     article = session.query(Article).filter(Article.id == articleID).first()
