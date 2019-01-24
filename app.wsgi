@@ -8,4 +8,4 @@ import logging
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0,"/var/www/html/comps")
 
-from server import app as application
+from run import app as application
