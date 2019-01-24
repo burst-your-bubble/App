@@ -1,5 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey
+from .db import Session
 
 ModelBase = declarative_base()
 
@@ -31,6 +32,8 @@ class Article(ModelBase):
     imageUrl = Column(Text)
     datePublished = Column(DATE)
     topicID = Column(Integer)
+
+    query = Session.query_property()
 
 class Topic(ModelBase):
     __tablename__ = 'topics'

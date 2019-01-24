@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template
 from server.data.models import Article, Topic, User
+from server.data.db import Session
 from server.config import mysql_connection_string
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -9,29 +10,25 @@ api = Blueprint('api', __name__)
 
 @api.route("/topics")
 def json_topics():
-    DBSession = get_db_session()
     # Cache this query for better performance, and it only changes once a day?
-    topics = { 'topics': getTopics(DBSession) }
+    topics = { 'topics': getTopics() }
     return json.dumps(topics)
 
 @api.route('/article/<id>')
 def json_article(id):
-    DBSession = get_db_session()
-    article = getArticleByID(DBSession, id)
+    article = getArticleByID(id)
     return json.dumps(article)
 
-def get_db_session():
-    engine = create_engine(mysql_connection_string)
-    DBSession = sessionmaker(bind=engine)
-    return DBSession
 
-def getArticles(DBSession, topicID = None):
-    session = DBSession()
+def getArticles(topicID = None):
     if topicID is None:
-        articles = session.query(Article).all()
+        articles = Session.query(Article).all()
+        #articles = Article.query.all()
+        print("Articles: " + articles)
     else:
-        articles = session.query(Article).filter(Article.topicID == topicID).all()
-    session.close()
+        articles = Session.query(Article).filter(Article.topicID == topicID).all()
+        #articles = Article.query.filter(Article.topicID == topicID).all()
+        print("Topic: " + str(topicID) + "Articles: " + str(len(articles)))
 
     articles = [{
         'id': article.id,
@@ -50,9 +47,8 @@ def getArticles(DBSession, topicID = None):
 
 # Better way to json-ify objects?
 # https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json
-def getArticleByID(DBSession, articleID):
-    session = DBSession()
-    article = session.query(Article).filter(Article.id == articleID).first()
+def getArticleByID(articleID):
+    article = Session.query(Article).filter(Article.id == articleID).first()
 
     article = {
         'id': article.id,
@@ -69,14 +65,11 @@ def getArticleByID(DBSession, articleID):
 
     return article
 
-def getTopics(DBSession):
-    session = DBSession()
-    topics = session.query(Topic).all()
-    session.close()
-
+def getTopics():
+    topics = Session.query(Topic).all()
     topics = [{
         'story': topic.headline,
-        'articles': getArticles(DBSession, topicID=topic.id)
+        'articles': getArticles(topicID=topic.id)
     } for topic in topics]
 
     return topics
