@@ -19,13 +19,21 @@ def json_article(id):
     article = get_article(id)
     return json.dumps(article)
 
-def get_articles_list(topicID = None):
-    if topicID is None:
-        articles = Article.query.all()
-    else:
-        articles = Article.query.filter(Article.topicID == topicID).all()
+def get_articles_list(topicID):
+    articles = Article.query.with_entities(
+        Article.id,
+        Article.title,
+        Article.summary,
+        Article.topicID
+    ).filter(Article.topicID == topicID).all()
 
-    articles = [article.to_json(list_view=True) for article in articles]
+    articles = [{
+            'id': article[0],
+            'title': article[1],
+            'summary': article[2],
+            'topicID': article[3]
+        } for article in articles ]
+
     return articles
 
 def get_article(articleID):
