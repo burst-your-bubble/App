@@ -35,9 +35,25 @@ class Article(ModelBase):
 
     query = Session.query_property()
 
+    def to_json(self, list_view=False):
+        if list_view:
+            return {
+                'id': self.id,
+                'title': self.title,
+                'summary': self.summary,
+                'topicID': self.topicID
+            }
+
+        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+
 class Topic(ModelBase):
     __tablename__ = 'topics'
 
     id = Column(Integer ,primary_key=True)
     headline = Column(Text)
     dateScraped = Column(DATE)
+
+    query = Session.query_property()
+
+    def to_json(self):
+        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}

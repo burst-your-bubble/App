@@ -11,65 +11,32 @@ api = Blueprint('api', __name__)
 @api.route("/topics")
 def json_topics():
     # Cache this query for better performance, and it only changes once a day?
-    topics = { 'topics': getTopics() }
+    topics = { 'topics': get_topics() }
     return json.dumps(topics)
 
 @api.route('/article/<id>')
 def json_article(id):
-    article = getArticleByID(id)
+    article = get_article(id)
     return json.dumps(article)
 
-
-def getArticles(topicID = None):
+def get_articles_list(topicID = None):
     if topicID is None:
-        articles = Session.query(Article).all()
-        #articles = Article.query.all()
-        print("Articles: " + articles)
+        articles = Article.query.all()
     else:
-        articles = Session.query(Article).filter(Article.topicID == topicID).all()
-        #articles = Article.query.filter(Article.topicID == topicID).all()
-        print("Topic: " + str(topicID) + "Articles: " + str(len(articles)))
+        articles = Article.query.filter(Article.topicID == topicID).all()
 
-    articles = [{
-        'id': article.id,
-        'title': article.title,
-        #'author': article.author,
-        'source': article.source,
-        'summary': article.summary,
-        #'text': article.text,
-        'stance': article.stance,
-        'url': article.url,
-        #'imageUrl': article.imageUrl,
-        #'datePublished': str(article.datePublished)
-    } for article in articles]
-
+    articles = [article.to_json(list_view=True) for article in articles]
     return articles
 
-# Better way to json-ify objects?
-# https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json
-def getArticleByID(articleID):
-    article = Session.query(Article).filter(Article.id == articleID).first()
+def get_article(articleID):
+    article = Article.query.filter(Article.id == articleID).first()
+    return article.to_json()
 
-    article = {
-        'id': article.id,
-        'title': article.title,
-        'author': article.author,
-        'source': article.source,
-        'summary': article.summary,
-        'text': article.text,
-        'stance': article.stance,
-        'url': article.url,
-        'imageUrl': article.imageUrl,
-        'datePublished': str(article.datePublished)
-    } 
-
-    return article
-
-def getTopics():
-    topics = Session.query(Topic).all()
+def get_topics():
+    topics = Topic.query.all()
     topics = [{
         'story': topic.headline,
-        'articles': getArticles(topicID=topic.id)
+        'articles': get_articles_list(topicID=topic.id)
     } for topic in topics]
 
     return topics
