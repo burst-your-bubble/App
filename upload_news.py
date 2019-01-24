@@ -44,14 +44,11 @@ model_file_path = "./news_pipeline/models/article-classifier_8000x3.pkl"
 clf = NewsClassifier(model_file=model_file_path)
 news = get_classified_news(clf)
 
-with open('/Users/aidanwhite/Desktop/news.csv', 'w') as f:
-    writer = csv.writer(f)
-    today = datetime.datetime.today().strftime('%Y-%m-%d')
-    for topic in news:
-        topicID = uploadTopic(DBSession, topic['headline'], today)
-        for article in topic['articles']:
-            #uploadArticle(DBSession, article, topicID)
-            writer.writerow([article['title'], article['source']])
+today = datetime.datetime.today().strftime('%Y-%m-%d')
+for topic in news:
+    topicID = uploadTopic(DBSession, topic['headline'], today)
+    for article in topic['articles']:
+        uploadArticle(DBSession, article, topicID)
 
 
 
