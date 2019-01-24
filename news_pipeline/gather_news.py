@@ -4,7 +4,6 @@ import time
 from sklearn.externals import joblib
 import newspaper
 from server.config import api_key
-from news_classifier import NewsClassifier
 import datetime
 
 # Get top weekly stories from US News subreddit
@@ -48,10 +47,9 @@ def get_articles_for_topic(topic):
     data = json.loads(res)
     return data['articles']
 
+
 # Return article object with classification from newsapi article
 def classify_article(article, clf):
-    stances = ['L','R','C']
-
     try:
         a = newspaper.Article(article['url'])
         a.download()
@@ -121,11 +119,14 @@ def get_classified_news(clf, src="r/politics"):
         print("Topic {0} of {1}: {2}".format(i, len(topics), topic))
         i += 1
 
-        articles = get_articles_for_topic(topic)
+        try:
+            articles = get_articles_for_topic(topic)
+        except:
+            continue
+
         if len(articles) < 6:
             continue
 
-        #classified_articles = [classify_article(a, clf) for a in articles]
         classified_articles = []
         for article in articles:
             ca = classify_article(article, clf)
@@ -140,10 +141,10 @@ def get_classified_news(clf, src="r/politics"):
     
     return classified_news
 
-if __name__ == "__main__":
-    model_file_path = "./models/article-classifier_8000x3.pkl"
-    clf = NewsClassifier(model_file=model_file_path)
+# if __name__ == "__main__":
+#     model_file_path = "./models/article-classifier_8000x3.pkl"
+#     clf = NewsClassifier(model_file=model_file_path)
 
-    news = get_classified_news(clf)
-    output = json.dumps(news, indent=4, separators=(',',': '))
-    print(output)
+#     news = get_classified_news(clf)
+#     output = json.dumps(news, indent=4, separators=(',',': '))
+#     print(output)
