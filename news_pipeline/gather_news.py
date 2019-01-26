@@ -3,6 +3,8 @@ import json
 import time
 from sklearn.externals import joblib
 import newspaper
+from textblob import TextBlob
+from functools import reduce
 from server.config import api_key
 import datetime
 
@@ -41,8 +43,10 @@ def get_topics_politico():
 # Get articles from newsapi.org by a query string
 def get_articles_for_topic(topic):
     # Change url from everything to top articles, and to filter to US articles
-    url = "https://newsapi.org/v2/everything?q={0}&sortBy=relevance&apiKey={1}"
-    url = url.format(topic, api_key)
+    query_text = reduce((lambda a, b: a + " " + b), TextBlob(topic).noun_phrases, "")
+    url = "https://newsapi.org/v2/everything?q={0}&sortBy=relevance&apiKey={1}&sources='abc-news','al-jazeera-english','ars-technica','associated-press','axios','bleacher-report','bloomberg','breitbart-news','business-insider','buzzfeed','cbs-news','cnbc','cnn','crypto-coins-news','engadget','entertainment-weekly','espn','espn-cric-info','fortune','fox-news','fox-sports','google-news','hacker-news','ign','mashable','medical-news-today','msnbc','mtv-news','national-geographic','national-review','nbc-news','new-scientist','newsweek','new-york-magazine','next-big-future','nfl-news','nhl-news','politico','polygon','recode','reddit-r-all','reuters','techcrunch','techradar','the-american-conservative','the-hill','the-huffington-post','the-new-york-times','the-next-web','the-verge','the-wall-street-journal','the-washington-post','the-washington-times','time','usa-today','vice-news','wired'"
+    url = url.format(query_text, api_key) 
+    url = url.replace(' ', '%20')
     res = rq.get(url).text
     data = json.loads(res)
     return data['articles']
@@ -101,7 +105,7 @@ def classify_article(article, clf):
     ]
 '''
 def get_classified_news(clf, src="r/politics"):
-    sources = ['r/politics', 'r/usnews', 'politico']
+    sources = ['r/politics','r/usnews','politico']
     if src not in sources:
         raise Exception("Invalid source")
 
@@ -124,7 +128,7 @@ def get_classified_news(clf, src="r/politics"):
         except:
             continue
 
-        if len(articles) < 6:
+        if len(articles) < 5:
             continue
 
         classified_articles = []
@@ -136,15 +140,7 @@ def get_classified_news(clf, src="r/politics"):
 
         classified_news.append({
             'headline': topic,
-            'articles': classified_articles
+            'articles': classified_articles[:10]
         })
     
     return classified_news
-
-# if __name__ == "__main__":
-#     model_file_path = "./models/article-classifier_8000x3.pkl"
-#     clf = NewsClassifier(model_file=model_file_path)
-
-#     news = get_classified_news(clf)
-#     output = json.dumps(news, indent=4, separators=(',',': '))
-#     print(output)
