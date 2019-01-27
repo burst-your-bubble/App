@@ -14,9 +14,11 @@ class User(ModelBase):
 
 class History(ModelBase):
     __tablename__ = 'history'
-    articleID = Column(Integer,primary_key=True)
+    articleID = Column(Integer, ForeignKey('articles.id'),primary_key=True)
     response = Column(Integer)
-    userID = Column(Integer, ForeignKey('user.id'),primary_key=True)
+    userID = Column(Integer, ForeignKey('users.id'),primary_key=True)
+
+    query = Session.query_property()
 
 class Article(ModelBase):
     __tablename__ = 'articles'
