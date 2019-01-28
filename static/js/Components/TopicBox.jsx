@@ -12,6 +12,8 @@ export class TopicBox extends React.Component {
                     stance={article.stance}
                     url={article.url}
                     id={article.id}
+                    read={article.read}
+                    response={article.response}
                 />)
         });
 
