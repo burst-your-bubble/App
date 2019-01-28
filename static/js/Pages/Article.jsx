@@ -8,7 +8,7 @@ export class Article extends React.Component {
     constructor(props) {
         super(props);
         this.id = props.match.params.id;
-        this.jsonUrl = `/json/article/${this.id}`;
+        this.jsonUrl = `/api/article/${this.id}`;
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.state = {
