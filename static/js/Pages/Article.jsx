@@ -56,8 +56,8 @@ export class Article extends React.Component {
         if (this.state.loading) return <Loading />;
 
         return (
-            <div>
-                <Media className="articlePage">
+            <div className = "container">
+                <Media className = "articlePage">
                     <Media.Left>
                         <img width={64} height={64} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
                     </Media.Left>
