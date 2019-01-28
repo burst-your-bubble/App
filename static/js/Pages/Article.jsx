@@ -15,8 +15,9 @@ export class Article extends React.Component {
             loading: true,
             article: null,
             show: false,
-            response: ""
         };
+        this.handleResponse = this.handleResponse.bind(this);
+
     }
 
     componentDidMount() {
@@ -36,17 +37,27 @@ export class Article extends React.Component {
         this.setState({ show: true });
     }
 
-    handleResponse() {
-        {/* Send the response here back to home */}
-        window.location.href = "/home";
+    handleResponse(response) {
+        {/* Send the response here back to home */ }
+        fetch(`/api/article/${this.id}/respond`,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },            
+            body: JSON.stringify({
+                response: response
+            })
+        })
+        window.location.href='/home';
     }
 
     render() {
         if (this.state.loading) return <Loading />;
 
         return (
-            <div>
-                <Media className="articlePage">
+            <div className = "container">
+                <Media className = "articlePage">
                     <Media.Left>
                         <img width={64} height={64} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
                     </Media.Left>
@@ -70,9 +81,9 @@ export class Article extends React.Component {
                         </p>
                         <ButtonToolbar>
                             {/* Capture what button is clicked into 'response' */}
-                            <Button bsStyle="success" onClick={this.handleResponse}>Agree</Button>
-                            <Button bsStyle="warning" onClick={this.handleResponse}>Neutral</Button>
-                            <Button bsStyle="danger" onClick={this.handleResponse}>Disagree</Button>
+                            <Button bsStyle="success" onClick={() => this.handleResponse(1)}>Agree</Button>
+                            <Button bsStyle="warning" onClick={() => this.handleResponse(0)}>Neutral</Button>
+                            <Button bsStyle="danger" onClick={() => this.handleResponse(-1)}>Disagree</Button>
                         </ButtonToolbar>
                     </Modal.Body>
                     <Modal.Footer>

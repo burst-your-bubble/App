@@ -15,7 +15,11 @@ def json_topics():
     read = read_articles(dummy_user_id)
     for topic in topics:
         for article in topic['articles']:
-            article['read'] = article['id'] in read
+            article['read'] = article['id'] in read.keys()
+            if article['read']:
+                article['response'] = int(read[article.get('id')])
+            else:
+                article['response'] = None
     return jsonify({ 'topics' : topics })
 
 @api.route('/article/<id>', methods=['GET'])
@@ -25,11 +29,9 @@ def json_article(id):
 
 @api.route('/article/<id>/respond', methods=['POST'])
 def respond_to_article(id):
-    response = request.form['response']
+    response = request.get_json()['response']
     addResponse(dummy_user_id, id, response)
-    return redirect('/home')
-
-
+    return response
 
 def get_articles_list(topicID):
     articles = Article.query.with_entities(
@@ -63,17 +65,35 @@ def get_topics():
     return topics
 
 def addResponse(userID,articleID,response):
-    new_history = History(articleID=articleID, 
-                    userID=userID,
-                    response = response)
-    Session().add(new_history)
-    Session().commit()
+    res = History.query.with_entities(
+        History.response
+    ).filter(
+        History.userID==userID,History.articleID==articleID,
+    ).first()
+
+    print(res)
+
+    if res is None:
+        new_history = History(articleID=articleID, 
+                        userID=userID,
+                        response = response)
+        Session().add(new_history)
+        Session().commit()
+    
+    else:
+        changeResponse(userID,articleID,response)
 
 def read_articles(user_id):
     res = History.query.with_entities(
-        History.articleID
+        History.articleID, History.response
     ).filter(
-        History.userID==user_id,
+        History.userID==user_id
     ).all()
-    return [row[0] for row in res] 
+    return { row[0]: row[1] for row in res }
 
+def changeResponse(userID,articleID,response):
+    session = Session()
+    session.query(History).filter_by(userID = userID,articleID = articleID).delete()
+    new_history = History(articleID=articleID, userID=userID,response = response)
+    session.add(new_history)
+    session.commit()
