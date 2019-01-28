@@ -43,3 +43,10 @@ body {
     height: 1em;
     width: 1em;
 }  
+
+.loader-container {
+    height: 100vh; /* Magic here */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
