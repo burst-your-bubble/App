@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, jsonify
 from server.data.models import Article, Topic, User, History
+from server.cache import cache
 from server.data.db import Session
 from server.config import mysql_connection_string
 
@@ -51,6 +52,7 @@ def get_article(articleID):
     article = Article.query.filter(Article.id == articleID).first()
     return article.to_json()
 
+@cache.cached(timeout=30)
 def get_topics():
     topics = Topic.query.all()
     topics = [{
