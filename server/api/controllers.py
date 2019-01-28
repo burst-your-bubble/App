@@ -14,7 +14,11 @@ def json_topics():
     read = read_articles(dummy_user_id)
     for topic in topics:
         for article in topic['articles']:
-            article['read'] = article['id'] in read
+            article['read'] = article['id'] in read.keys()
+            if article['read']:
+                article['response'] = int(read[article.get('id')])
+            else:
+                article['response'] = None
     return jsonify({ 'topics' : topics })
 
 @api.route('/article/<id>', methods=['GET'])
@@ -79,11 +83,11 @@ def addResponse(userID,articleID,response):
 
 def read_articles(user_id):
     res = History.query.with_entities(
-        History.articleID
+        History.articleID, History.response
     ).filter(
-        History.userID==user_id,
+        History.userID==user_id
     ).all()
-    return [row[0] for row in res] 
+    return { row[0]: row[1] for row in res }
 
 def changeResponse(userID,articleID,response):
     session = Session()
