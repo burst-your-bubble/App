@@ -13,6 +13,7 @@ et-xmlfile==1.0.1
 feedfinder2==0.0.4
 feedparser==5.2.1
 Flask==0.12.1
+Flask-Caching==1.4.0
 Flask-Cors==3.0.3
 gast==0.2.0
 grpcio==1.15.0
