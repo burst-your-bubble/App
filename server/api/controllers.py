@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, jsonify
 from server.data.models import Article, Topic, User, History
-from server.cache import cache
+# from server.cache import cache
 from server.data.db import Session
 from server.config import mysql_connection_string
 
@@ -54,7 +54,7 @@ def get_article(articleID):
     article = Article.query.filter(Article.id == articleID).first()
     return article.to_json()
 
-@cache.cached(timeout=30)
+# @cache.cached(timeout=30)
 def get_topics():
     topics = Topic.query.all()
     topics = [{
@@ -74,12 +74,12 @@ def addResponse(userID,articleID,response):
     print(res)
 
     if res is None:
-        new_history = History(articleID=articleID, 
+        new_history = History(articleID=articleID,
                         userID=userID,
                         response = response)
         Session().add(new_history)
         Session().commit()
-    
+
     else:
         changeResponse(userID,articleID,response)
 
