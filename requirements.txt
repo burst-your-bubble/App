@@ -39,7 +39,6 @@ munkres==1.0.12
 musicbrainzngs==0.6
 mutagen==1.38
 mysql-connector-python-rf==2.2.2
-MySQL-python==1.2.4
 newspaper3k==0.2.8
 nltk==3.3
 numpy==1.15.2
