@@ -13,6 +13,7 @@ et-xmlfile==1.0.1
 feedfinder2==0.0.4
 feedparser==5.2.1
 Flask==0.12.1
+Flask-Caching==1.4.0
 Flask-Cors==3.0.3
 Flask-SQLAlchemy==2.3.2
 Flask-User==0.6.21
@@ -62,6 +63,7 @@ SQLAlchemy==1.2.16
 tensorboard==1.11.0
 tensorflow==1.11.0
 termcolor==1.1.0
+textblob==0.15.2
 tinysegmenter==0.3
 tldextract==2.2.0
 tzlocal==1.4

@@ -3,7 +3,7 @@ cd /srv/comps
 
 npm install
 npm run build
-. ./venv/bin/activate
 pip install -r requirements.txt
-deactivate
-sudo apachectl restart
+cp /home/ubuntu/news_config.py server/config.py
+apachectl restart
+service apache2 restart

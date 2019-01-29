@@ -4,6 +4,10 @@ files:
   - source: /
     destination: /srv/comps
 hooks:
+  BeforeInstall:
+    - location: ./beforeinstall.sh
+      timeout: 300
+      runas: root
   AfterInstall:
     - location: ./install.sh
       timeout: 300
