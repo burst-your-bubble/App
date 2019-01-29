@@ -1,4 +1,7 @@
 #!/bin/bash
+cd /srv
+
+sudo chown -R ubuntu comps
 cd /srv/comps
 
 npm install
