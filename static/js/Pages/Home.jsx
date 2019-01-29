@@ -1,16 +1,23 @@
 import React from 'react';
 
-import { Loading } from '../Components/Loading';
+import { css } from '@emotion/core';
+import { PacmanLoader} from 'react-spinners';
 import { TopicBox } from '../Components/TopicBox';
 
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
 
 
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: white;
+`;
+
 export class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        this.jsonUrl = '/json/topics';
+        this.jsonUrl = '/api/topics';
         this.state = {
             loading: true,
             topics: null
@@ -30,7 +37,19 @@ export class Home extends React.Component {
 
     render() {
         // Display a loading screen until the json data comes back from server
-        if (this.state.loading) return <Loading />;
+        if (this.state.loading) return (
+            <div className='loader-container'>
+                <div className='sweet-loading'>
+                    <PacmanLoader
+                        css={override}
+                        sizeUnit={"px"}
+                        size={25}
+                        color={'#4A4A4A'}
+                        loading={this.state.loading}
+                    />
+                </div>
+            </div>
+        );
 
         const secondColumnStart = Math.floor(this.state.topics.length / 2);
 
@@ -50,7 +69,7 @@ export class Home extends React.Component {
 
         return (
             <div>
-                <PageHeader className = "homeTitle">Burst Your Bubble</PageHeader>
+                <PageHeader className="homeTitle">Burst Your Bubble</PageHeader>
                 <Grid>
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}>

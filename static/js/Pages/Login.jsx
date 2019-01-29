@@ -20,7 +20,7 @@ export class Login extends React.Component {
 
     render() {
         return (
-            <Form horizontal>
+            <Form horizontal className = "container">
                 <PageHeader className="homeTitle">Burst Your Bubble</PageHeader>
                 <FormGroup>
                     <Col componentClass={ControlLabel} sm={2}>

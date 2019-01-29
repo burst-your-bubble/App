@@ -1,5 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey
+from .db import Session
 
 ModelBase = declarative_base()
 
@@ -13,9 +14,11 @@ class User(ModelBase):
 
 class History(ModelBase):
     __tablename__ = 'history'
-    articleID = Column(Integer,primary_key=True)
+    articleID = Column(Integer, ForeignKey('articles.id'),primary_key=True)
     response = Column(Integer)
-    userID = Column(Integer, ForeignKey('user.id'),primary_key=True)
+    userID = Column(Integer, ForeignKey('users.id'),primary_key=True)
+
+    query = Session.query_property()
 
 class Article(ModelBase):
     __tablename__ = 'articles'
@@ -32,9 +35,27 @@ class Article(ModelBase):
     datePublished = Column(DATE)
     topicID = Column(Integer)
 
+    query = Session.query_property()
+
+    def to_json(self, list_view=False):
+        if list_view:
+            return {
+                'id': self.id,
+                'title': self.title,
+                'summary': self.summary,
+                'topicID': self.topicID
+            }
+
+        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+
 class Topic(ModelBase):
     __tablename__ = 'topics'
 
     id = Column(Integer ,primary_key=True)
     headline = Column(Text)
     dateScraped = Column(DATE)
+
+    query = Session.query_property()
+
+    def to_json(self):
+        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}

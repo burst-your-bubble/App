@@ -1,82 +1,99 @@
-from flask import Blueprint, render_template
-from server.data.models import Article, Topic, User
+from flask import Blueprint, render_template, redirect, request, jsonify
+from server.data.models import Article, Topic, User, History
+from server.cache import cache
+from server.data.db import Session
 from server.config import mysql_connection_string
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-import json
+
+dummy_user_id = 1
 
 api = Blueprint('api', __name__)
 
-@api.route("/topics")
+@api.route("/topics", methods=['GET'])
 def json_topics():
-    DBSession = get_db_session()
     # Cache this query for better performance, and it only changes once a day?
-    topics = { 'topics': getTopics(DBSession) }
-    return json.dumps(topics)
+    topics = get_topics()
+    read = read_articles(dummy_user_id)
+    for topic in topics:
+        for article in topic['articles']:
+            article['read'] = article['id'] in read.keys()
+            if article['read']:
+                article['response'] = int(read[article.get('id')])
+            else:
+                article['response'] = None
+    return jsonify({ 'topics' : topics })
 
-@api.route('/article/<id>')
+@api.route('/article/<id>', methods=['GET'])
 def json_article(id):
-    DBSession = get_db_session()
-    article = getArticleByID(DBSession, id)
-    return json.dumps(article)
+    article = get_article(id)
+    return jsonify(article)
 
-def get_db_session():
-    engine = create_engine(mysql_connection_string)
-    DBSession = sessionmaker(bind=engine)
-    return DBSession
+@api.route('/article/<id>/respond', methods=['POST'])
+def respond_to_article(id):
+    response = request.get_json()['response']
+    addResponse(dummy_user_id, id, response)
+    return response
 
-def getArticles(DBSession, topicID = None):
-    session = DBSession()
-    if topicID is None:
-        articles = session.query(Article).all()
-    else:
-        articles = session.query(Article).filter(Article.topicID == topicID).all()
-    session.close()
+def get_articles_list(topicID):
+    articles = Article.query.with_entities(
+        Article.id,
+        Article.title,
+        Article.summary,
+        Article.topicID
+    ).filter(Article.topicID == topicID).all()
 
     articles = [{
-        'id': article.id,
-        'title': article.title,
-        #'author': article.author,
-        'source': article.source,
-        'summary': article.summary,
-        #'text': article.text,
-        'stance': article.stance,
-        'url': article.url,
-        #'imageUrl': article.imageUrl,
-        #'datePublished': str(article.datePublished)
-    } for article in articles]
+            'id': article[0],
+            'title': article[1],
+            'summary': article[2],
+            'topicID': article[3],
+        } for article in articles ]
 
     return articles
 
-# Better way to json-ify objects?
-# https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json
-def getArticleByID(DBSession, articleID):
-    session = DBSession()
-    article = session.query(Article).filter(Article.id == articleID).first()
+def get_article(articleID):
+    article = Article.query.filter(Article.id == articleID).first()
+    return article.to_json()
 
-    article = {
-        'id': article.id,
-        'title': article.title,
-        'author': article.author,
-        'source': article.source,
-        'summary': article.summary,
-        'text': article.text,
-        'stance': article.stance,
-        'url': article.url,
-        'imageUrl': article.imageUrl,
-        'datePublished': str(article.datePublished)
-    } 
-
-    return article
-
-def getTopics(DBSession):
-    session = DBSession()
-    topics = session.query(Topic).all()
-    session.close()
-
+@cache.cached(timeout=30)
+def get_topics():
+    topics = Topic.query.all()
     topics = [{
         'story': topic.headline,
-        'articles': getArticles(DBSession, topicID=topic.id)
+        'articles': get_articles_list(topicID=topic.id)
     } for topic in topics]
 
     return topics
+
+def addResponse(userID,articleID,response):
+    res = History.query.with_entities(
+        History.response
+    ).filter(
+        History.userID==userID,History.articleID==articleID,
+    ).first()
+
+    print(res)
+
+    if res is None:
+        new_history = History(articleID=articleID, 
+                        userID=userID,
+                        response = response)
+        Session().add(new_history)
+        Session().commit()
+    
+    else:
+        changeResponse(userID,articleID,response)
+
+def read_articles(user_id):
+    res = History.query.with_entities(
+        History.articleID, History.response
+    ).filter(
+        History.userID==user_id
+    ).all()
+    return { row[0]: row[1] for row in res }
+
+def changeResponse(userID,articleID,response):
+    session = Session()
+    session.query(History).filter_by(userID = userID,articleID = articleID).delete()
+    new_history = History(articleID=articleID, userID=userID,response = response)
+    session.add(new_history)
+    session.commit()
