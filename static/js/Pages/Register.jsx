@@ -34,7 +34,7 @@ export class Register extends React.Component {
 
     render() {
         return (
-            <Form horizontal className="container">
+            <Form action="/register" method="POST" horizontal className="container">
                 <PageHeader className="homeTitle">Register</PageHeader>
                 <FormGroup>
                     <Col componentClass={ControlLabel} sm={2}>
@@ -70,7 +70,7 @@ export class Register extends React.Component {
                     <Col smOffset={2} sm={10}>
                         <ButtonToolbar>
                             <Button variant="dark" onClick={this.handleBack}>Back</Button>
-                            <Button variant="outline-primary" onClick={this.handleNext}>Next</Button>
+                            <Button variant="outline-primary" type="submit">Next</Button>
                         </ButtonToolbar>
                     </Col>
                 </FormGroup>

@@ -74,12 +74,12 @@ def addResponse(userID,articleID,response):
     print(res)
 
     if res is None:
-        new_history = History(articleID=articleID, 
+        new_history = History(articleID=articleID,
                         userID=userID,
                         response = response)
         Session().add(new_history)
         Session().commit()
-    
+
     else:
         changeResponse(userID,articleID,response)
 
