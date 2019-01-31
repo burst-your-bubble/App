@@ -1,18 +1,19 @@
-from flask import Blueprint, render_template, redirect, request, jsonify
+from flask import Blueprint, render_template, redirect, request, jsonify, abort
 from server.data.models import Article, Topic, User, History
 # from server.cache import cache
 from server.data.db import Session
 from server.config import mysql_connection_string
 
-dummy_user_id = 1
-
 api = Blueprint('api', __name__)
 
 @api.route("/topics", methods=['GET'])
 def json_topics():
+    if not user_logged_in():
+        abort(401)
+
     # Cache this query for better performance, and it only changes once a day?
     topics = get_topics()
-    read = read_articles(dummy_user_id)
+    read = read_articles(get_user())
     for topic in topics:
         for article in topic['articles']:
             article['read'] = article['id'] in read.keys()
@@ -20,18 +21,24 @@ def json_topics():
                 article['response'] = int(read[article.get('id')])
             else:
                 article['response'] = None
-    score = get_score(dummy_user_id)
+    score = get_score(get_user())
     return jsonify({ 'topics' : topics, 'score': score })
 
 @api.route('/article/<id>', methods=['GET'])
 def json_article(id):
+    if not user_logged_in():
+        abort(401)     
+
     article = get_article(id)
     return jsonify(article)
 
 @api.route('/article/<id>/respond', methods=['POST'])
 def respond_to_article(id):
+    if not user_logged_in():
+        abort(401)
+
     response = request.get_json()['response']
-    addResponse(dummy_user_id, id, response)
+    addResponse(get_user(), id, response)
     return response
 
 def get_articles_list(topicID):
@@ -104,3 +111,9 @@ def changeResponse(userID,articleID,response):
 def get_score(user_id):
     score = Session().query(User).filter_by(id = user_id).one().score
     return score
+
+def get_user():
+    return request.cookies['user_id']
+
+def user_logged_in():
+    return request.cookies.get('user_id') is not None
