@@ -1,11 +1,13 @@
 import React from 'react';
 import { ArticleBox } from './ArticleBox';
+import { sortArticles } from '../lib/articleSort';
 
 import { Panel } from 'react-bootstrap';
 
 export class TopicBox extends React.Component {
     render() {
-        var articles = this.props.articles.map(article => {
+        var sorted = sortArticles(this.props.score, this.props.articles)
+        var articles = sorted.map(article => {
             return (
                 <ArticleBox title={article.title}
                     summary={article.summary}

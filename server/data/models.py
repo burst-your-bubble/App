@@ -10,7 +10,10 @@ class User(ModelBase):
     id = Column(Integer, primary_key=True)
     name = Column(String(length=32))
     password = Column(String(length=32))
+    score = Column(Integer)
     #history = relationship('history', backref="user")
+
+    query = Session.query_property()
 
 class History(ModelBase):
     __tablename__ = 'history'
