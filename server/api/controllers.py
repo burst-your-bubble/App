@@ -31,7 +31,7 @@ def json_article(id):
 def respond_to_article(id):
     response = request.get_json()['response']
     addResponse(dummy_user_id, id, response)
-    return response
+    return str(response)
 
 def get_articles_list(topicID):
     articles = Article.query.with_entities(

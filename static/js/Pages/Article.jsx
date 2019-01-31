@@ -55,8 +55,7 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 response: response
             })
-        })
-        window.location.href='/home';
+        }).then(() => window.history.back());
     }
 
     render() {
