@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey, Float
 from .db import Session
 
 ModelBase = declarative_base()
@@ -10,7 +10,10 @@ class User(ModelBase):
     id = Column(Integer, primary_key=True)
     name = Column(String(length=32))
     password = Column(String(length=32))
-    score = Column(Integer)
+    salt = Column(String(length=32))
+    score = Column(Float)
+
+    query = Session.query_property()
     #history = relationship('history', backref="user")
 
     query = Session.query_property()
