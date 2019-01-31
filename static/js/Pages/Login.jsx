@@ -17,9 +17,6 @@ export class Login extends React.Component {
 
     handleLogin() {
         {/* Send the response for validation here and then proceed to home */ }
-        window.location.href = "/home";
-        console.log(this.state.email);
-        console.log(this.state.password);
     }
 
     handleChange(event) {
@@ -34,7 +31,7 @@ export class Login extends React.Component {
 
     render() {
         return (
-            <Form horizontal className="container">
+            <Form method="post" action="/login" horizontal className="container">
                 <PageHeader className="homeTitle">Login</PageHeader>
                 <FormGroup>
                     <Col componentClass={ControlLabel} sm={2}>
@@ -74,7 +71,7 @@ export class Login extends React.Component {
                 <FormGroup>
                     <Col smOffset={2} sm={10}>
                         <ButtonToolbar>
-                            <Button variant="outline-primary" onClick={this.handleLogin}>Login</Button>
+                            <Button variant="outline-primary" type="submit">Login</Button>
                             <Button variant="dark" onClick={this.handleRegister}>Register</Button>
                         </ButtonToolbar>
                     </Col>

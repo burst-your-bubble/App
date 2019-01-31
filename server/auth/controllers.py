@@ -5,8 +5,6 @@ from server.config import mysql_connection_string
 import uuid
 import hashlib
 
-dummy_user_id = 1
-
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 @auth.route("/register", methods=['POST'])
@@ -28,4 +26,21 @@ def register_user():
 
     response = make_response(redirect('/quiz'))
     response.set_cookie('user_id', str(new_user.id))
+    return response
+
+@auth.route("/login", methods=['POST'])
+def login_user():
+    email = request.form['email']
+    user = User.query.filter(User.name == email).first()
+    if user is None:
+        return redirect('/')
+
+    pwstring = request.form['password'] + user.salt
+    password = hashlib.sha256(pwstring.encode('utf-8')).hexdigest()
+
+    if user.password != password:
+        return redirect('/')
+
+    response = make_response(redirect('/home'))
+    response.set_cookie('user_id', str(user.id))
     return response
