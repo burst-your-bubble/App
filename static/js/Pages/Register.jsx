@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
 
-export class Login extends React.Component {
+export class Register extends React.Component {
 
     constructor(props) {
         super(props);
@@ -12,12 +12,16 @@ export class Login extends React.Component {
             password: ''
         };
 
-        this.handleLogin = this.handleLogin.bind(this);
+        this.handleNext = this.handleNext.bind(this);
     }
 
-    handleLogin() {
-        {/* Send the response for validation here and then proceed to home */ }
-        window.location.href = "/home";
+    handleBack() {
+        window.location.href = "/";
+    }
+
+    handleNext() {
+        {/* Add the response for to database and then proceed to quiz */ }
+        window.location.href = "/quiz";
         console.log(this.state.email);
         console.log(this.state.password);
     }
@@ -28,14 +32,10 @@ export class Login extends React.Component {
         this.setState({ [fieldName]: fieldVal })
     }
 
-    handleRegister() {
-        window.location.href = "/register";
-    }
-
     render() {
         return (
             <Form horizontal className="container">
-                <PageHeader className="homeTitle">Login</PageHeader>
+                <PageHeader className="homeTitle">Register</PageHeader>
                 <FormGroup>
                     <Col componentClass={ControlLabel} sm={2}>
                         Email
@@ -61,21 +61,16 @@ export class Login extends React.Component {
                             name='password'
                             placeholder='Password'
                             defaultValue={this.state.password}
-                            onChange={this.handleChange.bind(this)}                        />
-                    </Col>
-                </FormGroup>
-
-                <FormGroup>
-                    <Col smOffset={2} sm={10}>
-                        <Checkbox>Remember me</Checkbox>
+                            onChange={this.handleChange.bind(this)}
+                        />
                     </Col>
                 </FormGroup>
 
                 <FormGroup>
                     <Col smOffset={2} sm={10}>
                         <ButtonToolbar>
-                            <Button variant="outline-primary" onClick={this.handleLogin}>Login</Button>
-                            <Button variant="dark" onClick={this.handleRegister}>Register</Button>
+                            <Button variant="dark" onClick={this.handleBack}>Back</Button>
+                            <Button variant="outline-primary" onClick={this.handleNext}>Next</Button>
                         </ButtonToolbar>
                     </Col>
                 </FormGroup>

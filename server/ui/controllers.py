@@ -7,8 +7,16 @@ ui = Blueprint('ui', __name__,
 def index():
     return render_template("index.html")
 
+@ui.route("/register")
+def registe():
+    return render_template("index.html")
+
 @ui.route("/home")
 def home():
+    return render_template("index.html")
+
+@ui.route("/quiz")
+def quiz():
     return render_template("index.html")
 
 @ui.route("/article/<id>")
