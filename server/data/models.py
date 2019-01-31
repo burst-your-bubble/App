@@ -14,8 +14,9 @@ class User(ModelBase):
     score = Column(Float)
 
     query = Session.query_property()
-
     #history = relationship('history', backref="user")
+
+    query = Session.query_property()
 
 class History(ModelBase):
     __tablename__ = 'history'

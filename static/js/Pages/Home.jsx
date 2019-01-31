@@ -20,7 +20,8 @@ export class Home extends React.Component {
         this.jsonUrl = '/api/topics';
         this.state = {
             loading: true,
-            topics: null
+            topics: null,
+            user_score: null
         }
 
         this.componentDidMount.bind(this);
@@ -30,7 +31,7 @@ export class Home extends React.Component {
         // GET mock json data, when it comes back put it into state.
         fetch(this.jsonUrl).then(res => {
             res.json().then(data =>
-                this.setState({ loading: false, topics: data.topics })
+                this.setState({ loading: false, topics: data.topics, user_score: data.score })
             );
         });
     }
@@ -57,7 +58,8 @@ export class Home extends React.Component {
             return (
                 <TopicBox topic={story.story}
                     summary={story.summary}
-                    articles={story.articles} />)
+                    articles={story.articles}
+                    score={this.state.user_score} />)
         })
 
         var storiesR = this.state.topics.slice(secondColumnStart).map(story => {

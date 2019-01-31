@@ -20,7 +20,8 @@ def json_topics():
                 article['response'] = int(read[article.get('id')])
             else:
                 article['response'] = None
-    return jsonify({ 'topics' : topics })
+    score = get_score(dummy_user_id)
+    return jsonify({ 'topics' : topics, 'score': score })
 
 @api.route('/article/<id>', methods=['GET'])
 def json_article(id):
@@ -38,6 +39,7 @@ def get_articles_list(topicID):
         Article.id,
         Article.title,
         Article.summary,
+        Article.stance,
         Article.topicID
     ).filter(Article.topicID == topicID).all()
 
@@ -45,7 +47,8 @@ def get_articles_list(topicID):
             'id': article[0],
             'title': article[1],
             'summary': article[2],
-            'topicID': article[3],
+            'stance': article[3],
+            'topicID': article[4]
         } for article in articles ]
 
     return articles
@@ -97,3 +100,7 @@ def changeResponse(userID,articleID,response):
     new_history = History(articleID=articleID, userID=userID,response = response)
     session.add(new_history)
     session.commit()
+
+def get_score(user_id):
+    score = Session().query(User).filter_by(id = user_id).one().score
+    return score
