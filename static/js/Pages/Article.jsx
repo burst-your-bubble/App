@@ -74,6 +74,9 @@ export class Article extends React.Component {
             </div>
         );
 
+        let paragraphs = this.state.article.text.split("\n");
+        let text = paragraphs.map(paragraph => <p>{paragraph}</p>);
+
         return (
             <div className = "container">
                 <Media className = "articlePage">
@@ -88,7 +91,7 @@ export class Article extends React.Component {
                         {this.state.article.datePublished} • By {this.state.article.author}
                     </p>
                     <p className="articleText">
-                        {this.state.article.text}
+                        {text}
                     </p>
                     <Button bsStyle="info" onClick={this.handleShow}>Done Reading</Button>
                 </Media>
