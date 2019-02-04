@@ -17,20 +17,27 @@ export function sortArticles(score, articles) {
     let sorted;
 
     if (L.length >= 3 && R.length >= 3 && C.length >= 2) {
+        //far left
         if (score <= -0.75)
-            sorted = getArticles(L,1,R,2,C,2)
-        else if (score > -0.75 && score < -0.25) 
-            sorted = getArticles(L,1,R,3,C,1)
-        else if (score >= -0.25 && score <= 0.25){
-            sorted = getNArticles(L.concat(C).concat(R), 5);
+            sorted = getArticles(L, 1, R, 2, C, 2);
+        //liberal
+        else if (score > -0.75 && score < -0.25)
+            sorted = getArticles(L, 1, R, 3, C, 1);
+        // central / swing
+        else if (score >= -0.25 && score <= 0.25) {
+            var distribution = [2,2,1];
+            distribution = shuffle(distribution);
+            sorted = getArticles(L, distribution[0], R, distribution[1], C, distribution[2]);
         }
+        // conservatives
         else if (score > 0.25 && score < 0.75)
-            sorted = getArticles(L,3,R,1,C,1)
+            sorted = getArticles(L, 3, R, 1, C, 1);
+        // far right
         else
-            sorted = getArticles(L,2,R,1,C,2)
+            sorted = getArticles(L, 2, R, 1, C, 2);
     }
 
-    else{
+    else {
         sorted = shuffle(L.concat(C).concat(R));
     }
 
@@ -38,7 +45,7 @@ export function sortArticles(score, articles) {
     return sorted;
 }
 
-function getArticles(left,l,right,r,center,c){
+function getArticles(left, l, right, r, center, c) {
     var sortedL, sortedR, sortedC;
     sortedL = (getNArticles(left, l));
     sortedR = (getNArticles(right, r));
@@ -60,7 +67,7 @@ function getNArticles(articles, n) {
         result[n] = articles[x in taken ? taken[x] : x];
         taken[x] = --len in taken ? taken[len] : len;
     }
-    
+
     return result;
 }
 
