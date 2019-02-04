@@ -16,6 +16,12 @@ export function sortArticles(score, articles) {
 
     let sorted;
 
+    /*
+        KNOWN ISSUES: 
+        1) Articles get randomized and distributed EVERYTIME we render, 
+        probably don't want that
+        2) For topics that don't meet our dist requirements, we need a better method.
+    */
     if (L.length >= 3 && R.length >= 3 && C.length >= 2) {
         //far left
         if (score <= -0.75)
@@ -25,7 +31,7 @@ export function sortArticles(score, articles) {
             sorted = getArticles(L, 1, R, 3, C, 1);
         // central / swing
         else if (score >= -0.25 && score <= 0.25) {
-            var distribution = [2,2,1];
+            var distribution = [2, 2, 1];
             distribution = shuffle(distribution);
             sorted = getArticles(L, distribution[0], R, distribution[1], C, distribution[2]);
         }
