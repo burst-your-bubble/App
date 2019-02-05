@@ -151,7 +151,7 @@ def addResponse(userID,articleID,response):
     stance = [1,-1][article.stance== 'L']
     if article.stance == 'C':
         stance = 0
-        if score == 0:
+        if user.score == 0:
             return 
     if old != None:
         if int(old.response) == response:
