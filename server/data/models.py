@@ -1,7 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey,Float
 from .db import Session
-
+import datetime
 ModelBase = declarative_base()
 
 class User(ModelBase):
@@ -11,13 +11,13 @@ class User(ModelBase):
     name = Column(String(length=32))
     password = Column(String(length=32))
     #history = relationship('history', backref="user")
-
+    score = Column(Float)
 class History(ModelBase):
     __tablename__ = 'history'
     articleID = Column(Integer, ForeignKey('articles.id'),primary_key=True)
     response = Column(Integer)
     userID = Column(Integer, ForeignKey('users.id'),primary_key=True)
-
+    createdAt = Column(DateTime,default=datetime.datetime.utcnow)
     query = Session.query_property()
 
 class Article(ModelBase):
