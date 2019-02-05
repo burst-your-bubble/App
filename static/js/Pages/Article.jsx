@@ -24,7 +24,6 @@ export class Article extends React.Component {
             show: false,
         };
         this.handleResponse = this.handleResponse.bind(this);
-
     }
 
     componentDidMount() {
