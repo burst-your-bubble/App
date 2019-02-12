@@ -73,7 +73,7 @@ export class Article extends React.Component {
 
     handleReporting(response) {
         {/* Send the response here back to home */ }
-        fetch(`/api/article/${this.id}/respond`, {
+        fetch(`/api/article/${this.id}/report`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
