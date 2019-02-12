@@ -26,6 +26,7 @@ export class Article extends React.Component {
             article: null,
             doneShow: false,
             reportShow: false,
+            showSource: false
         };
 
         this.handleResponse = this.handleResponse.bind(this);
@@ -114,7 +115,9 @@ export class Article extends React.Component {
                         <p className="articleSummary">{this.state.article.summary}</p>
                     </Media.Body>
                     <p className="articleText">
-                        {this.state.article.datePublished} • By {this.state.article.author}
+                        {this.state.article.datePublished} • 
+                        By {this.state.article.author} •&nbsp;
+                        {this.state.showSource? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({showSource: true})}>Show Source</span>}
                     </p>
                     <p className="articleText">
                         {text}
@@ -124,6 +127,7 @@ export class Article extends React.Component {
                         <Button bsStyle="info" onClick={this.handleDoneShow}>Done Reading</Button>
                     </ButtonToolbar>
                 </Media>
+
                 <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
                         <h4>{this.state.article.title}</h4>

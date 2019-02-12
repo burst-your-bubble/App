@@ -27,7 +27,7 @@ def json_topics():
 @api.route('/article/<id>', methods=['GET'])
 def json_article(id):
     if not user_logged_in():
-        abort(401)     
+        abort(401)
 
     article = get_article(id)
     return jsonify(article)
@@ -105,7 +105,7 @@ def addResponse(userID,articleID,response):
     if article.stance == 'C':
         stance = 0
         if user.score == 0:
-            return 
+            return
     if old != None:
         if int(old.response) == response:
             return
@@ -124,7 +124,7 @@ def addResponse(userID,articleID,response):
     else:
         if stance == 0:
             prev_score += response * sign
-        else: 
+        else:
             prev_score += response * stance
         new_history = History(articleID=articleID, userID=userID,response = response)
         session.add(new_history)
