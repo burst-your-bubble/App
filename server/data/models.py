@@ -27,6 +27,14 @@ class History(ModelBase):
     createdAt = Column(DateTime,default=datetime.datetime.utcnow)
     query = Session.query_property()
 
+class Reports(ModelBase):
+    __tablename__ = 'reports'
+    articleID = Column(Integer, ForeignKey('articles.id'),primary_key=True)
+    reportType = Column(Text)
+    userID = Column(Integer, ForeignKey('users.id'),primary_key=True)
+    createdAt = Column(DateTime,default=datetime.datetime.utcnow)
+    query = Session.query_property()
+
 class Article(ModelBase):
     __tablename__ = 'articles'
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, jsonify, abort
-from server.data.models import Article, Topic, User, History
+from server.data.models import Article, Topic, User, History, Reports
 # from server.cache import cache
 from server.data.db import Session
 from server.config import mysql_connection_string
@@ -52,10 +52,6 @@ def report_article(id):
     addReport(get_user(), id, reportType)
     return str(reportType)
 
-def addReport(userID,articleID,reportType):
-    session = Session()
-    user = session.query(User).filter(User.id==userID).first()
-
 def get_articles_list(topicID):
     articles = Article.query.with_entities(
         Article.id,
@@ -88,6 +84,13 @@ def get_topics():
     } for topic in topics]
 
     return topics
+
+def addReport(userID,articleID,reportType):
+    session = Session()
+    new_report = Reports(articleID=articleID,userID=userID,reportType=reportType)
+    session.add(new_report)
+    session.commit()
+    return reportType
 
 def addResponse(userID,articleID,response):
     session = Session()

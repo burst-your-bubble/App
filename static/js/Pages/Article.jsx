@@ -2,7 +2,7 @@ import React from 'react';
 
 import { css } from '@emotion/core';
 import { PacmanLoader } from 'react-spinners';
-import { Media, Button, Modal, ButtonToolbar, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 const override = css`
     display: block;
@@ -71,7 +71,7 @@ export class Article extends React.Component {
         }).then(() => window.history.back());
     }
 
-    handleReporting(response) {
+    handleReporting(reportType) {
         {/* Send the response here back to home */ }
         fetch(`/api/article/${this.id}/report`, {
             method: 'POST',
@@ -80,7 +80,7 @@ export class Article extends React.Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                response: response
+                reportType: reportType
             })
         }).then(() => window.history.back());
     }
@@ -146,19 +146,16 @@ export class Article extends React.Component {
                         <h4>{this.state.article.title}</h4>
                         <p>
                             {this.state.article.summary}<br></br>
-                            <b>What would you like to report about this article?</b>
+                            <b>We're sorry that something's wrong! What seems to be the problem?</b>
                         </p>
-                        <DropdownButton title="Dropdown button">
-                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                        </DropdownButton>
+                        <ListGroup>
+                            <ListGroupItem action bsStyle = "danger" onClick={() => this.handleReporting("factually_incorrect")}>The article is factually incorrect</ListGroupItem>
+                            <ListGroupItem action bsStyle = "warning" onClick={() => this.handleReporting("not_an_article")}>This isn't a news article</ListGroupItem>
+                            <ListGroupItem action onClick={() => this.handleReporting("bad_formatting")}>The text is badly formatted, garbled, or missing</ListGroupItem>
+                        </ListGroup>
                     </Modal.Body>
                     <Modal.Footer>
-                        <ButtonToolbar>
-                            <Button onClick={this.handleReportClose}>Cancel</Button>
-                            <Button bsStyle="danger">Submit</Button>
-                        </ButtonToolbar>
+                        <Button onClick={this.handleReportClose}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
