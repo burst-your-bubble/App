@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { css } from '@emotion/core';
-import { PacmanLoader} from 'react-spinners';
-import { Media, Button, Modal, ButtonToolbar } from 'react-bootstrap';
+import { PacmanLoader } from 'react-spinners';
+import { Media, Button, Modal, ButtonToolbar, Dropdown, DropdownButton } from 'react-bootstrap';
 
 const override = css`
     display: block;
@@ -16,13 +16,18 @@ export class Article extends React.Component {
         super(props);
         this.id = props.match.params.id;
         this.jsonUrl = `/api/article/${this.id}`;
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+        this.handleDoneShow = this.handleDoneShow.bind(this);
+        this.handleReportShow = this.handleReportShow.bind(this);
+        this.handleDoneClose = this.handleDoneClose.bind(this);
+        this.handleReportClose = this.handleReportClose.bind(this);
+
         this.state = {
             loading: true,
             article: null,
-            show: false,
+            doneShow: false,
+            reportShow: false,
         };
+
         this.handleResponse = this.handleResponse.bind(this);
     }
 
@@ -35,22 +40,45 @@ export class Article extends React.Component {
         });
     }
 
-    handleClose() {
-        this.setState({ show: false });
+    handleDoneShow() {
+        this.setState({ doneShow: true });
     }
 
-    handleShow() {
-        this.setState({ show: true });
+    handleDoneClose() {
+        this.setState({ doneShow: false });
     }
+
+    handleReportShow() {
+        this.setState({ reportShow: true });
+    }
+
+    handleReportClose() {
+        this.setState({ reportShow: false });
+    }
+
 
     handleResponse(response) {
         {/* Send the response here back to home */ }
-        fetch(`/api/article/${this.id}/respond`,{
+        fetch(`/api/article/${this.id}/respond`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-              },            
+            },
+            body: JSON.stringify({
+                response: response
+            })
+        }).then(() => window.history.back());
+    }
+
+    handleReporting(response) {
+        {/* Send the response here back to home */ }
+        fetch(`/api/article/${this.id}/respond`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
                 response: response
             })
@@ -76,8 +104,8 @@ export class Article extends React.Component {
         let text = paragraphs.map(paragraph => <p>{paragraph}</p>);
 
         return (
-            <div className = "container">
-                <Media className = "articlePage">
+            <div className="container">
+                <Media className="articlePage">
                     <Media.Left>
                         <img width={64} height={64} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
                     </Media.Left>
@@ -91,9 +119,12 @@ export class Article extends React.Component {
                     <p className="articleText">
                         {text}
                     </p>
-                    <Button bsStyle="info" onClick={this.handleShow}>Done Reading</Button>
+                    <ButtonToolbar>
+                        <Button bsStyle="danger" onClick={this.handleReportShow}>Report</Button>
+                        <Button bsStyle="info" onClick={this.handleDoneShow}>Done Reading</Button>
+                    </ButtonToolbar>
                 </Media>
-                <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
                         <h4>{this.state.article.title}</h4>
                         <p>
@@ -107,7 +138,27 @@ export class Article extends React.Component {
                         </ButtonToolbar>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleClose}>Cancel</Button>
+                        <Button onClick={this.handleDoneClose}>Cancel</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
+                    <Modal.Body>
+                        <h4>{this.state.article.title}</h4>
+                        <p>
+                            {this.state.article.summary}<br></br>
+                            <b>What would you like to report about this article?</b>
+                        </p>
+                        <DropdownButton title="Dropdown button">
+                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                        </DropdownButton>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <ButtonToolbar>
+                            <Button onClick={this.handleReportClose}>Cancel</Button>
+                            <Button bsStyle="danger">Submit</Button>
+                        </ButtonToolbar>
                     </Modal.Footer>
                 </Modal>
             </div>

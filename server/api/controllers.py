@@ -42,6 +42,20 @@ def respond_to_article(id):
     addResponse(get_user(), id, response)
     return str(response)
 
+@api.route('/article/<id>/report', methods=['POST'])
+def report_article(id):
+    if not user_logged_in():
+        abort(401)
+
+    reportType = request.get_json()['reportType']
+
+    addReport(get_user(), id, reportType)
+    return str(reportType)
+
+def addReport(userID,articleID,reportType):
+    session = Session()
+    user = session.query(User).filter(User.id==userID).first()
+
 def get_articles_list(topicID):
     articles = Article.query.with_entities(
         Article.id,
