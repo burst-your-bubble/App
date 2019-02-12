@@ -7,32 +7,40 @@ from textblob import TextBlob
 from functools import reduce
 from server.config import api_key
 import datetime
+from py_linq import Enumerable
+from difflib import SequenceMatcher
+from string import punctuation
+from nltk.corpus import stopwords
+from nltk import word_tokenize, pos_tag
+from news_pipeline.sources import sources
 
-# Get top weekly stories from US News subreddit
+HEADLINE_SIMILARITY_CUTOFF = 0.25
+NUM_LEFT_ARTICLES = 3
+NUM_RIGHT_ARTICLES = 3
+NUM_CENTER_ARTICLES = 2
+MAX_NUM_TOPICS = 10
+
 def get_topics_r_usnews():
+    ''' Get top weekly stories from r/USNEWS '''
+
     url = "https://www.reddit.com/r/USNEWS/top.json?t=week"
     res = rq.get(url, headers = {'User-agent': 'Burst Your Bubble'})
-    while res.status_code == 429:
-        time.sleep(0.1)
-        res = rq.get(url, headers = {'User-agent': 'Burst Your Bubble'})
     articles = json.loads(res.text)['data']['children']
     topics = [article['data']['title'] for article in articles]
     return topics
 
-# Get top daily stories from r/POLITICS
 def get_topics_r_politics():
-    url = "https://www.reddit.com/r/politics/top.json?t=day"
+    ''' Get top daily stories from r/POLITICS '''
+
+    url = "https://www.reddit.com/r/politics/top.json?t=day&limit=50"
     res = rq.get(url, headers = {'User-agent': 'Burst Your Bubble'})
-    while res.status_code == 429:
-        print("429")
-        time.sleep(0.1)
-        res = rq.get(url, headers = {'User-agent': 'Burst Your Bubble'})
     articles = json.loads(res.text)['data']['children']
     topics = [article['data']['title'] for article in articles]
     return topics
 
-# Get topc stories from Politico (via newsapi.org)
 def get_topics_politico():
+    ''' Get topc stories from Politico (via newsapi.org) '''
+
     url = "https://newsapi.org/v2/top-headlines?sources=politico&apiKey={0}"
     url = url.format(api_key)
     res = json.loads(rq.get(url, headers = {'User-agent': 'Burst Your Bubble'}).text)
@@ -40,20 +48,30 @@ def get_topics_politico():
     return topics
 
 
-# Get articles from newsapi.org by a query string
 def get_articles_for_topic(topic):
-    # Change url from everything to top articles, and to filter to US articles
-    query_text = reduce((lambda a, b: a + " " + b), TextBlob(topic).noun_phrases, "")
-    url = "https://newsapi.org/v2/everything?q={0}&sortBy=relevance&apiKey={1}&sources='abc-news','al-jazeera-english','ars-technica','associated-press','axios','bleacher-report','bloomberg','breitbart-news','business-insider','buzzfeed','cbs-news','cnbc','cnn','crypto-coins-news','engadget','entertainment-weekly','espn','espn-cric-info','fortune','fox-news','fox-sports','google-news','hacker-news','ign','mashable','medical-news-today','msnbc','mtv-news','national-geographic','national-review','nbc-news','new-scientist','newsweek','new-york-magazine','next-big-future','nfl-news','nhl-news','politico','polygon','recode','reddit-r-all','reuters','techcrunch','techradar','the-american-conservative','the-hill','the-huffington-post','the-new-york-times','the-next-web','the-verge','the-wall-street-journal','the-washington-post','the-washington-times','time','usa-today','vice-news','wired'"
-    url = url.format(query_text, api_key) 
+    ''' Get articles from newsapi.org by a query string '''
+
+    is_noun = lambda pos: pos[:2] == 'NN'
+    tokenized = word_tokenize(topic)
+    keywords = [word for (word, pos) in pos_tag(tokenized) if is_noun(pos)]
+    query_text = reduce((lambda a, b: a + " " + b), keywords[:3], "")
+    sources_text = reduce(lambda a, b: a+','+b, sources, '')
+    url = "https://newsapi.org/v2/everything?q={0}&sortBy=relevance&pageSize=100&apiKey={1}&sources={2}"
+    url = url.format(query_text, api_key, sources_text) 
     url = url.replace(' ', '%20')
     res = rq.get(url).text
     data = json.loads(res)
+    try:
+        print("{0} results returned for search: {1}".format(len(data['articles']), query_text))
+    except KeyError as ex:
+        print(ex)
+        return []
     return data['articles']
 
 
-# Return article object with classification from newsapi article
 def classify_article(article, clf):
+    ''' Return article object with a L/C/R stance classification '''
+
     try:
         a = newspaper.Article(article['url'])
         a.download()
@@ -81,30 +99,38 @@ def classify_article(article, clf):
 
     return classified
 
-'''
-    Return a list of topics and related articles in the following format:
 
-    [
-        {
-            headline: 
-            articles: [
-                {
-                    title:
-                    author:
-                    source:
-                    summary:
-                    text:
-                    stance:
-                    url:
-                    imageUrl:
-                    datePublished:
-                    dateScraped:  
-                },...
-            ]
-        },...
-    ]
-'''
+def filter_articles(articles, topic):
+    ''' Return only the articles relevant to the given topic '''
+
+    relevant = lambda a: compare_strings(topic, a['title'])
+            
+    articles = [a for a in articles if relevant(a)]
+
+    e = Enumerable(articles)
+    left = e.where(lambda a: a['stance'] == 'L').to_list()
+    center = e.where(lambda a: a['stance'] == 'C').to_list()
+    right = e.where(lambda a: a['stance'] == 'R').to_list()
+
+    articles = left[:NUM_LEFT_ARTICLES] + center[:NUM_CENTER_ARTICLES] + right[:NUM_RIGHT_ARTICLES]
+    print("Topic: {0} returns {1} articles".format(topic, len(articles)))
+    return articles
+
+def compare_strings(s1, s2):
+    ''' Return true if the two strings share nouns '''
+
+    is_noun = lambda pos: pos[:2] == 'NN'
+    tokenized = word_tokenize(s1)
+    nouns_s1 = [word.lower() for (word, pos) in pos_tag(tokenized) if is_noun(pos)]
+    tokenized = word_tokenize(s2)
+    nouns_s2 = [word.lower() for (word, pos) in pos_tag(tokenized) if is_noun(pos)]
+    shared = [w for w in nouns_s1 if w in nouns_s2]
+    return len(shared) > 1
+
+
 def get_classified_news(clf, src="r/politics"):
+    ''' Return a list of topics with related articles '''
+
     sources = ['r/politics','r/usnews','politico']
     if src not in sources:
         raise Exception("Invalid source")
@@ -118,17 +144,12 @@ def get_classified_news(clf, src="r/politics"):
     elif src == "politico":
         topics = get_topics_politico()
 
-    i = 1
+    enough_articles = lambda a: len(a) >= 8
+
     for topic in topics:
-        print("Topic {0} of {1}: {2}".format(i, len(topics), topic))
-        i += 1
+        articles = get_articles_for_topic(topic)
 
-        try:
-            articles = get_articles_for_topic(topic)
-        except:
-            continue
-
-        if len(articles) < 5:
+        if not enough_articles(articles):
             continue
 
         classified_articles = []
@@ -138,9 +159,13 @@ def get_classified_news(clf, src="r/politics"):
                 continue
             classified_articles.append(ca)
 
+        articles = filter_articles(classified_articles, topic)
+        if not enough_articles(articles):
+            continue
+
         classified_news.append({
             'headline': topic,
-            'articles': classified_articles[:10]
+            'articles': articles
         })
-    
-    return classified_news
+
+    return classified_news[:10]
