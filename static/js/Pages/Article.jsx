@@ -1,14 +1,6 @@
 import React from 'react';
-
-import { css } from '@emotion/core';
-import { PacmanLoader } from 'react-spinners';
 import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: white;
-`;
+import { Loading } from '../Components/Loading';
 
 export class Article extends React.Component {
 
@@ -87,19 +79,7 @@ export class Article extends React.Component {
     }
 
     render() {
-        if (this.state.loading) return (
-            <div className='loader-container'>
-                <div className='sweet-loading'>
-                    <PacmanLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={25}
-                        color={'#4A4A4A'}
-                        loading={this.state.loading}
-                    />
-                </div>
-            </div>
-        );
+        if (this.state.loading) return <Loading />;
 
         let paragraphs = this.state.article.text.split("\n");
         let text = paragraphs.map(paragraph => <p>{paragraph}</p>);

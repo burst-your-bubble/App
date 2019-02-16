@@ -17,7 +17,6 @@ class User(ModelBase):
 
     query = Session.query_property()
     #history = relationship('history', backref="user")
-    score = Column(Float)
 
 class History(ModelBase):
     __tablename__ = 'history'
@@ -45,6 +44,7 @@ class Article(ModelBase):
     summary = Column(Text)
     text = Column(Text)
     stance = Column(CHAR)
+    rating = Column(Float)
     url = Column(Text)
     imageUrl = Column(Text)
     datePublished = Column(DATE)
