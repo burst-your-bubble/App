@@ -1,14 +1,6 @@
 import React from 'react';
-
-import { css } from '@emotion/core';
-import { PacmanLoader} from 'react-spinners';
-import { Media, Button, Modal, ButtonToolbar } from 'react-bootstrap';
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: white;
-`;
+import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Loading } from '../Components/Loading';
 
 export class Article extends React.Component {
 
@@ -16,13 +8,19 @@ export class Article extends React.Component {
         super(props);
         this.id = props.match.params.id;
         this.jsonUrl = `/api/article/${this.id}`;
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+        this.handleDoneShow = this.handleDoneShow.bind(this);
+        this.handleReportShow = this.handleReportShow.bind(this);
+        this.handleDoneClose = this.handleDoneClose.bind(this);
+        this.handleReportClose = this.handleReportClose.bind(this);
+
         this.state = {
             loading: true,
             article: null,
-            show: false,
+            doneShow: false,
+            reportShow: false,
+            showSource: false
         };
+
         this.handleResponse = this.handleResponse.bind(this);
     }
 
@@ -35,49 +33,60 @@ export class Article extends React.Component {
         });
     }
 
-    handleClose() {
-        this.setState({ show: false });
+    handleDoneShow() {
+        this.setState({ doneShow: true });
     }
 
-    handleShow() {
-        this.setState({ show: true });
+    handleDoneClose() {
+        this.setState({ doneShow: false });
     }
+
+    handleReportShow() {
+        this.setState({ reportShow: true });
+    }
+
+    handleReportClose() {
+        this.setState({ reportShow: false });
+    }
+
 
     handleResponse(response) {
         {/* Send the response here back to home */ }
-        fetch(`/api/article/${this.id}/respond`,{
+        fetch(`/api/article/${this.id}/respond`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-              },            
+            },
             body: JSON.stringify({
                 response: response
             })
         }).then(() => window.history.back());
     }
 
+    handleReporting(reportType) {
+        {/* Send the response here back to home */ }
+        fetch(`/api/article/${this.id}/report`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                reportType: reportType
+            })
+        }).then(() => window.history.back());
+    }
+
     render() {
-        if (this.state.loading) return (
-            <div className='loader-container'>
-                <div className='sweet-loading'>
-                    <PacmanLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={25}
-                        color={'#4A4A4A'}
-                        loading={this.state.loading}
-                    />
-                </div>
-            </div>
-        );
+        if (this.state.loading) return <Loading />;
 
         let paragraphs = this.state.article.text.split("\n");
         let text = paragraphs.map(paragraph => <p>{paragraph}</p>);
 
         return (
-            <div className = "container">
-                <Media className = "articlePage">
+            <div className="container">
+                <Media className="articlePage">
                     <Media.Left>
                         <img width={64} height={64} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
                     </Media.Left>
@@ -86,18 +95,25 @@ export class Article extends React.Component {
                         <p className="articleSummary">{this.state.article.summary}</p>
                     </Media.Body>
                     <p className="articleText">
-                        {this.state.article.datePublished} • By {this.state.article.author}
+                        {this.state.article.datePublished} • 
+                        By {this.state.article.author} •&nbsp;
+                        {this.state.showSource? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({showSource: true})}>Show Source</span>}
                     </p>
                     <p className="articleText">
                         {text}
                     </p>
-                    <Button bsStyle="info" onClick={this.handleShow}>Done Reading</Button>
+                    <ButtonToolbar>
+                        <Button bsStyle="danger" onClick={this.handleReportShow}>Report</Button>
+                        <Button bsStyle="info" onClick={this.handleDoneShow}>Done Reading</Button>
+                    </ButtonToolbar>
                 </Media>
-                <Modal show={this.state.show} onHide={this.handleClose}>
+
+                <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
                         <h4>{this.state.article.title}</h4>
                         <p>
                             {this.state.article.summary}
+                            <b>What is your reaction to this article?</b>
                         </p>
                         <ButtonToolbar>
                             {/* Capture what button is clicked into 'response' */}
@@ -107,7 +123,24 @@ export class Article extends React.Component {
                         </ButtonToolbar>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleClose}>Cancel</Button>
+                        <Button onClick={this.handleDoneClose}>Cancel</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
+                    <Modal.Body>
+                        <h4>{this.state.article.title}</h4>
+                        <p>
+                            {this.state.article.summary}<br></br>
+                            <b>We're sorry that something's wrong! What seems to be the problem?</b>
+                        </p>
+                        <ListGroup>
+                            <ListGroupItem action bsStyle = "danger" onClick={() => this.handleReporting("factually_incorrect")}>The article is factually incorrect</ListGroupItem>
+                            <ListGroupItem action bsStyle = "warning" onClick={() => this.handleReporting("not_an_article")}>This isn't a news article</ListGroupItem>
+                            <ListGroupItem action onClick={() => this.handleReporting("bad_formatting")}>The text is badly formatted, garbled, or missing</ListGroupItem>
+                        </ListGroup>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleReportClose}>Cancel</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

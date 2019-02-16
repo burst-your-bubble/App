@@ -17,12 +17,19 @@ class User(ModelBase):
 
     query = Session.query_property()
     #history = relationship('history', backref="user")
-    score = Column(Float)
 
 class History(ModelBase):
     __tablename__ = 'history'
     articleID = Column(Integer, ForeignKey('articles.id'),primary_key=True)
     response = Column(Integer)
+    userID = Column(Integer, ForeignKey('users.id'),primary_key=True)
+    createdAt = Column(DateTime,default=datetime.datetime.utcnow)
+    query = Session.query_property()
+
+class Reports(ModelBase):
+    __tablename__ = 'reports'
+    articleID = Column(Integer, ForeignKey('articles.id'),primary_key=True)
+    reportType = Column(Text)
     userID = Column(Integer, ForeignKey('users.id'),primary_key=True)
     createdAt = Column(DateTime,default=datetime.datetime.utcnow)
     query = Session.query_property()
@@ -37,6 +44,7 @@ class Article(ModelBase):
     summary = Column(Text)
     text = Column(Text)
     stance = Column(CHAR)
+    rating = Column(Float)
     url = Column(Text)
     imageUrl = Column(Text)
     datePublished = Column(DATE)

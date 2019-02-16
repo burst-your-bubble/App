@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
 
 export class Register extends React.Component {

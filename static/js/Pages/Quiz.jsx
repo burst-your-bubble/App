@@ -1,16 +1,7 @@
 import React from 'react';
-
-import { css } from '@emotion/core';
-import { PacmanLoader } from 'react-spinners';
 import { TopicBox } from '../Components/TopicBox';
 
 import { PageHeader, Button } from 'react-bootstrap';
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: white;
-`;
 
 export class Quiz extends React.Component {
 
@@ -50,19 +41,7 @@ export class Quiz extends React.Component {
 
     render() {
         // Display a loading screen until the json data comes back from server
-        if (this.state.loading) return (
-            <div className='loader-container'>
-                <div className='sweet-loading'>
-                    <PacmanLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={25}
-                        color={'#4A4A4A'}
-                        loading={this.state.loading}
-                    />
-                </div>
-            </div>
-        );
+        if (this.state.loading) return <Loading />;
 
         var firstStory = this.state.topics[0];
         firstStory = <TopicBox topic={firstStory.story}

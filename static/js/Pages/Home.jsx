@@ -1,27 +1,21 @@
 import React from 'react';
-
-import { css } from '@emotion/core';
-import { PacmanLoader} from 'react-spinners';
 import { TopicBox } from '../Components/TopicBox';
-
-import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
-
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: white;
-`;
+import { Loading } from '../Components/Loading';
+import { Grid, Row, Col, PageHeader, Button, Modal, ButtonToolbar, Form, FormGroup, FormControl } from 'react-bootstrap';
 
 export class Home extends React.Component {
 
     constructor(props) {
         super(props);
         this.jsonUrl = '/api/topics';
+        this.handleFeedbackShow = this.handleFeedbackShow.bind(this);
+        this.handleFeedbackClose = this.handleFeedbackClose.bind(this);
+
         this.state = {
             loading: true,
             topics: null,
-            user_score: null
+            user_score: null,
+            feedbackShow: false,
         }
 
         this.componentDidMount.bind(this);
@@ -36,21 +30,17 @@ export class Home extends React.Component {
         });
     }
 
+    handleFeedbackShow() {
+        this.setState({ feedbackShow: true });
+    }
+
+    handleFeedbackClose() {
+        this.setState({ feedbackShow: false });
+    }
+
     render() {
         // Display a loading screen until the json data comes back from server
-        if (this.state.loading) return (
-            <div className='loader-container'>
-                <div className='sweet-loading'>
-                    <PacmanLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={25}
-                        color={'#4A4A4A'}
-                        loading={this.state.loading}
-                    />
-                </div>
-            </div>
-        );
+        if (this.state.loading) return <Loading />;
 
         const secondColumnStart = Math.floor(this.state.topics.length / 2);
 
@@ -71,7 +61,25 @@ export class Home extends React.Component {
 
         return (
             <div>
-                <PageHeader className="homeTitle">Burst Your Bubble</PageHeader>
+                <PageHeader className="homeTitle">
+                    Burst Your Bubble <br></br>
+                    <Button bsStyle="success" onClick={this.handleFeedbackShow}>Email Feedback</Button>
+                    <Modal show={this.state.feedbackShow} onHide={this.handleFeedbackClose}>
+                        <Modal.Body>
+                            <h4>Thanks for providing us with feedback!</h4>
+                            <p>
+                                <form action="mailto:karr@carleton.edu" method="post" encType="text/plain">
+                                    <input type="text" name="mail" placeholder="Email"/> <br></br>
+                                    <input type="text" name="feedback" placeholder="Feedback"/><br></br>
+                                    <input type="submit" value="Send"/>
+                                </form>
+                            </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={this.handleFeedbackClose}>Cancel</Button>
+                        </Modal.Footer>
+                    </Modal>
+                </PageHeader>
                 <Grid>
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}>

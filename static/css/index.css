@@ -50,3 +50,13 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.show-source {
+    cursor: pointer;
+    font-style: italic;
+}
+
+.show-source:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
