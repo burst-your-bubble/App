@@ -99,7 +99,6 @@ def classify_article(article, clf):
 
     return classified
 
-
 def filter_articles(articles, topic):
     ''' Return only the articles relevant to the given topic '''
 
@@ -126,7 +125,6 @@ def compare_strings(s1, s2):
     nouns_s2 = [word.lower() for (word, pos) in pos_tag(tokenized) if is_noun(pos)]
     shared = [w for w in nouns_s1 if w in nouns_s2]
     return len(shared) > 1
-
 
 def get_classified_news(clf, src="r/politics"):
     ''' Return a list of topics with related articles '''
@@ -167,5 +165,5 @@ def get_classified_news(clf, src="r/politics"):
             'headline': topic,
             'articles': articles
         })
-
-    return classified_news[:10]
+        
+    return classified_news[:MAX_NUM_TOPICS]
