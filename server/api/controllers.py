@@ -101,7 +101,6 @@ def addResponse(userID,articleID,response):
     sign = [-1,1][user.score >= 0]
     all_history = session.query(History).filter_by(userID = userID).order_by(History.createdAt).all()
     lens = len(all_history)
-    print(lens)
     prev_score = lens* user.score
     old_score = user.score
     # Total score = authority score + user rating(Limit the max to 1 and min to -1.)
@@ -109,6 +108,12 @@ def addResponse(userID,articleID,response):
     if article.stance == 'C':
         stance = 0
         if user.score == 0:
+            if old !=None:
+               old.response = response 
+            else:
+                new_history = History(articleID=articleID, userID=userID,response = response)
+                session.add(new_history)
+            session.commit()
             return
     stance +=  max(-1,min(1,article.rating))
     # Need to change response
