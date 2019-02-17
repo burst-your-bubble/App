@@ -2,6 +2,7 @@ import React from 'react';
 import { TopicBox } from '../Components/TopicBox';
 
 import { PageHeader, Button } from 'react-bootstrap';
+import { Loading } from '../Components/Loading';
 
 export class Quiz extends React.Component {
 
