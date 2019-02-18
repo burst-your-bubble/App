@@ -3,6 +3,7 @@ from server.data.models import Article, Topic, User, History, Reports
 # from server.cache import cache
 from server.data.db import Session
 from server.config import mysql_connection_string
+import datetime
 
 api = Blueprint('api', __name__)
 # experienced is a constant that define when user can affect article rating score.
@@ -78,7 +79,10 @@ def get_article(articleID):
 
 # @cache.cached(timeout=30)
 def get_topics():
-    topics = Topic.query.all()
+    today = datetime.datetime.today().strftime('%Y-%m-%d')
+    topics = Topic.query.filter(
+        Topic.dateScraped == today
+    ).all()
     topics = [{
         'story': topic.headline,
         'articles': get_articles_list(topicID=topic.id)
