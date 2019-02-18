@@ -5,11 +5,11 @@ from server.data.models import Article, Topic
 from news_pipeline.news_classifier import NewsClassifier
 from news_pipeline.gather_news import get_classified_news 
 import datetime
-
+import os
 import json
 import csv
 
-CLASSIFIER_MODEL_PATH = "./news_pipeline/models/article-classifier_8000x3.pkl"
+CLASSIFIER_MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + "/news_pipeline/models/article-classifier_8000x3.pkl"
 
 def uploadTopic(headline, date):
     new_topic = Topic(headline=headline, dateScraped=date)
@@ -22,13 +22,13 @@ def uploadArticle(article, topicID):
     new_article = Article(
         title = article['title'],
         author = article['author'],
-        source = article['source'],
-        summary = article['summary'],
+        source = article['source']['name'],
+        summary = article['description'],
         text = article['text'],
         stance = article['stance'],
         url = article['url'],
-        imageUrl = article['imageUrl'],
-        datePublished = article['datePublished'],
+        imageUrl = article['urlToImage'],
+        datePublished = article['publishedAt'],
         topicID = topicID
     )
     session.add(new_article)
