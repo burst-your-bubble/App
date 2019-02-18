@@ -5,7 +5,8 @@ from server.data.db import Session
 from server.config import mysql_connection_string
 
 api = Blueprint('api', __name__)
-
+# experienced is a constant that define when user can affect article rating score.
+experienced = 10
 @api.route("/topics", methods=['GET'])
 def json_topics():
     if not user_logged_in():
@@ -101,27 +102,35 @@ def addResponse(userID,articleID,response):
     all_history = session.query(History).filter_by(userID = userID).order_by(History.createdAt).all()
     lens = len(all_history)
     prev_score = lens* user.score
-    stance = [1,-1][article.stance== 'L']
+    old_score = user.score
+    # Total score = authority score + user rating(Limit the max to 1 and min to -1.)
+    stance = [1,-1][article.stance== 'L'] 
     if article.stance == 'C':
         stance = 0
         if user.score == 0:
+            if old !=None:
+               old.response = response 
+            else:
+                new_history = History(articleID=articleID, userID=userID,response = response)
+                session.add(new_history)
+            session.commit()
             return
+    stance +=  max(-1,min(1,article.rating))
+    # Need to change response
     if old != None:
         if int(old.response) == response:
             return
-        print(stance)
         prev_response = int(old.response)
         old.response = response
         if stance == 0:
             prev_score += response * sign
             prev_score -= prev_response * sign
         else:
-            print(prev_score,type(prev_response),type(stance))
             prev_score += response * stance
             prev_score -= prev_response * stance
         user.score = prev_score/float(lens)
-
     else:
+    # Just add response
         if stance == 0:
             prev_score += response * sign
         else:
@@ -129,6 +138,9 @@ def addResponse(userID,articleID,response):
         new_history = History(articleID=articleID, userID=userID,response = response)
         session.add(new_history)
         user.score = prev_score/float(lens+1)
+    # Now User response will affect article score 
+    if lens > experienced:
+        article.rating += (response * 0.1 * user.score)
     session.commit()
     return user.score
 
