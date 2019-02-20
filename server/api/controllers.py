@@ -3,7 +3,8 @@ from server.data.models import Article, Topic, User, History, Reports
 # from server.cache import cache
 from server.data.db import Session
 from server.config import mysql_connection_string
-import datetime
+from datetime import datetime, timezone
+import pytz
 
 api = Blueprint('api', __name__)
 # experienced is a constant that define when user can affect article rating score.
@@ -81,7 +82,8 @@ def get_article(articleID):
 
 # @cache.cached(timeout=30)
 def get_topics():
-    today = datetime.datetime.today().strftime('%Y-%m-%d')
+    ct = pytz.timezone('US/Central')
+    today = datetime.now(ct).strftime('%Y-%m-%d')
     topics = Topic.query.filter(
         Topic.dateScraped == today
     ).all()

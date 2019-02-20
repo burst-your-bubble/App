@@ -5,6 +5,7 @@ from server.data.models import Article, Topic
 from news_pipeline.news_classifier import NewsClassifier
 from news_pipeline.gather_news import get_classified_news 
 import datetime
+import pytz
 import os
 import json
 import csv
@@ -43,7 +44,9 @@ if __name__ == '__main__':
 
     print(str(len(news)) + " topics to be uploaded")
 
-    today = datetime.datetime.today().strftime('%Y-%m-%d')
+    ct = pytz.timezone('US/Central')
+    today = datetime.datetime.now(ct).strftime('%Y-%m-%d')
+    
     for topic in news:
         topicID = uploadTopic(topic['headline'], today)
         for article in topic['articles']:
