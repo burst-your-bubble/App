@@ -20,7 +20,7 @@ export class Register extends React.Component {
 
     handleNext() {
         {/* Add the response for to database and then proceed to quiz */ }
-        window.location.href = "/quiz";
+        window.location.href = "/home";
         console.log(this.state.email);
         console.log(this.state.password);
     }

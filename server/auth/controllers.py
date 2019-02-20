@@ -24,7 +24,7 @@ def register_user():
     Session().add(new_user)
     Session().commit()
 
-    response = make_response(redirect('/quiz'))
+    response = make_response(redirect('/home'))
     response.set_cookie('user_id', str(new_user.id))
     return response
 
