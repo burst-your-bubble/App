@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, make_response, request, session
+from flask import Blueprint, redirect, make_response, request, session, jsonify
 from server.data.models import User
 from server.data.db import Session
 from server.config import mysql_connection_string
@@ -33,14 +33,14 @@ def login_user():
     email = request.form['email']
     user = User.query.filter(User.name == email).first()
     if user is None:
-        return redirect('/')
+        return jsonify({'success': False, 'message': 'Email Not Found'})
 
     pwstring = request.form['password'] + user.salt
     password = hashlib.sha256(pwstring.encode('utf-8')).hexdigest()
 
     if user.password != password:
-        return redirect('/')
+        return jsonify({'success': False, 'message': 'Incorrect Password'})
 
-    response = make_response(redirect('/home'))
+    response = make_response(jsonify({'success': True, 'message': 'Successful Login'}))
     response.set_cookie('user_id', str(user.id))
     return response

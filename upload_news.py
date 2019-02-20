@@ -30,7 +30,8 @@ def uploadArticle(article, topicID):
         url = article['url'],
         imageUrl = article['urlToImage'],
         datePublished = article['publishedAt'],
-        topicID = topicID
+        topicID = topicID,
+        rating = 0
     )
     session.add(new_article)
 
