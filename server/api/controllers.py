@@ -8,6 +8,8 @@ import datetime
 api = Blueprint('api', __name__)
 # experienced is a constant that define when user can affect article rating score.
 experienced = 10
+# delta is the diminishing return constant for user score
+delta = 0.9
 @api.route("/topics", methods=['GET'])
 def json_topics():
     if not user_logged_in():
@@ -105,7 +107,7 @@ def addResponse(userID,articleID,response):
     sign = [-1,1][user.score >= 0]
     all_history = session.query(History).filter_by(userID = userID).order_by(History.createdAt).all()
     lens = len(all_history)
-    prev_score = lens* user.score
+    prev_score = lens* user.score* delta
     old_score = user.score
     # Total score = authority score + user rating(Limit the max to 1 and min to -1.)
     stance = [1,-1][article.stance== 'L'] 
