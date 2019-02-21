@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
+import { ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader, Alert } from 'react-bootstrap';
 
 export class Login extends React.Component {
 
@@ -9,14 +9,32 @@ export class Login extends React.Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            showAlert: false,
+            errorMessage: ''
         };
 
         this.handleLogin = this.handleLogin.bind(this);
     }
 
-    handleLogin() {
+    handleLogin(e) {
         {/* Send the response for validation here and then proceed to home */ }
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append('email', this.state.email);
+        formData.append('password', this.state.password);
+        fetch('/login', {
+            body: formData,
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(result => {
+            if(!result.success) {
+                this.setState({showAlert: true, errorMessage: result.message});
+            } else {
+                window.location.href = '/home';
+            }
+        });
     }
 
     handleChange(event) {
@@ -30,8 +48,11 @@ export class Login extends React.Component {
     }
 
     render() {
+        let alert = null;
+        if(this.state.showAlert) alert = <Alert bsStyle="danger">Login Failed: {this.state.errorMessage}</Alert>;
         return (
-            <Form method="post" action="/login" horizontal className="container">
+            <div>
+            <Form horizontal className="container" onSubmit={this.handleLogin}>
                 <PageHeader className="homeTitle">Login</PageHeader>
                 <FormGroup>
                     <Col componentClass={ControlLabel} sm={2}>
@@ -76,6 +97,8 @@ export class Login extends React.Component {
                         </ButtonToolbar>
                     </Col>
                 </FormGroup>
-            </Form>)
+                {alert}
+            </Form>
+            </div>)
     }
 }

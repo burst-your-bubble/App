@@ -19,13 +19,15 @@ export class TopicBox extends React.Component {
                     response={article.response}
                 />)
         });
-
         return (
             <Panel id="story-box" defaultExpanded={false}>
                 <Panel.Heading>
-                    <Panel.Title componentClass="h3">{this.props.topic}</Panel.Title>
-                    <Panel.Body>{this.props.summary}</Panel.Body>
-                    <Panel.Toggle componentClass="a">Read More...</Panel.Toggle>
+                    <Panel.Title style={{fontFamily: 'Avenir Next-DemiBold', fontWeight: 'Demi Bold'}} componentClass="span">{this.props.topic}</Panel.Title>
+                    <Panel.Body>
+                        <div style={{float: 'right'}}>
+                            <Panel.Toggle><i className="fas fa-caret-down"></i></Panel.Toggle>
+                        </div>
+                    </Panel.Body>   
                 </Panel.Heading>
                 <Panel.Collapse>
                     <Panel.Body>

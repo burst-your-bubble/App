@@ -1,9 +1,30 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
+@font-face {
+    font-family: "Avenir Next";
+    src: url('/static/fonts/Avenir\ Next.ttc');
+}
+@font-face {
+    font-family: "Avenir Next-DemiBold";
+    src: url('/static/fonts/AvenirNext-DemiBold-03.ttf')
 }
 
-.homeTitle{
-    text-align: center;
+body {
+    font-family: "Avenir";
+}
+
+.homeTitle {
+    text-align: left;
+}
+.homeTitle button {
+    float: right;
+}
+
+@media only screen and (max-width: 500px) {
+    .homeTitle {
+        text-align: center;
+    }
+    .homeTitle button {
+        float: none;
+    }
 }
 
 .articlePage {
@@ -59,4 +80,21 @@ body {
 .show-source:hover {
     font-weight: bold;
     text-decoration: underline;
+}
+
+.article-box-title {
+    font-family: "adobe-caslon-pro";
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.panel-default>.panel-heading {
+    color: #333;
+    background-color: #fff;
+    border-color: none;
+}
+
+.panel-default>.panel-heading span {
+    font-size: 2rem;
 }
