@@ -22,7 +22,7 @@ export class ArticleBox extends React.Component {
         
         return (
             <div>
-                <Media>
+                <Media className={this.props.read? 'greyed-out':''}>
                     <Media.Left align="top" >
                         <i className={circleClass} style={style}></i>
                     </Media.Left>

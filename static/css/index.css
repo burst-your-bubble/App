@@ -126,12 +126,19 @@ body {
     text-decoration: none;
     color: inherit;
 }
+.article-box-title:hover {
+    text-decoration: none;
+}
 
 .article-box {
     font-family: "adobe-caslon-pro";
     font-weight: bold;
     text-decoration: none;
     color: inherit;
+}
+
+.greyed-out {
+    color: #bfbfbf;
 }
 
 .topic-box {
@@ -166,6 +173,7 @@ body {
     margin-bottom: 5px;
 }
 
+/* Override bootstrap panel coloring */
 .panel-default>.panel-heading {
     color: #333;
     background-color: #fff;
