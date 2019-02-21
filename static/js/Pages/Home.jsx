@@ -71,9 +71,9 @@ export class Home extends React.Component {
                             <h4>Thanks for providing us with feedback!</h4>
                             <p>
                                 <form action="mailto:karr@carleton.edu" method="post" encType="text/plain">
-                                    <input type="text" name="mail" placeholder="Email"/> <br></br>
-                                    <input type="text" name="feedback" placeholder="Feedback"/><br></br>
-                                    <input type="submit" value="Send"/>
+                                    <input type="text" name="mail" placeholder="Email" /> <br></br>
+                                    <input type="text" name="feedback" placeholder="Feedback" /><br></br>
+                                    <input type="submit" value="Send" />
                                 </form>
                             </p>
                         </Modal.Body>
