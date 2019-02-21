@@ -27,7 +27,7 @@ export class ArticleBox extends React.Component {
                         <i className={circleClass} style={style}></i>
                     </Media.Left>
                     <Media.Body>
-                        <Media.Heading><Link to={url}>{this.props.title}</Link></Media.Heading>
+                        <Media.Heading><Link className="article-box-title" to={url}>{this.props.title}</Link></Media.Heading>
                         <p>
                             {this.props.summary} - {this.props.stance}
                         </p>

@@ -60,9 +60,9 @@ export class Home extends React.Component {
         })
 
         return (
-            <div>
+            <div className="container">
                 <PageHeader className="homeTitle">
-                    Burst Your Bubble <br></br>
+                    <span style={{fontFamily: 'Avenir Next'}}>Burst Your Bubble</span>
                     <Button bsStyle="success" onClick={this.handleFeedbackShow}>Email Feedback</Button>
                     <Modal show={this.state.feedbackShow} onHide={this.handleFeedbackClose}>
                         <Modal.Body>
@@ -80,7 +80,7 @@ export class Home extends React.Component {
                         </Modal.Footer>
                     </Modal>
                 </PageHeader>
-                <Grid>
+                <Grid componentClass="none">
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}>
                             {storiesL}
