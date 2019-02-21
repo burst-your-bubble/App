@@ -20,7 +20,6 @@ export function sortArticles(score, articles) {
         KNOWN ISSUES: 
         1) Articles get randomized and distributed EVERYTIME we render, 
         probably don't want that
-        2) For topics that don't meet our dist requirements, we need a better method.
     */
     if (L.length >= 3 && R.length >= 3 && C.length >= 2) {
         //far left

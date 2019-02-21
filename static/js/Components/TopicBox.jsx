@@ -6,7 +6,8 @@ import { Panel } from 'react-bootstrap';
 
 export class TopicBox extends React.Component {
     render() {
-        var sorted = sortArticles(this.props.score, this.props.articles)
+        var sorted = sortArticles(this.props.score, this.props.articles);
+        
         var articles = sorted.map(article => {
             return (
                 <ArticleBox title={article.title}
