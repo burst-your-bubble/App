@@ -30,7 +30,7 @@ export class Article extends React.Component {
             res.json().then(article => {
                 this.setState({ article: article, loading: false });
             });
-        });
+        })
     }
 
     handleDoneShow() {
@@ -89,12 +89,26 @@ export class Article extends React.Component {
         var readingTime = require('reading-time');
         var stats = readingTime(this.state.article.text);
 
+        //run this onScroll
+        window.onscroll = function () { updateProgressBar() };
+
+        //updating scroll bar while scrolling
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        }
+
         return (
             <div className="container">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
                 <div className="body">
                     <Media className="article-header">
                         <Media.Left>
-                            <img className = "thumbnail" src={this.state.article.imageUrl} alt="thumbnail" />
+                            <img className="thumbnail" src={this.state.article.imageUrl} alt="thumbnail" />
                         </Media.Left>
                         <Media.Body>
                             <Media.Heading className="article-title"> {this.state.article.title} </Media.Heading>
@@ -112,9 +126,15 @@ export class Article extends React.Component {
                     </Media>
                 </div>
                 <div className="footer">
+                    <div className="left">
                         <Button bsStyle="danger" onClick={this.handleReportShow}>Report</Button>
+                    </div>
+                    <div className="center">
                         Approximately {stats.text}
+                    </div>
+                    <div className="right">
                         <Button bsStyle="success" onClick={this.handleDoneShow}>Done Reading</Button>
+                    </div>
                 </div>
 
                 <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
