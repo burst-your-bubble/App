@@ -19,8 +19,8 @@ export class TopicBox extends React.Component {
     }
 
     render() {
+        console.log(this.props.score);
         var sorted = sortArticles(this.props.score, this.props.articles);
-
         var articles = sorted.map(article => {
             return (
                 <ArticleBox title={article.title}
