@@ -10,14 +10,11 @@ export class Home extends React.Component {
         this.jsonUrl = '/api/topics';
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleIntroShow = this.handleIntroShow.bind(this);
-        this.handleIntroClose = this.handleIntroClose.bind(this);
 
         this.state = {
             loading: true,
             topics: null,
             user_score: null,
-            introShow: true,
             show: false,
         }
 
@@ -42,15 +39,6 @@ export class Home extends React.Component {
         this.setState({ show: false });
 
     }
-
-    handleIntroShow() {
-        this.setState({ introShow: true });
-    }
-
-    handleIntroClose() {
-        this.setState({ introShow: false });
-    }
-
 
     render() {
         // Display a loading screen until the json data comes back from server
@@ -94,21 +82,6 @@ export class Home extends React.Component {
                         </Modal.Footer>
                     </Modal>
                 </PageHeader>
-
-                <Modal show={this.state.introShow} onHide = {this.handleIntroClose}>
-                        <Modal.Body>
-                            <h4>Welcome to Burst Your Bubble!</h4>
-                            <p>
-                                Thanks for trying out a whole new way of consuming news! In Burst Your Bubble, we've curated some of the most important news topics for the day. <br></br>
-                                1. Within each topic, we've provided you with 5 articles from various parts of the political spectrum.<br></br>
-                                2. Read the articles, and record what you think of the opinion presented in the article.<br></br>
-                                3. Keep reading and reacting, we'll update the articles we show you to keep you well informed!
-                            </p>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button onClick={this.handleIntroClose}>Got it!</Button>
-                        </Modal.Footer>
-                </Modal>
 
                 <Grid>
                     <Row className="show-grid">

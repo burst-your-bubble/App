@@ -18,7 +18,7 @@ export class Article extends React.Component {
             article: null,
             doneShow: false,
             reportShow: false,
-            showSource: false
+            showSource: false,
         };
 
         this.handleResponse = this.handleResponse.bind(this);
@@ -48,7 +48,6 @@ export class Article extends React.Component {
     handleReportClose() {
         this.setState({ reportShow: false });
     }
-
 
     handleResponse(response) {
         {/* Send the response here back to home */ }

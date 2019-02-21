@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
+import { Modal, ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
 
 export class Register extends React.Component {
 
@@ -8,10 +8,13 @@ export class Register extends React.Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            introShow: false,
         };
 
         this.handleNext = this.handleNext.bind(this);
+        this.handleIntroShow = this.handleIntroShow.bind(this);
+        this.handleIntroClose = this.handleIntroClose.bind(this);
     }
 
     handleBack() {
@@ -19,7 +22,7 @@ export class Register extends React.Component {
     }
 
     handleNext() {
-        {/* Add the response for to database and then proceed to quiz */ }
+        {/* Add the response for to database and then proceed to home */ }
         window.location.href = "/home";
         console.log(this.state.email);
         console.log(this.state.password);
@@ -29,6 +32,14 @@ export class Register extends React.Component {
         let fieldName = event.target.name;
         let fieldVal = event.target.value;
         this.setState({ [fieldName]: fieldVal })
+    }
+
+    handleIntroShow() {
+        this.setState({ introShow: true });
+    }
+
+    handleIntroClose() {
+        this.setState({ introShow: false });
     }
 
     render() {
@@ -69,10 +80,26 @@ export class Register extends React.Component {
                     <Col smOffset={2} sm={10}>
                         <ButtonToolbar>
                             <Button variant="dark" onClick={this.handleBack}>Back</Button>
-                            <Button variant="outline-primary" type="submit">Next</Button>
+                            <Button variant="outline-primary" type = "submit" onClick={this.handleIntroShow}>Next</Button>
                         </ButtonToolbar>
                     </Col>
                 </FormGroup>
+
+                <Modal show={this.state.introShow} onHide = {this.handleIntroClose}>
+                        <Modal.Body>
+                            <h4>Welcome to Burst Your Bubble!</h4>
+                            <p>
+                                Thanks for trying out a whole new way of consuming news! In Burst Your Bubble, we've curated some of the most important news topics for the day. <br></br>
+                                1. Within each topic, we've provided you with 5 articles from various parts of the political spectrum.<br></br>
+                                2. Read the articles, and record what you think of the opinion presented in the article<br></br>
+                                3. Keep reading and reacting, we'll update the articles we show you to keep you well informed!
+                            </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={this.handleIntroClose}>Got it!</Button>
+                        </Modal.Footer>
+                </Modal>
+
             </Form>)
     }
 }
