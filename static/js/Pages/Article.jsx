@@ -83,22 +83,27 @@ export class Article extends React.Component {
         let paragraphs = this.state.article.text.split("\n");
         let text = paragraphs.map(paragraph => <p>{paragraph}</p>);
 
+        var datePublished = new Date(this.state.article.datePublished);
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
         return (
             <div className="container">
-                <Media className="articlePage">
+                <Media className="article-header">
                     <Media.Left>
-                        <img width={64} height={64} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
+                        <img width={88} height={88} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
                     </Media.Left>
                     <Media.Body>
-                        <Media.Heading> {this.state.article.title} </Media.Heading>
-                        <p className="articleSummary">{this.state.article.summary}</p>
+                        <Media.Heading className="article-title"> {this.state.article.title} </Media.Heading>
+                        <p className="article-summary">{this.state.article.summary}</p>
+                        <p className="article-metaData">
+                            {weekName[datePublished.getDay()]}, {monthNames[datePublished.getMonth()]} {datePublished.getDate()}, {datePublished.getFullYear()} •
+                            By {this.state.article.author} •&nbsp;
+                            {this.state.showSource ? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({ showSource: true })}>Show Source</span>}
+                        </p>
                     </Media.Body>
-                    <p className="articleText">
-                        {this.state.article.datePublished} • 
-                        By {this.state.article.author} •&nbsp;
-                        {this.state.showSource? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({showSource: true})}>Show Source</span>}
-                    </p>
-                    <p className="articleText">
+                    <hr></hr>
+                    <p>
                         {text}
                     </p>
                     <ButtonToolbar>
@@ -132,8 +137,8 @@ export class Article extends React.Component {
                             <b>We're sorry that something's wrong! What seems to be the problem?</b>
                         </p>
                         <ListGroup>
-                            <ListGroupItem action bsStyle = "danger" onClick={() => this.handleReporting("factually_incorrect")}>The article is factually incorrect</ListGroupItem>
-                            <ListGroupItem action bsStyle = "warning" onClick={() => this.handleReporting("not_an_article")}>This isn't a news article</ListGroupItem>
+                            <ListGroupItem action bsStyle="danger" onClick={() => this.handleReporting("factually_incorrect")}>The article is factually incorrect</ListGroupItem>
+                            <ListGroupItem action bsStyle="warning" onClick={() => this.handleReporting("not_an_article")}>This isn't a news article</ListGroupItem>
                             <ListGroupItem action onClick={() => this.handleReporting("bad_formatting")}>The text is badly formatted, garbled, or missing</ListGroupItem>
                         </ListGroup>
                     </Modal.Body>

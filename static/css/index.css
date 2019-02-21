@@ -2,9 +2,15 @@
     font-family: "Avenir Next";
     src: url('/static/fonts/Avenir\ Next.ttc');
 }
+
 @font-face {
     font-family: "Avenir Next-DemiBold";
     src: url('/static/fonts/AvenirNext-DemiBold-03.ttf')
+}
+
+@font-face {
+    font-family: "Avenir Next-UltraLight";
+    src: url('/static/fonts/AvenirNext-UltraLight-11.ttf')
 }
 
 body {
@@ -14,6 +20,7 @@ body {
 .homeTitle {
     text-align: left;
 }
+
 .homeTitle button {
     float: right;
 }
@@ -88,6 +95,36 @@ body {
     text-decoration: none;
     color: inherit;
 }
+
+.article-box {
+    font-family: "adobe-caslon-pro";
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.article-summary{
+    font-family: "Avenir";
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.article-metaData{
+    font-family: "Avenir";
+}
+
+.article-header{
+    padding-top: 32px;
+}
+
+.article-title{
+    font-family: "adobe-caslon-pro";
+    font-weight: bold;
+    font-size: 32px;
+    margin-top: 2px;
+    margin-bottom: 5px;
+}
+
 
 .panel-default>.panel-heading {
     color: #333;
