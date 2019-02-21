@@ -102,9 +102,6 @@ export class Article extends React.Component {
 
         return (
             <div className="container">
-                <div class="progress-container">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
                 <div className="body">
                     <Media className="article-header">
                         <Media.Left>
@@ -134,6 +131,9 @@ export class Article extends React.Component {
                     </div>
                     <div className="right">
                         <Button bsStyle="success" onClick={this.handleDoneShow}>Done Reading</Button>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
                     </div>
                 </div>
 
