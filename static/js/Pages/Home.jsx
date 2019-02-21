@@ -8,14 +8,17 @@ export class Home extends React.Component {
     constructor(props) {
         super(props);
         this.jsonUrl = '/api/topics';
-        this.handleFeedbackShow = this.handleFeedbackShow.bind(this);
-        this.handleFeedbackClose = this.handleFeedbackClose.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleIntroShow = this.handleIntroShow.bind(this);
+        this.handleIntroClose = this.handleIntroClose.bind(this);
 
         this.state = {
             loading: true,
             topics: null,
             user_score: null,
-            feedbackShow: false,
+            introShow: true,
+            show: false,
         }
 
         this.componentDidMount.bind(this);
@@ -30,13 +33,24 @@ export class Home extends React.Component {
         });
     }
 
-    handleFeedbackShow() {
-        this.setState({ feedbackShow: true });
+    handleShow() {
+        this.setState({ show: true });
     }
 
-    handleFeedbackClose() {
-        this.setState({ feedbackShow: false });
+
+    handleClose() {
+        this.setState({ show: false });
+
     }
+
+    handleIntroShow() {
+        this.setState({ introShow: true });
+    }
+
+    handleIntroClose() {
+        this.setState({ introShow: false });
+    }
+
 
     render() {
         // Display a loading screen until the json data comes back from server
@@ -63,8 +77,8 @@ export class Home extends React.Component {
             <div>
                 <PageHeader className="homeTitle">
                     Burst Your Bubble <br></br>
-                    <Button bsStyle="success" onClick={this.handleFeedbackShow}>Email Feedback</Button>
-                    <Modal show={this.state.feedbackShow} onHide={this.handleFeedbackClose}>
+                    <Button bsStyle="success" onClick={this.handleShow}>Email Feedback</Button>
+                    <Modal show={this.state.show} onHide={this.handleClose}>
                         <Modal.Body>
                             <h4>Thanks for providing us with feedback!</h4>
                             <p>
@@ -76,10 +90,25 @@ export class Home extends React.Component {
                             </p>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={this.handleFeedbackClose}>Cancel</Button>
+                            <Button onClick={this.handleClose}>Cancel</Button>
                         </Modal.Footer>
                     </Modal>
                 </PageHeader>
+
+                <Modal show={this.state.introShow} onHide = {this.handleIntroClose}>
+                        <Modal.Body>
+                            <h4>Welcome to Burst Your Bubble!</h4>
+                            <p>
+                                Thanks for trying out a whole new way of consuming news! In Burst Your Bubble, we've curated some of the most important news topics for the day. <br></br><br></br>
+
+                                Within each topic, we've provided you with 5 articles from various parts of the political spectrum. As you interact with the articles and provide us with your opinion on the stance provided, we'll update the articles we show you to keep you well informed!
+                            </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={this.handleIntroClose}>Got it!</Button>
+                        </Modal.Footer>
+                </Modal>
+
                 <Grid>
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}>

@@ -29,7 +29,7 @@ export class ArticleBox extends React.Component {
                     <Media.Body>
                         <Media.Heading><Link to={url}>{this.props.title}</Link></Media.Heading>
                         <p>
-                            {this.props.summary} - {this.props.stance}
+                            {this.props.summary}
                         </p>
                     </Media.Body>
                 </Media>
