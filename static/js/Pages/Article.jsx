@@ -94,7 +94,7 @@ export class Article extends React.Component {
                 <div className="body">
                     <Media className="article-header">
                         <Media.Left>
-                            <img width={88} height={88} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
+                            <img className = "thumbnail" src={this.state.article.imageUrl} alt="thumbnail" />
                         </Media.Left>
                         <Media.Body>
                             <Media.Heading className="article-title"> {this.state.article.title} </Media.Heading>

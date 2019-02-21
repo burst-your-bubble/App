@@ -113,6 +113,12 @@ body {
     color: inherit;
 }
 
+.thumbnail{
+    object-fit:cover;
+    width: 88px;
+    height: 88px;
+}
+
 .article-summary{
     font-family: "Avenir";
     font-weight: bold;
