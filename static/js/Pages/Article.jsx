@@ -86,7 +86,9 @@ export class Article extends React.Component {
         var datePublished = new Date(this.state.article.datePublished);
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
+        var readingTime = require('reading-time');
+        var stats = readingTime(this.state.article.text);
+        
         return (
             <div className="container">
                 <Media className="article-header">
@@ -99,7 +101,7 @@ export class Article extends React.Component {
                         <p className="article-metaData">
                             {weekName[datePublished.getDay()]}, {monthNames[datePublished.getMonth()]} {datePublished.getDate()}, {datePublished.getFullYear()} •
                             By {this.state.article.author} •&nbsp;
-                            {this.state.showSource ? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({ showSource: true })}>Show Source</span>}
+                            {this.state.showSource ? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({ showSource: true })}>Show Source</span>} • Approximately {stats.text}
                         </p>
                     </Media.Body>
                     <hr></hr>
@@ -131,9 +133,8 @@ export class Article extends React.Component {
                 </Modal>
                 <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
                     <Modal.Body>
-                        <h4>{this.state.article.title}</h4>
+                        <h4 >{this.state.article.title}</h4>
                         <p>
-                            {this.state.article.summary}<br></br>
                             <b>We're sorry that something's wrong! What seems to be the problem?</b>
                         </p>
                         <ListGroup>
