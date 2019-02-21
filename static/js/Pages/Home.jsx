@@ -64,15 +64,9 @@ export class Home extends React.Component {
         return (
             <div className="container">
                 <PageHeader className="homeTitle">
-<<<<<<< HEAD
-                    Burst Your Bubble <br></br>
-                    <Button bsStyle="success" onClick={this.handleShow}>Email Feedback</Button>
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-=======
                     <span style={{fontFamily: 'Avenir Next'}}>Burst Your Bubble</span>
                     <Button bsStyle="success" onClick={this.handleFeedbackShow}>Email Feedback</Button>
                     <Modal show={this.state.feedbackShow} onHide={this.handleFeedbackClose}>
->>>>>>> 9c2b21f41c03c177d05d3e9de05dd78ee510a9ad
                         <Modal.Body>
                             <h4>Thanks for providing us with feedback!</h4>
                             <p>
@@ -88,12 +82,7 @@ export class Home extends React.Component {
                         </Modal.Footer>
                     </Modal>
                 </PageHeader>
-<<<<<<< HEAD
-
-                <Grid>
-=======
                 <Grid componentClass="none">
->>>>>>> 9c2b21f41c03c177d05d3e9de05dd78ee510a9ad
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}>
                             {storiesL}
