@@ -22,12 +22,7 @@ export class TopicBox extends React.Component {
         return (
             <Panel id="story-box" defaultExpanded={false}>
                 <Panel.Heading>
-                    <Panel.Title style={{fontFamily: 'Avenir Next-DemiBold', fontWeight: 'Demi Bold'}} componentClass="span">{this.props.topic}</Panel.Title>
-                    <Panel.Body>
-                        <div style={{float: 'right'}}>
-                            <Panel.Toggle><i className="fas fa-caret-down"></i></Panel.Toggle>
-                        </div>
-                    </Panel.Body>   
+                <Panel.Toggle><Panel.Title style={{fontFamily: 'Avenir Next-DemiBold', fontWeight: 'Demi Bold'}} componentClass="span">{this.props.topic}</Panel.Title></Panel.Toggle>
                 </Panel.Heading>
                 <Panel.Collapse>
                     <Panel.Body>
