@@ -46,20 +46,23 @@ export class Home extends React.Component {
 
         const secondColumnStart = Math.floor(this.state.topics.length / 2);
 
+
         var storiesL = this.state.topics.slice(0, secondColumnStart).map(story => {
             return (
                 <TopicBox topic={story.story}
                     summary={story.summary}
                     articles={story.articles}
                     score={this.state.user_score} />)
-        })
+        });
 
         var storiesR = this.state.topics.slice(secondColumnStart).map(story => {
             return (
                 <TopicBox topic={story.story}
                     summary={story.summary}
-                    articles={story.articles} />)
-        })
+                    articles={story.articles}
+                    score={this.state.user_score} />)
+        });
+
 
         return (
             <div className="container">
