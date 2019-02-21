@@ -7,7 +7,7 @@ import { Panel } from 'react-bootstrap';
 export class TopicBox extends React.Component {
     render() {
         var sorted = sortArticles(this.props.score, this.props.articles);
-        
+
         var articles = sorted.map(article => {
             return (
                 <ArticleBox title={article.title}
@@ -22,7 +22,9 @@ export class TopicBox extends React.Component {
         return (
             <Panel id="story-box" defaultExpanded={false}>
                 <Panel.Heading>
-                <Panel.Toggle><Panel.Title style={{fontFamily: 'Avenir Next-DemiBold', fontWeight: 'Demi Bold'}} componentClass="span">{this.props.topic}</Panel.Title></Panel.Toggle>
+                    <Panel.Toggle>
+                        <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold', fontWeight: 'Demi Bold' }} componentClass="span">{this.props.topic}</Panel.Title>
+                    </Panel.Toggle>
                 </Panel.Heading>
                 <Panel.Collapse>
                     <Panel.Body>

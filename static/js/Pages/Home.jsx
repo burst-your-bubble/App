@@ -65,8 +65,8 @@ export class Home extends React.Component {
             <div className="container">
                 <PageHeader className="homeTitle">
                     <span style={{fontFamily: 'Avenir Next'}}>Burst Your Bubble</span>
-                    <Button bsStyle="success" onClick={this.handleFeedbackShow}>Email Feedback</Button>
-                    <Modal show={this.state.feedbackShow} onHide={this.handleFeedbackClose}>
+                    <Button bsStyle="success" onClick={this.handleShow}>Email Feedback</Button>
+                    <Modal show={this.state.show} onHide={this.handleClose}>
                         <Modal.Body>
                             <h4>Thanks for providing us with feedback!</h4>
                             <p>
