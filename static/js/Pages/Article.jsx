@@ -112,8 +112,7 @@ export class Article extends React.Component {
                     <Modal.Body>
                         <h4>{this.state.article.title}</h4>
                         <p>
-                            {this.state.article.summary}
-                            <b>What is your reaction to this article?</b>
+                            <b>What is your take on the opinion presented in this article?</b>
                         </p>
                         <ButtonToolbar>
                             {/* Capture what button is clicked into 'response' */}
