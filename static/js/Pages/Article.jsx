@@ -88,31 +88,34 @@ export class Article extends React.Component {
         const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         var readingTime = require('reading-time');
         var stats = readingTime(this.state.article.text);
-        
+
         return (
             <div className="container">
-                <Media className="article-header">
-                    <Media.Left>
-                        <img width={88} height={88} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
-                    </Media.Left>
-                    <Media.Body>
-                        <Media.Heading className="article-title"> {this.state.article.title} </Media.Heading>
-                        <p className="article-summary">{this.state.article.summary}</p>
-                        <p className="article-metaData">
-                            {weekName[datePublished.getDay()]}, {monthNames[datePublished.getMonth()]} {datePublished.getDate()}, {datePublished.getFullYear()} •
-                            By {this.state.article.author} •&nbsp;
-                            {this.state.showSource ? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({ showSource: true })}>Show Source</span>} • Approximately {stats.text}
+                <div className="body">
+                    <Media className="article-header">
+                        <Media.Left>
+                            <img width={88} height={88} object-fit={"cover"} src={this.state.article.imageUrl} alt="thumbnail" />
+                        </Media.Left>
+                        <Media.Body>
+                            <Media.Heading className="article-title"> {this.state.article.title} </Media.Heading>
+                            <p className="article-summary">{this.state.article.summary}</p>
+                            <p className="article-metaData">
+                                {weekName[datePublished.getDay()]}, {monthNames[datePublished.getMonth()]} {datePublished.getDate()}, {datePublished.getFullYear()} •
+                                By {this.state.article.author} •&nbsp;
+                                {this.state.showSource ? <a href={this.state.article.url}>{this.state.article.source}</a> : <span className="show-source" onClick={() => this.setState({ showSource: true })}>Show Source</span>}
+                            </p>
+                        </Media.Body>
+                        <hr></hr>
+                        <p>
+                            {text}
                         </p>
-                    </Media.Body>
-                    <hr></hr>
-                    <p>
-                        {text}
-                    </p>
-                    <ButtonToolbar>
+                    </Media>
+                </div>
+                <div className="footer">
                         <Button bsStyle="danger" onClick={this.handleReportShow}>Report</Button>
-                        <Button bsStyle="info" onClick={this.handleDoneShow}>Done Reading</Button>
-                    </ButtonToolbar>
-                </Media>
+                        Approximately {stats.text}
+                        <Button bsStyle="success" onClick={this.handleDoneShow}>Done Reading</Button>
+                </div>
 
                 <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
