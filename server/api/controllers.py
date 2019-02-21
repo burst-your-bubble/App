@@ -151,7 +151,42 @@ def addResponse(userID,articleID,response):
         article.rating += (response * 0.1 * user.score)
     session.commit()
     return user.score
-
+# This function use a sliding window to plot the score change of a given user
+def analyze(userID):
+    session = Session()
+    user = session.query(User).filter(User.id==userID).first()
+    all_history = session.query(History).filter_by(userID = userID).order_by(History.createdAt).all()
+    lens = len(all_history)
+    # Only analyze the experience user 
+    if lens <= experienced:
+        return
+    score,scoreList = recalculate(all_history,0)
+    graph_y = [item/10.0 for item in scoreList]
+    print(graph_y)
+    return graph_y
+        
+# Return the change of score once add this history
+def addOneHistory(score,article_stance,response):
+    sign = [-1,1][score >= 0]
+    stance = [1,-1][article_stance== 'L']
+    if article_stance == 'C':
+        stance = 0
+        if score == 0:
+            return 0
+    if stance == 0:
+        change = response * sign
+    else:
+        change = response * stance
+    return change
+# Given a start score and a list of history, it will return the final score if this list of history has been added to start scpre.
+def recalculate(all_history,score):
+    scoreList = [score]
+    for i,history in enumerate(all_history):
+        response = history.response
+        article = session.query(Article).filter(Article.id==history.articleID).first()
+        score =score*0.7 + addOneHistory(score,article.stance,response)
+        scoreList.append(score)
+    return score,scoreList 
 def read_articles(user_id):
     res = History.query.with_entities(
         History.articleID, History.response
