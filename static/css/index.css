@@ -134,6 +134,10 @@ body {
     color: inherit;
 }
 
+.topic-box {
+    cursor: pointer;
+}
+
 .thumbnail{
     object-fit:cover;
     width: 88px;

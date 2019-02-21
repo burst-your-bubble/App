@@ -5,6 +5,19 @@ import { sortArticles } from '../lib/articleSort';
 import { Panel } from 'react-bootstrap';
 
 export class TopicBox extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            expanded: false
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        this.setState({expanded: !this.state.expanded});
+    }
+
     render() {
         var sorted = sortArticles(this.props.score, this.props.articles);
 
@@ -20,11 +33,11 @@ export class TopicBox extends React.Component {
                 />)
         });
         return (
-            <Panel id="story-box" defaultExpanded={false}>
-                <Panel.Heading>
-                    <Panel.Toggle>
-                        <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold', fontWeight: 'Demi Bold' }} componentClass="span">{this.props.topic}</Panel.Title>
-                    </Panel.Toggle>
+            <Panel id="story-box" expanded={this.state.expanded}>
+                <Panel.Heading onClick={this.handleClick} className="topic-box">
+                    <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold' }} componentClass="span">
+                        {this.props.topic}
+                    </Panel.Title>
                 </Panel.Heading>
                 <Panel.Collapse>
                     <Panel.Body>
