@@ -50,6 +50,7 @@ export class Home extends React.Component {
         var storiesL = this.state.topics.slice(0, secondColumnStart).map(story => {
             return (
                 <TopicBox topic={story.story}
+                    topicID={story.id}
                     summary={story.summary}
                     articles={story.articles}
                     score={this.state.user_score} />)
@@ -58,6 +59,7 @@ export class Home extends React.Component {
         var storiesR = this.state.topics.slice(secondColumnStart).map(story => {
             return (
                 <TopicBox topic={story.story}
+                    topicID={story.id}
                     summary={story.summary}
                     articles={story.articles}
                     score={this.state.user_score} />)

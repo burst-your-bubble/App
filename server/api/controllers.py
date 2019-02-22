@@ -88,6 +88,7 @@ def get_topics():
         Topic.dateScraped == today
     ).all()
     topics = [{
+        'id': topic.id,
         'story': topic.headline,
         'articles': get_articles_list(topicID=topic.id)
     } for topic in topics]
