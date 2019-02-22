@@ -33,18 +33,20 @@ export class TopicBox extends React.Component {
                 />)
         });
         return (
-            <Panel id="story-box" expanded={this.state.expanded}>
-                <Panel.Heading onClick={this.handleClick} className="topic-box">
-                    <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold' }} componentClass="span">
-                        {this.props.topic}
-                    </Panel.Title>
-                </Panel.Heading>
-                <Panel.Collapse>
-                    <Panel.Body>
-                        {articles}
-                    </Panel.Body>
-                </Panel.Collapse>
-            </Panel>
+            <div>
+                <Panel id="story-box" expanded={this.state.expanded} >
+                    <Panel.Heading style={{cursor: "pointer"}} onClick={this.handleClick} className="topic-box">
+                        <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold' }} componentClass="span">
+                            {this.props.topic}
+                        </Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Collapse>
+                        <Panel.Body>
+                            {articles}
+                        </Panel.Body>
+                    </Panel.Collapse>
+                </Panel>
+            </div>
         );
     }
 }
