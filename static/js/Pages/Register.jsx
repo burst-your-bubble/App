@@ -40,6 +40,13 @@ export class Register extends React.Component {
 
     handleIntroClose() {
         this.setState({ introShow: false });
+        var formData = new FormData()
+        formData.append("email", this.state.email);
+        formData.append("password", this.state.password);
+        fetch('/register', {
+            body: formData,
+            method: 'POST'
+        }).then(() => window.location.href = '/home');
     }
 
     render() {
@@ -80,7 +87,7 @@ export class Register extends React.Component {
                     <Col smOffset={2} sm={10}>
                         <ButtonToolbar>
                             <Button variant="dark" onClick={this.handleBack}>Back</Button>
-                            <Button variant="outline-primary" type = "submit" onClick={this.handleIntroShow}>Next</Button>
+                            <Button variant="outline-primary" onClick={this.handleIntroShow}>Next</Button>
                         </ButtonToolbar>
                     </Col>
                 </FormGroup>
