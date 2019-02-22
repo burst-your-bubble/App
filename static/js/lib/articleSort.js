@@ -1,6 +1,6 @@
 var linq = require('linq');
 
-export function sortArticles(score, articles) {
+export function sortArticles(score, articles, topicID) {
     let L = linq.from(articles)
         .where(article => article.stance == "L")
         .select(item => item)
@@ -15,66 +15,40 @@ export function sortArticles(score, articles) {
         .toArray();
 
     let sorted;
-
-    /*
-        KNOWN ISSUES: 
-        1) Articles get randomized and distributed EVERYTIME we render, 
-        probably don't want that
-        2) For topics that don't meet our dist requirements, we need a better method.
-    */
     if (L.length >= 3 && R.length >= 3 && C.length >= 2) {
-        //far left
+        //far left: Distribution: 2R-2C-1L
         if (score <= -0.75)
-            sorted = getArticles(L, 1, R, 2, C, 2);
-        //liberal
-        else if (score > -0.75 && score < -0.25)
-            sorted = getArticles(L, 1, R, 3, C, 1);
-        // central / swing
-        else if (score >= -0.25 && score <= 0.25) {
-            var distribution = [2, 2, 1];
-            distribution = shuffle(distribution);
-            sorted = getArticles(L, distribution[0], R, distribution[1], C, distribution[2]);
+            sorted = [].concat(L[0]).concat(R.slice(0,2)).concat(C.slice(0,2));
+        //liberal: Distribution: 3R-1C-1L
+        else if (score > -0.75 && score < -0.25) {
+            sorted = [].concat(L[0]).concat(R).concat(C[0]);
         }
-        // conservatives
-        else if (score > 0.25 && score < 0.75)
-            sorted = getArticles(L, 3, R, 1, C, 1);
-        // far right
-        else
-            sorted = getArticles(L, 2, R, 1, C, 2);
+        // central / swing
+        // Randomly choose 5 of the 8 articles to display, save indices
+        // to session storage so that order persists through page reload
+        else if (score >= -0.25 && score <= 0.25) {
+            var distribution = JSON.parse(window.sessionStorage.getItem(`dist-${topicID}`));
+            if(!distribution) {
+                distribution = [0, 1, 2, 3, 4, 5, 6, 7];
+                distribution = shuffle(distribution).slice(0, 6);
+                window.sessionStorage.setItem(`dist-${topicID}`, JSON.stringify(distribution));
+            }
+            sorted = distribution.map(i => articles[i]);
+        }
+        // conservatives Distribution: 3L-1C-1R
+        else if (score > 0.25 && score < 0.75) {
+            sorted = [].concat(L).concat(R[0]).concat(C[0]);
+        }
+        // far right: Distribution: 2L-2C-1R
+        else {
+            sorted = [].concat(L.slice(0,2)).concat(R[0]).concat(C);
+        }
     }
-
     else {
         sorted = shuffle(L.concat(C).concat(R));
     }
 
-    //console.log(sorted);
     return sorted;
-}
-
-function getArticles(left, l, right, r, center, c) {
-    var sortedL, sortedR, sortedC;
-    sortedL = (getNArticles(left, l));
-    sortedR = (getNArticles(right, r));
-    sortedC = (getNArticles(center, c));
-
-    return shuffle(sortedL.concat(sortedR).concat(sortedC));
-}
-
-function getNArticles(articles, n) {
-    var result = new Array(n),
-        len = articles.length,
-        taken = new Array(len);
-
-    if (n > len)
-        throw new RangeError("getRandom: more elements taken than available");
-
-    while (n--) {
-        var x = Math.floor(Math.random() * len);
-        result[n] = articles[x in taken ? taken[x] : x];
-        taken[x] = --len in taken ? taken[len] : len;
-    }
-
-    return result;
 }
 
 //using Fisher–Yates Shuffle

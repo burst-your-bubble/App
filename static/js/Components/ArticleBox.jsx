@@ -22,14 +22,14 @@ export class ArticleBox extends React.Component {
         
         return (
             <div>
-                <Media>
+                <Media className={this.props.read? 'greyed-out':''}>
                     <Media.Left align="top" >
                         <i className={circleClass} style={style}></i>
                     </Media.Left>
                     <Media.Body>
-                        <Media.Heading><Link to={url}>{this.props.title}</Link></Media.Heading>
+                        <Media.Heading><Link className="article-box-title" to={url}>{this.props.title}</Link></Media.Heading>
                         <p>
-                            {this.props.summary} - {this.props.stance}
+                            {this.props.summary}
                         </p>
                     </Media.Body>
                 </Media>

@@ -17,10 +17,6 @@ def home():
         return redirect('/')
     return render_template("index.html")
 
-@ui.route("/quiz")
-def quiz():
-    return render_template("index.html")
-
 @ui.route("/article/<id>")
 def article(id):
     if not user_logged_in():
