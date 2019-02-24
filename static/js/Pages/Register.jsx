@@ -17,6 +17,11 @@ export class Register extends React.Component {
         this.handleNext = this.handleNext.bind(this);
         this.handleIntroShow = this.handleIntroShow.bind(this);
         this.handleIntroClose = this.handleIntroClose.bind(this);
+        this.validCredentials = this.validCredentials.bind(this);
+    }
+
+    validCredentials() {
+        return (this.state.email != '' && this.state.password != '');
     }
 
     handleBack() {
@@ -42,7 +47,13 @@ export class Register extends React.Component {
 
     handleIntroClose() {
         this.setState({ introShow: false });
-        var formData = new FormData()
+
+        if(!this.validCredentials()) {
+            this.setState({showAlert: true, alertMessage: "Invalid Email or Password"});
+            return;
+        }
+
+        var formData = new FormData();
         formData.append("email", this.state.email);
         formData.append("password", this.state.password);
         fetch('/register', {
