@@ -17,14 +17,14 @@ def register_user():
     # Check if user already exists in the database
     existing_user = User.query.filter(User.name == email).first()
     if existing_user is not None:
-        return redirect('/login')
+        return jsonify({'success': False, 'message': 'Email Already Registered'})
 
     # Register new user
     new_user = User(name=email, password=password, salt=salt, score=0)
     Session().add(new_user)
     Session().commit()
 
-    response = make_response(redirect('/home'))
+    response = make_response(jsonify({'success': True, 'message': 'Registration Successful'}))
     response.set_cookie('user_id', str(new_user.id))
     return response
 

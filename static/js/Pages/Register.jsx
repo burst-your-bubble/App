@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
+import { Modal, ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Alert, PageHeader } from 'react-bootstrap';
 
 export class Register extends React.Component {
 
@@ -10,6 +10,8 @@ export class Register extends React.Component {
             email: '',
             password: '',
             introShow: false,
+            showAlert: false,
+            alertMessage: ''
         };
 
         this.handleNext = this.handleNext.bind(this);
@@ -46,12 +48,23 @@ export class Register extends React.Component {
         fetch('/register', {
             body: formData,
             method: 'POST'
-        }).then(() => window.location.href = '/home');
+        })
+        .then(res => res.json())
+        .then(response => {
+            if(response.success) {
+                window.location.href = '/home';
+            }
+            else {
+                this.setState({showAlert: true, alertMessage: response.message});
+            }
+        });
+
     }
 
     render() {
+        var alert = this.state.showAlert? <Alert bsStyle="danger">Login Failed: {this.state.alertMessage}</Alert> : null;
         return (
-            <Form action="/register" method="POST" horizontal className="container">
+            <Form horizontal className="container">
                 <PageHeader className="homeTitle">Register</PageHeader>
                 <FormGroup>
                     <Col componentClass={ControlLabel} sm={2}>
@@ -91,6 +104,8 @@ export class Register extends React.Component {
                         </ButtonToolbar>
                     </Col>
                 </FormGroup>
+
+                {alert}
 
                 <Modal show={this.state.introShow} onHide = {this.handleIntroClose}>
                         <Modal.Body>
