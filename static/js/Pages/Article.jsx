@@ -28,7 +28,7 @@ export class Article extends React.Component {
         // fetch actual article data from server based on article id
         fetch(this.jsonUrl).then(res => {
             res.json().then(article => {
-                this.setState({ id: article, loading: false });
+                this.setState({ article: article, loading: false });
             });
         })
     }
