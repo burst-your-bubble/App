@@ -38,6 +38,30 @@ def json_article(id):
     article = get_article(id)
     return jsonify(article)
 
+
+@api.route('/history/<id>', methods=['GET'])
+def json_history(id):
+    if not user_logged_in():
+        abort(401)
+
+    history = read_history(id)
+    score = get_score(id)
+    return jsonify({'history': history, 'score': score,})
+
+def read_history(user_id):
+    readHistory = History.query.with_entities(
+        History.articleID, History.response
+    ).filter(
+        History.userID==user_id
+    ).all()
+
+    history = [{
+        'articleID': entry[0],
+        'response': entry[1]
+    } for entry in readHistory]
+
+    return history
+
 @api.route('/article/<id>/respond', methods=['POST'])
 def respond_to_article(id):
     if not user_logged_in():
@@ -189,6 +213,7 @@ def recalculate(all_history,score):
         score =score*0.7 + addOneHistory(score,article.stance,response)
         scoreList.append(score)
     return score,scoreList 
+
 def read_articles(user_id):
     res = History.query.with_entities(
         History.articleID, History.response
