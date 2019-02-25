@@ -30,7 +30,7 @@ export function sortArticles(score, articles, topicID) {
             var distribution = JSON.parse(window.sessionStorage.getItem(`dist-${topicID}`));
             if(!distribution) {
                 distribution = [0, 1, 2, 3, 4, 5, 6, 7];
-                distribution = shuffle(distribution).slice(0, 6);
+                distribution = shuffle(distribution).slice(0, 5);
                 window.sessionStorage.setItem(`dist-${topicID}`, JSON.stringify(distribution));
             }
             sorted = distribution.map(i => articles[i]);
