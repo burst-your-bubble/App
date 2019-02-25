@@ -63,11 +63,13 @@ def read_history(user_id):
         articles.append(get_articles_overview(article[0]))
     
     #QUESTION: is there a way to nest this???
-    history = [{
-        'articleID': entry[0],
+    history = []
+    for i in range(len(readHistory)):
+        entry = readHistory[i]
+        history.append({
         'response': entry[1],
-        'title': articles,
-    } for entry in readHistory]
+        'details': articles[i],
+    })
 
     return history
 
