@@ -41,7 +41,7 @@ export class Home extends React.Component {
     }
 
     render() {
-        let userHistory = `/history/${this.state.userId}`;
+        let userHistory = `/history`;
 
         // Display a loading screen until the json data comes back from server
         if (this.state.loading) return <Loading />;

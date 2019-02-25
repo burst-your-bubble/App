@@ -39,14 +39,15 @@ def json_article(id):
     return jsonify(article)
 
 
-@api.route('/history/<id>', methods=['GET'])
-def json_history(id):
+@api.route('/history', methods=['GET'])
+def json_history():
     if not user_logged_in():
         abort(401)
 
+    id = get_user()
     history = read_history(id)
     score = get_score(id)
-    return jsonify({'history': history, 'score': score,})
+    return jsonify({'history': history, 'score': score, 'userID': id,})
 
 def read_history(user_id):
     readHistory = History.query.with_entities(
@@ -55,12 +56,39 @@ def read_history(user_id):
         History.userID==user_id
     ).all()
 
+    articles = []
+
+    # add in the article info for topic level detail
+    for article in readHistory:
+        articles.append(get_articles_overview(article[0]))
+    
+    #QUESTION: is there a way to nest this???
     history = [{
         'articleID': entry[0],
-        'response': entry[1]
+        'response': entry[1],
+        'title': articles,
     } for entry in readHistory]
 
     return history
+
+def get_articles_overview(articleID):
+    article = Article.query.with_entities(
+        Article.id,
+        Article.title,
+        Article.summary,
+        Article.stance,
+        Article.topicID
+    ).filter(Article.id == articleID).first()
+
+    article = {
+            'id': article[0],
+            'title': article[1],
+            'summary': article[2],
+            'stance': article[3],
+            'topicID': article[4]
+    }
+
+    return article
 
 @api.route('/article/<id>/respond', methods=['POST'])
 def respond_to_article(id):
