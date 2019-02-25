@@ -58,36 +58,37 @@ def read_history(user_id):
 
     articles = []
 
-    # add in the article info for topic level detail
     for article in readHistory:
-        articles.append(get_articles_overview(article[0]))
+        id=article[0]
+        articles.append(get_articles_overview(id, user_id))
     
-    #QUESTION: is there a way to nest this???
-    history = []
-    for i in range(len(readHistory)):
-        entry = readHistory[i]
-        history.append({
-        'response': entry[1],
-        'details': articles[i],
-    })
+    return articles
 
-    return history
-
-def get_articles_overview(articleID):
+def get_articles_overview(articleID, userID):
     article = Article.query.with_entities(
         Article.id,
         Article.title,
         Article.summary,
         Article.stance,
+        Article.url,
         Article.topicID
     ).filter(Article.id == articleID).first()
+
+    readHistory = History.query.with_entities(
+        History.articleID, History.response
+    ).filter(
+        History.userID==userID, History.articleID==articleID
+    ).first()
 
     article = {
             'id': article[0],
             'title': article[1],
             'summary': article[2],
             'stance': article[3],
-            'topicID': article[4]
+            'url': article[4],
+            'topicID': article[5],
+            'read': True,
+            'response': int(readHistory[1])
     }
 
     return article

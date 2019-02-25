@@ -2,6 +2,7 @@ import React from 'react';
 import { PageHeader, Panel } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ArticleBox } from '../Components/ArticleBox';
+import { Article } from './Article';
 
 export class History extends React.Component {
 
@@ -30,14 +31,18 @@ export class History extends React.Component {
 
     render() {
         if (this.state.loading) return <Loading />;
-        var articles;
 
-        for (var i = 0; i < this.state.history.length; i++) {
-            console.log(this.state.history[i].details.id);
-            console.log(this.state.history[i].details.title);
-            console.log(this.state.history[i].details.summary);
-            console.log(this.state.history[i].response);
-        }
+        var articles = this.state.history.map(article => {
+            return (
+                <ArticleBox title={article.title}
+                    summary={article.summary}
+                    stance={article.stance}
+                    url={article.url}
+                    id={article.id}
+                    read={article.read}
+                    response={article.response}
+                />)
+        });
 
         return (
             <div className="container">
