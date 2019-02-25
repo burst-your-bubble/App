@@ -27,7 +27,8 @@ def json_topics():
             else:
                 article['response'] = None
     score = get_score(get_user())
-    return jsonify({ 'topics' : topics, 'score': score })
+    id = get_user()
+    return jsonify({ 'topics' : topics, 'score': score, 'userId':id, })
 
 @api.route('/article/<id>', methods=['GET'])
 def json_article(id):
