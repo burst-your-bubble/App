@@ -67,7 +67,7 @@ def analyze(userID):
     # Only analyze the experience user 
     if lens <= experienced:
         return
-    score,scoreList = recalculate(all_history,0)
+    score,scoreList = recalculate(all_history,0,session)
     graph_y = [item/10.0 for item in scoreList]
     return graph_y
     
@@ -245,10 +245,10 @@ def addOneHistory(score,article_stance,response):
         change = response * stance
     return change
 # Given a start score and a list of history, it will return the final score if this list of history has been added to start scpre.
-def recalculate(all_history,score):
+def recalculate(all_history,score,session):
     scoreList = [score]
     for i,history in enumerate(all_history):
-        response = history.response
+        response = int(history.response)
         article = session.query(Article).filter(Article.id==history.articleID).first()
         score =score*0.7 + addOneHistory(score,article.stance,response)
         scoreList.append(score)
