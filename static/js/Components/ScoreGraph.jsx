@@ -7,19 +7,20 @@ export class ScoreGraph extends React.Component {
         this.state = {
             data: null
         }
-        this.yTicks = [];
-        for(let i = -1; i <= 1; i+=0.1) {
-            this.yTicks.push(i.toFixed(1));
-        }
-        console.log(this.yTicks);
+        this.scoresUrl = '/api/scoregraph'
     }
 
     componentDidMount() {
-        let scores = [-.7,-.2,-.5,.3,0]; // TODO: This data will come from Kai's server endpoint
-        let data = scores.map((score, i) => {return {x: i, y: score}});
-        this.setState({
-            data: data
-        });
+        fetch(this.scoresUrl)
+            .then(res => res.json())
+            .then(result => {
+                let scores = result.graph_y;
+                let data = scores.map((score, i) => {return {x: i, y: score}});
+                this.setState({
+                    data: data
+                });
+            });
+        
     }
 
     render() {
