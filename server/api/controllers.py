@@ -48,7 +48,26 @@ def json_history():
     history = read_history(id)
     score = get_score(id)
     return jsonify({'history': history, 'score': score, 'userID': id,})
+def json_score():
+    if not user_logged_in():
+        abort(401)
 
+    id = get_user()
+    graph_y = analyze(id)
+    return jsonify({'graph_y': graph_y, 'userID': id,})
+# This function use a sliding window to plot the score change of a given user
+def analyze(userID):
+    session = Session()
+    user = session.query(User).filter(User.id==userID).first()
+    all_history = session.query(History).filter_by(userID = userID).order_by(History.createdAt).all()
+    lens = len(all_history)
+    # Only analyze the experience user 
+    if lens <= experienced:
+        return
+    score,scoreList = recalculate(all_history,0)
+    graph_y = [item/10.0 for item in scoreList]
+    return graph_y
+    
 def read_history(user_id):
     readHistory = History.query.with_entities(
         History.articleID, History.response
@@ -208,19 +227,6 @@ def addResponse(userID,articleID,response):
         article.rating += (response * 0.1 * user.score)
     session.commit()
     return user.score
-# This function use a sliding window to plot the score change of a given user
-def analyze(userID):
-    session = Session()
-    user = session.query(User).filter(User.id==userID).first()
-    all_history = session.query(History).filter_by(userID = userID).order_by(History.createdAt).all()
-    lens = len(all_history)
-    # Only analyze the experience user 
-    if lens <= experienced:
-        return
-    score,scoreList = recalculate(all_history,0)
-    graph_y = [item/10.0 for item in scoreList]
-    print(graph_y)
-    return graph_y
         
 # Return the change of score once add this history
 def addOneHistory(score,article_stance,response):
