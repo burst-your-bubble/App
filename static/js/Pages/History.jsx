@@ -1,8 +1,9 @@
 import React from 'react';
-import { PageHeader, Panel } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ArticleBox } from '../Components/ArticleBox';
-import { Article } from './Article';
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, RadialChart } from 'react-vis';
+
 
 export class History extends React.Component {
 
@@ -29,6 +30,61 @@ export class History extends React.Component {
         });
     }
 
+    getProportions(stance) {
+        const data = [{
+            angle: 0,
+            label: "Disagree",
+            color: "#5cb85c"
+        },
+        {
+            angle: 0,
+            label: "Neutral",
+            color: "#ec971f"
+        },
+        {
+            angle: 0,
+            label: "Agree",
+            color: "#d9534f"
+        }];
+
+        for (var i = 0; i < this.state.history.length; i++) {
+            switch (stance) {
+                case 'left':
+                    if (this.state.history[i].stance == 'L') {
+                        if (this.state.history[i].response == -1)
+                            data[0].angle++;
+                        if (this.state.history[i].response == 0)
+                            data[1].angle++;
+                        if (this.state.history[i].response == 1)
+                            data[2].angle++;
+                    }
+                    break;
+                case 'center':
+                    if (this.state.history[i].stance == 'C') {
+                        if (this.state.history[i].response == -1)
+                            data[0].angle++;
+                        if (this.state.history[i].response == 0)
+                            data[1].angle++;
+                        if (this.state.history[i].response == 1)
+                            data[2].angle++;
+                    }
+                    break;
+                case 'right':
+                    if (this.state.history[i].stance == 'R') {
+                        if (this.state.history[i].response == -1)
+                            data[0].angle++;
+                        if (this.state.history[i].response == 0)
+                            data[1].angle++;
+                        if (this.state.history[i].response == 1)
+                            data[2].angle++;
+                    }
+                    break;
+            }
+        }
+
+        return data;
+    }
+
     render() {
         if (this.state.loading) return <Loading />;
 
@@ -44,16 +100,53 @@ export class History extends React.Component {
                 />)
         });
 
+        const leftData = this.getProportions('left');
+        const rightData = this.getProportions('right');
+        const centerData = this.getProportions('center');
+
         return (
             <div className="container">
                 <PageHeader className="homeTitle">
-                    <span style={{ fontFamily: 'Avenir Next' }}>User History for {this.state.userID}</span>
+                    <span style={{ fontFamily: 'Avenir Next' }}>Your History</span>
                 </PageHeader>
                 <Panel.Body>
+                    <h4><b>Opinion Trends</b></h4>
+                    <div className="charts">
+                        <RadialChart
+                            data={leftData}
+                            innerRadius={100}
+                            radius={140}
+                            width={300}
+                            height={300}
+                            colorType="literal"
+                            padAngle={0.04}
+                            //showLabels={true}
+                        />
+                        <RadialChart
+                            data={rightData}
+                            innerRadius={100}
+                            radius={140}
+                            width={300}
+                            height={300}
+                            colorType="literal"
+                            padAngle={0.04}
+                            //showLabels={true}
+                        />
+                        <RadialChart
+                            data={centerData}
+                            innerRadius={100}
+                            radius={140}
+                            width={300}
+                            height={300}
+                            colorType="literal"
+                            padAngle={0.04}
+                            //showLabels={true}
+                        />
+                    </div>
+                    <h4><b>Reading History</b></h4>
                     {articles}
                 </Panel.Body>
             </div>
         );
     }
-
 }

@@ -63,6 +63,15 @@ body {
     background:rgb(0, 0, 0);
 }
 
+.charts{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+
 .left{float:left; padding: 5%}
 .right{float:right; padding: 5%}
 .center{margin:0 auto;}
