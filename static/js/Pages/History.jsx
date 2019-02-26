@@ -3,6 +3,7 @@ import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ArticleBox } from '../Components/ArticleBox';
 import { DiscreteColorLegend, RadialChart } from 'react-vis';
+import { ScoreGraph } from '../Components/ScoreGraph';
 
 const ITEMS = [
     { title: 'Agree', color: "#5cb85c" },
@@ -161,6 +162,7 @@ export class History extends React.Component {
                     <h4><b>Reading History</b></h4>
                     {articles}
                 </Panel.Body>
+                <ScoreGraph />
             </div>
         );
     }
