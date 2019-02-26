@@ -5,7 +5,8 @@ export class ScoreGraph extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null
+            data: null,
+            loading: true
         }
         this.scoresUrl = '/api/scoregraph'
     }
@@ -17,20 +18,23 @@ export class ScoreGraph extends React.Component {
                 let scores = result.graph_y;
                 let data = scores.map((score, i) => {return {x: i, y: score}});
                 this.setState({
-                    data: data
+                    data: data,
+                    loading: false
                 });
             });
         
     }
 
     render() {
-        if (!this.state.data) return <span>Loading...</span>;
+        if(this.state.loading) return <span>Loading...</span>;
+        if (!this.state.data) return null;
 
+        let graphWidth = document.documentElement.clientWidth > 575? 500 : 300;
         return (
             <div className="container" style={{width: 'fit-content', backgroundColor: 'white'}}>
                 <h1>Stance Over Time</h1>
                 <span>0 is neutral/Positive is Right-leaning/Negative is Left-leaning</span>
-                <XYPlot height={300} width={500}>
+                <XYPlot height={300} width={graphWidth}>
                     <HorizontalGridLines />
                     <XAxis hideTicks />
                     <YAxis title="Stance Score" />
