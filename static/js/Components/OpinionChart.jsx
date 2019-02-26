@@ -1,5 +1,6 @@
 import React from 'react';
 import { DiscreteColorLegend, RadialChart } from 'react-vis';
+import { Grid, Row, Col } from 'react-bootstrap'
 import { Loading } from '../Components/Loading';
 
 export class OpinionChart extends React.Component {
@@ -91,49 +92,53 @@ export class OpinionChart extends React.Component {
             { title: 'Neutral', color: "#ec971f" },
             { title: 'Disagree', color: "#d9534f" },
         ];
-        
+
         return (
-            <div className="charts">
-                <section className="centerObjects">
-                    <RadialChart
-                        data={leftData}
-                        innerRadius={100}
-                        radius={140}
-                        width={300}
-                        height={300}
-                        colorType="literal"
-                        padAngle={0.04}
-                    //showLabels={true}
-                    />
-                    Left Leaning
-                </section>
-                <section className="centerObjects">
-                    <RadialChart
-                        data={centerData}
-                        innerRadius={100}
-                        radius={140}
-                        width={300}
-                        height={300}
-                        colorType="literal"
-                        padAngle={0.04}
-                    //showLabels={true}
-                    />
-                    Center Leaning
-                </section>
-                <section className="centerObjects">
-                    <RadialChart
-                        data={rightData}
-                        innerRadius={100}
-                        radius={140}
-                        width={300}
-                        height={300}
-                        colorType="literal"
-                        padAngle={0.04}
-                    //showLabels={true}
-                    />
-                    Right Leaning
-                </section>
-                <DiscreteColorLegend orientation="vertical" width={300} items={legend} />
+            <div>
+                <Grid componentClass="none">
+                    <Row className="show-grid">
+                        <Col sm={4} className="centerObjects">
+                            <RadialChart
+                                data={leftData}
+                                innerRadius={100}
+                                radius={140}
+                                width={300}
+                                height={300}
+                                colorType="literal"
+                                padAngle={0.04}
+                            //showLabels={true}
+                            />
+                            Left Leaning
+                        </Col>
+                        <Col sm={4} className="centerObjects">
+                            <RadialChart
+                                data={centerData}
+                                innerRadius={100}
+                                radius={140}
+                                width={300}
+                                height={300}
+                                colorType="literal"
+                                padAngle={0.04}
+                            //showLabels={true}
+                            />
+                            Center Leaning
+                        </Col>
+                        <Col sm={4} className="centerObjects">
+                            <RadialChart
+                                data={rightData}
+                                innerRadius={100}
+                                radius={140}
+                                width={300}
+                                height={300}
+                                colorType="literal"
+                                padAngle={0.04}
+                            //showLabels={true}
+                            />
+                            Right Leaning
+                        </Col>
+                    </Row>
+                </Grid>
+                <DiscreteColorLegend className="legend" orientation="horizontal" items={legend} />
             </div>)
     }
 }

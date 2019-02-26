@@ -65,11 +65,12 @@ body {
 
 .centerObjects{
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
-.charts{
+.legend{
     display: flex;
-    align-items: center;
     justify-content: center;
     align-items: center;
     flex-direction: row;
