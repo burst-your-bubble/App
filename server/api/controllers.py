@@ -48,6 +48,8 @@ def json_history():
     history = read_history(id)
     score = get_score(id)
     return jsonify({'history': history, 'score': score, 'userID': id,})
+
+@api.route('/scoreGraph', methods=['GET'])
 def json_score():
     if not user_logged_in():
         abort(401)
@@ -55,6 +57,7 @@ def json_score():
     id = get_user()
     graph_y = analyze(id)
     return jsonify({'graph_y': graph_y, 'userID': id,})
+
 # This function use a sliding window to plot the score change of a given user
 def analyze(userID):
     session = Session()

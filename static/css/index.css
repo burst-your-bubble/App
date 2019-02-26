@@ -63,6 +63,10 @@ body {
     background:rgb(0, 0, 0);
 }
 
+.centerObjects{
+    text-align: center;
+}
+
 .charts{
     display: flex;
     align-items: center;

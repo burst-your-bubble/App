@@ -11,7 +11,6 @@ def index():
 def register():
     return render_template("index.html")
 
-
 @ui.route("/history")
 def history():
     return render_template("index.html")
