@@ -3,6 +3,7 @@ import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ArticleBox } from '../Components/ArticleBox';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, RadialChart } from 'react-vis';
+import { ScoreGraph } from '../Components/ScoreGraph';
 
 
 export class History extends React.Component {
@@ -146,6 +147,7 @@ export class History extends React.Component {
                     <h4><b>Reading History</b></h4>
                     {articles}
                 </Panel.Body>
+                <ScoreGraph />
             </div>
         );
     }
