@@ -115,7 +115,7 @@ export class History extends React.Component {
                     <span style={{ fontFamily: 'Avenir Next' }}>Your History</span>
                 </PageHeader>
                 <Panel.Body>
-                    <h4><b>Opinion Trends</b></h4>
+                    <h4><b>Opinion Trends on Articles</b></h4>
                     <div className="charts">
                         <section className="centerObjects">
                             <RadialChart
@@ -128,7 +128,7 @@ export class History extends React.Component {
                                 padAngle={0.04}
                             //showLabels={true}
                             />
-                            Left
+                            Left Leaning
                         </section>
                         <section className="centerObjects">
                             <RadialChart
@@ -141,7 +141,7 @@ export class History extends React.Component {
                                 padAngle={0.04}
                             //showLabels={true}
                             />
-                            Center
+                            Center Leaning
                         </section>
                         <section className="centerObjects">
                             <RadialChart
@@ -154,7 +154,7 @@ export class History extends React.Component {
                                 padAngle={0.04}
                             //showLabels={true}
                             />
-                            Right
+                            Right Leaning
                         </section>
                         <DiscreteColorLegend orientation="vertical" width={300} items={ITEMS} />
                     </div>
