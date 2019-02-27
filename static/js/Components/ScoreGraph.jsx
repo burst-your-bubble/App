@@ -4,20 +4,13 @@ import { XYPlot, HorizontalGridLines, XAxis, YAxis, LineSeries } from 'react-vis
 export class ScoreGraph extends React.Component {
     constructor(props) {
         super(props);
-        this.jsonUrl = `/api/scoreGraph`;
 
         this.state = {
             data: null,
             loading: true
         }
-<<<<<<< HEAD
-        this.yTicks = [];
-        for(let i = -1; i <= 1; i+=0.1) {
-            this.yTicks.push(i.toFixed(1));
-        }
-=======
+
         this.scoresUrl = '/api/scoregraph'
->>>>>>> e00434f2527aa443ec161689b55aa6ff0ee0f9f4
     }
 
     componentDidMount() {
