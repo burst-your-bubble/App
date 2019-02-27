@@ -49,7 +49,7 @@ def json_history():
     score = get_score(id)
     return jsonify({'history': history, 'score': score, 'userID': id,})
 
-@api.route('/scoreGraph', methods=['GET'])
+@api.route('/scoregraph', methods=['GET'])
 def json_score():
     if not user_logged_in():
         abort(401)
