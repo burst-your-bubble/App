@@ -123,6 +123,7 @@ export class Register extends React.Component {
                             <h4>Welcome to Burst Your Bubble!</h4>
                             <p>
                                 Thanks for trying out a whole new way of consuming news! In Burst Your Bubble, we've curated some of the most important news topics for the day. <br></br>
+                                In 3 simple steps you too can "Burst Your Bubble":<br></br>
                                 1. Within each topic, we've provided you with 5 articles from various parts of the political spectrum.<br></br>
                                 2. Read the articles, and record what you think of the opinion presented in the article<br></br>
                                 3. Keep reading and reacting, we'll update the articles we show you to keep you well informed!

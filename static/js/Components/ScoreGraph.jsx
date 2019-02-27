@@ -4,6 +4,8 @@ import { XYPlot, HorizontalGridLines, XAxis, YAxis, LineSeries } from 'react-vis
 export class ScoreGraph extends React.Component {
     constructor(props) {
         super(props);
+        this.jsonUrl = `/api/scoreGraph`;
+
         this.state = {
             data: null
         }
@@ -11,7 +13,6 @@ export class ScoreGraph extends React.Component {
         for(let i = -1; i <= 1; i+=0.1) {
             this.yTicks.push(i.toFixed(1));
         }
-        console.log(this.yTicks);
     }
 
     componentDidMount() {
@@ -25,9 +26,12 @@ export class ScoreGraph extends React.Component {
     render() {
         if (!this.state.data) return <span>Loading...</span>;
 
+        if(this.state.data == null)
+            return <p> You haven't interacted with enough articles yet, find some topics to read <a href="/home">here</a>!</p>
+
         return (
-            <div className="container" style={{width: 'fit-content', backgroundColor: 'white'}}>
-                <h1>Stance Over Time</h1>
+            <div>
+                <h4><b>Stance Over Time</b></h4>
                 <span>0 is neutral/Positive is Right-leaning/Negative is Left-leaning</span>
                 <XYPlot height={300} width={500}>
                     <HorizontalGridLines />

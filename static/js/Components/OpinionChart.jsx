@@ -1,6 +1,6 @@
 import React from 'react';
 import { DiscreteColorLegend, RadialChart } from 'react-vis';
-import { Grid, Row, Col } from 'react-bootstrap'
+import { Grid, Row, Col, Panel } from 'react-bootstrap'
 import { Loading } from '../Components/Loading';
 
 export class OpinionChart extends React.Component {
@@ -13,8 +13,11 @@ export class OpinionChart extends React.Component {
             history: null,
             user_score: null,
             userID: null,
+            value: false,
+            expanded: false,
         }
 
+        this.handleClick = this.handleClick.bind(this);
         this.componentDidMount.bind(this);
     }
 
@@ -24,6 +27,10 @@ export class OpinionChart extends React.Component {
             result.json().then(data =>
                 this.setState({ loading: false, history: data.history, user_score: data.score, userID: data.userID }))
         });
+    }
+
+    handleClick() {
+        this.setState({ expanded: !this.state.expanded });
     }
 
     getProportions(stance) {
@@ -82,6 +89,8 @@ export class OpinionChart extends React.Component {
     }
 
     render() {
+        const { value } = this.state;
+
         if (this.state.loading) return <Loading />;
 
         const leftData = this.getProportions('left');
@@ -93,52 +102,63 @@ export class OpinionChart extends React.Component {
             { title: 'Disagree', color: "#d9534f" },
         ];
 
+        if (this.state.history == null)
+            return <p> You haven't interacted with any articles yet, find some topics to read <a href="/home">here</a>!</p>
+
         return (
             <div>
-                <Grid componentClass="none">
-                    <Row className="show-grid">
-                        <Col sm={4} className="centerObjects">
-                            <RadialChart
-                                data={leftData}
-                                innerRadius={100}
-                                radius={140}
-                                width={300}
-                                height={300}
-                                colorType="literal"
-                                padAngle={0.04}
-                            //showLabels={true}
-                            />
-                            Left Leaning
-                        </Col>
-                        <Col sm={4} className="centerObjects">
-                            <RadialChart
-                                data={centerData}
-                                innerRadius={100}
-                                radius={140}
-                                width={300}
-                                height={300}
-                                colorType="literal"
-                                padAngle={0.04}
-                            //showLabels={true}
-                            />
-                            Center Leaning
-                        </Col>
-                        <Col sm={4} className="centerObjects">
-                            <RadialChart
-                                data={rightData}
-                                innerRadius={100}
-                                radius={140}
-                                width={300}
-                                height={300}
-                                colorType="literal"
-                                padAngle={0.04}
-                            //showLabels={true}
-                            />
-                            Right Leaning
-                        </Col>
-                    </Row>
-                </Grid>
-                <DiscreteColorLegend className="legend" orientation="horizontal" items={legend} />
-            </div>)
+                <Panel id="story-box" expanded={this.state.expanded} >
+                    <Panel.Heading style={{ cursor: "pointer" }} onClick={this.handleClick} className="topic-box">
+                        <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold' }} componentClass="span">
+                            Opinion Trends on Articles
+                        </Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Collapse>
+                        <Panel.Body>
+                            <Grid componentClass="none" className="container">
+                                <Row className="show-grid">
+                                    <Col sm={4}>
+                                        <RadialChart
+                                            data={leftData}
+                                            innerRadius={50}
+                                            radius={70}
+                                            width={150}
+                                            height={150}
+                                            colorType="literal"
+                                            padAngle={0.04}
+                                        />
+                                        Left Leaning
+                                    </Col>
+                                    <Col sm={4}>
+                                        <RadialChart
+                                            data={centerData}
+                                            innerRadius={50}
+                                            radius={70}
+                                            width={150}
+                                            height={150}
+                                            colorType="literal"
+                                            padAngle={0.04}
+                                        />
+                                        Center Leaning
+                                    </Col>
+                                    <Col sm={4}>
+                                        <RadialChart
+                                            data={rightData}
+                                            innerRadius={50}
+                                            radius={70}
+                                            width={150}
+                                            height={150}
+                                            colorType="literal"
+                                            padAngle={0.04}
+                                        />
+                                        Right Leaning
+                                    </Col>
+                                </Row>
+                            </Grid>
+                            <DiscreteColorLegend className="legend" orientation="horizontal" items={legend} />
+                        </Panel.Body>
+                    </Panel.Collapse>
+                </Panel>
+            </div >)
     }
 }
