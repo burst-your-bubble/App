@@ -105,6 +105,8 @@ export class OpinionChart extends React.Component {
         if (this.state.history == null)
             return <p> You haven't interacted with any articles yet, find some topics to read <a href="/home">here</a>!</p>
 
+        let chartStyle = {margin: 'auto', width: 'fit-content'}
+
         return (
             <div>
                 <Panel id="story-box" expanded={this.state.expanded} >
@@ -118,19 +120,22 @@ export class OpinionChart extends React.Component {
                             <Grid componentClass="none" className="container">
                                 <Row className="show-grid">
                                     <Col sm={4}>
+                                       <div style={chartStyle}>
                                         <RadialChart
-                                            data={leftData}
-                                            innerRadius={50}
-                                            radius={70}
-                                            width={150}
-                                            height={150}
-                                            colorType="literal"
-                                            padAngle={0.04}
-                                        />
-                                        Left Leaning
+                                                data={leftData}
+                                                innerRadius={50}
+                                                radius={70}
+                                                width={150}
+                                                height={150}
+                                                colorType="literal"
+                                                padAngle={0.04}
+                                            />
+                                            Left Leaning
+                                       </div>
                                     </Col>
                                     <Col sm={4}>
-                                        <RadialChart
+                                       <div style={chartStyle}>
+                                       <RadialChart
                                             data={centerData}
                                             innerRadius={50}
                                             radius={70}
@@ -140,8 +145,11 @@ export class OpinionChart extends React.Component {
                                             padAngle={0.04}
                                         />
                                         Center Leaning
+                                       </div>
+
                                     </Col>
                                     <Col sm={4}>
+                                        <div style={chartStyle}>
                                         <RadialChart
                                             data={rightData}
                                             innerRadius={50}
@@ -152,6 +160,8 @@ export class OpinionChart extends React.Component {
                                             padAngle={0.04}
                                         />
                                         Right Leaning
+                                        </div>
+
                                     </Col>
                                 </Row>
                             </Grid>
