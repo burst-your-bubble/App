@@ -14,7 +14,7 @@ export class OpinionChart extends React.Component {
             user_score: null,
             userID: null,
             value: false,
-            expanded: false,
+            expanded: true,
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -110,7 +110,7 @@ export class OpinionChart extends React.Component {
                 <Panel id="story-box" expanded={this.state.expanded} >
                     <Panel.Heading style={{ cursor: "pointer" }} onClick={this.handleClick} className="topic-box">
                         <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold' }} componentClass="span">
-                            Opinion Trends on Articles
+                            Your Opinions
                         </Panel.Title>
                     </Panel.Heading>
                     <Panel.Collapse>

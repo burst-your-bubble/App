@@ -16,7 +16,7 @@ export class History extends React.Component {
             history: null,
             user_score: null,
             userID: null,
-            expanded: true,
+            expanded: false,
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -55,8 +55,8 @@ export class History extends React.Component {
 
         for (var i = 0; i < articles.length; i++) {
             if (this.state.history[i].stance == "L") left++;
-            if (this.state.history[i].stance == "R") center++;
-            if (this.state.history[i].stance == "C") right++;
+            if (this.state.history[i].stance == "C") center++;
+            if (this.state.history[i].stance == "R") right++;
         }
 
         return (
@@ -67,16 +67,21 @@ export class History extends React.Component {
                 <Grid componentClass="none">
                     <Row className="show-grid">
                         <Col sm={3} className="centerObjects">
-                            <b><h1 style={{ color: "#00000" }}>{articles.length}</h1> articles read</b>
+                            <b><h2 style={{ color: "#00000" }}>{articles.length}</h2> articles read</b>
                         </Col>
                         <Col sm={3} className="centerObjects">
-                            <h1 style={{ color: "#99999A" }}>{left}</h1> <b>left leaning</b>
+                            <h2 style={{ color: "#99999A" }}>{left}</h2> <b>left leaning</b>
                         </Col>
                         <Col sm={3} className="centerObjects">
-                            <h1 style={{ color: "#99999A" }}>{center}</h1> <b>center leaning</b>
+                            <h2 style={{ color: "#99999A" }}>{center}</h2> <b>center leaning</b>
                         </Col>
                         <Col sm={3} className="centerObjects">
-                            <h1 style={{ color: "#99999A" }}>{right}</h1> <b>right leaning</b>
+                            <h2 style={{ color: "#99999A" }}>{right}</h2> <b>right leaning</b>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="centerObjects" style={{padding: "1%"}}>
+                            <h4>Reading Trends</h4> 
                         </Col>
                     </Row>
                     <Row className="show-grid">
@@ -92,7 +97,7 @@ export class History extends React.Component {
                     <Panel id="story-box" expanded={this.state.expanded} >
                         <Panel.Heading style={{ cursor: "pointer" }} onClick={this.handleClick} className="topic-box">
                             <Panel.Title style={{ fontFamily: 'Avenir Next-DemiBold' }} componentClass="span">
-                                Reading History
+                                Reading History ({articles.length})
                             </Panel.Title>
                         </Panel.Heading>
                         <Panel.Collapse>
