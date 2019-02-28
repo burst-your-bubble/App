@@ -122,6 +122,9 @@ export class Article extends React.Component {
                         </p>
                     </Media>
                 </div>
+                <div>
+                    <h2>Discussion</h2>
+                </div>
                 <div className="footer">
                     <div className="left">
                         <Button bsStyle="danger" onClick={this.handleReportShow}>Report</Button>
