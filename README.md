@@ -1,9 +1,9 @@
 
 <h1 align="center">
   <br>
-  <img src="https://github.com/CarletonDevX/immigrant_mentorship/blob/master/PaveItForwardIcon.png" alt="Pave It Forward" width="200"></a>
+  <img src="https://github.com/burst-your-bubble/App/blob/master/static/favicon.ico" alt="Burst Your Bubble" width="200"></a>
   <br>
-  Pave It Forward
+  Burst Your Bubble
   <br>
 </h1>
 
