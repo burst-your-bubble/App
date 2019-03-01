@@ -43,6 +43,10 @@ export class History extends React.Component {
 
         var left = 0, right = 0, center = 0;
 
+        if(articles == null){
+            return <h4 className="loader-container"><span>You don't have a reading history yet! Find some topics to read <a href="/home"> here</a>!</span></h4>;
+        }
+
         for (var i = 0; i < articles.length; i++) {
             if (this.state.history[i].stance == "L") left++;
             if (this.state.history[i].stance == "C") center++;

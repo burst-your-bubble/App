@@ -78,6 +78,11 @@ def read_history(user_id):
         History.userID==user_id
     ).all()
 
+    lens = len(readHistory)
+
+    if not lens:
+        return
+
     articles = []
 
     for article in readHistory:

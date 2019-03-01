@@ -22,11 +22,19 @@ export class ScoreGraph extends React.Component {
             .then(res => res.json())
             .then(result => {
                 let scores = result.graph_y;
-                let data = scores.map((score, i) => { return { x: i, y: score } });
-                this.setState({
-                    data: data,
-                    loading: false
-                });
+
+                if(scores == null) {
+                    this.setState({
+                        loading: false
+                    });
+                }
+                else{
+                    let data = scores.map((score, i) => { return { x: i, y: score } });
+                    this.setState({
+                        data: data,
+                        loading: false
+                    });    
+                }
             });
     }
 
@@ -35,11 +43,11 @@ export class ScoreGraph extends React.Component {
     }
 
     render() {
-        if (this.state.loading) return <span>Loading...</span>;
-        if (!this.state.data) return null;
+
+        if (this.state.loading) return <span className="centerObjects">Loading...</span>;
 
         if (this.state.data == null)
-            return <p> You haven't interacted with enough articles yet, find some topics to read <a href="/home">here</a>!</p>
+            return <p> <b>Your Political Stance:</b> You haven't interacted with enough articles yet, find some topics to read <a href="/home">here</a>!</p>
 
         let graphWidth = document.documentElement.clientWidth > 575 ? 500 : 300;
 

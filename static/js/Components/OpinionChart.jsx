@@ -1,7 +1,6 @@
 import React from 'react';
 import { DiscreteColorLegend, RadialChart } from 'react-vis';
 import { Grid, Row, Col, Panel } from 'react-bootstrap'
-import { Loading } from '../Components/Loading';
 
 export class OpinionChart extends React.Component {
     constructor(props) {
@@ -13,7 +12,6 @@ export class OpinionChart extends React.Component {
             history: null,
             user_score: null,
             userID: null,
-            value: false,
             expanded: true,
         }
 
@@ -89,9 +87,8 @@ export class OpinionChart extends React.Component {
     }
 
     render() {
-        const { value } = this.state;
 
-        if (this.state.loading) return <Loading />;
+        if (this.state.loading) return <span className="centerObjects">Loading...</span>;
 
         const leftData = this.getProportions('left');
         const rightData = this.getProportions('right');
@@ -103,7 +100,7 @@ export class OpinionChart extends React.Component {
         ];
 
         if (this.state.history == null)
-            return <p> You haven't interacted with any articles yet, find some topics to read <a href="/home">here</a>!</p>
+            return <p> <b>Your Score:</b> You haven't interacted with any articles yet, find some topics to read <a href="/home">here</a>!</p>
 
         let chartStyle = {margin: 'auto', width: 'fit-content'}
 
