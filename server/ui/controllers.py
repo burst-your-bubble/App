@@ -15,6 +15,11 @@ def register():
 def history():
     return render_template("index.html")
 
+
+@ui.route("/about")
+def about():
+    return render_template("index.html")
+
 @ui.route("/home")
 def home():
     if not user_logged_in():
