@@ -1,6 +1,7 @@
 import React from 'react';
 import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
+import { ReadingFooter } from '../Components/ReadingFooter';
 
 export class Article extends React.Component {
 
@@ -86,19 +87,6 @@ export class Article extends React.Component {
         var datePublished = new Date(this.state.article.datePublished);
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        var readingTime = require('reading-time');
-        var stats = readingTime(this.state.article.text);
-
-        //run this onScroll
-        window.onscroll = function () { updateProgressBar() };
-
-        //updating scroll bar while scrolling
-        function updateProgressBar() {
-            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            var scrolled = (winScroll / height) * 100;
-            document.getElementById("progressBar").style.width = scrolled + "%";
-        }
 
         return (
             <div className="container">
@@ -122,20 +110,8 @@ export class Article extends React.Component {
                         </p>
                     </Media>
                 </div>
-                <div className="footer">
-                    <div className="left">
-                        <Button bsStyle="danger" onClick={this.handleReportShow}>Report</Button>
-                    </div>
-                    <div className="center">
-                        Approximately {stats.text}
-                    </div>
-                    <div className="right">
-                        <Button bsStyle="success" onClick={this.handleDoneShow}>Done Reading</Button>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
-                </div>
+                
+                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text} />
 
                 <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
