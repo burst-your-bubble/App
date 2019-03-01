@@ -1,5 +1,5 @@
 import React from 'react';
-import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 
 export class Article extends React.Component {
@@ -8,6 +8,7 @@ export class Article extends React.Component {
         super(props);
         this.id = props.match.params.id;
         this.jsonUrl = `/api/article/${this.id}`;
+        this.stanceText = ["disagree with", "take a neutral stance on", "agree with"];
         this.handleDoneShow = this.handleDoneShow.bind(this);
         this.handleReportShow = this.handleReportShow.bind(this);
         this.handleDoneClose = this.handleDoneClose.bind(this);
@@ -18,6 +19,8 @@ export class Article extends React.Component {
             article: null,
             doneShow: false,
             reportShow: false,
+            commentShow: false,
+            stance: null,
             showSource: false,
         };
 
@@ -28,17 +31,24 @@ export class Article extends React.Component {
         // fetch actual article data from server based on article id
         fetch(this.jsonUrl).then(res => {
             res.json().then(article => {
+                console.log(article);
                 this.setState({ article: article, loading: false });
             });
         })
     }
 
     handleDoneShow() {
-        this.setState({ doneShow: true });
+        this.setState({
+            doneShow: true,
+            commentShow: false
+        });
     }
 
     handleDoneClose() {
-        this.setState({ doneShow: false });
+        this.setState({
+            doneShow: false,
+            commentShow: false
+        });
     }
 
     handleReportShow() {
@@ -60,7 +70,13 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 response: response
             })
-        }).then(() => window.history.back());
+        }).then(() => {
+            this.setState({
+                doneShow: false,
+                stance: this.stanceText[response + 1],
+                commentShow: true
+            });
+        });
     }
 
     handleReporting(reportType) {
@@ -88,6 +104,10 @@ export class Article extends React.Component {
         const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         var readingTime = require('reading-time');
         var stats = readingTime(this.state.article.text);
+
+        const comments = this.state.article.comments.map((item, key) =>
+            <li key={item.id}>{item.text} &mdash; {item.author}</li>
+        );
 
         //run this onScroll
         window.onscroll = function () { updateProgressBar() };
@@ -124,6 +144,9 @@ export class Article extends React.Component {
                 </div>
                 <div>
                     <h2>Discussion</h2>
+                    <ul>
+                    {comments}
+                    </ul>
                 </div>
                 <div className="footer">
                     <div className="left">
@@ -140,26 +163,42 @@ export class Article extends React.Component {
                     </div>
                 </div>
 
-                <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
+                <Modal show={this.state.doneShow || this.state.commentShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
-                        <h4>{this.state.article.title}</h4>
-                        <p>
-                            <b>What is your take on the opinion presented in this article?</b>
-                        </p>
-                        <ButtonToolbar>
-                            {/* Capture what button is clicked into 'response' */}
-                            <Button bsStyle="success" onClick={() => this.handleResponse(1)}>Agree</Button>
-                            <Button bsStyle="warning" onClick={() => this.handleResponse(0)}>Neutral</Button>
-                            <Button bsStyle="danger" onClick={() => this.handleResponse(-1)}>Disagree</Button>
-                        </ButtonToolbar>
+                        {this.state.commentShow ?
+                            <div>
+                                <h4>Thank you!</h4>
+                                <p>
+                                    Your opinion has been recorded. You can now join the conversation by leaving a comment, or click "Finish without commenting" to return home.
+                                </p>
+                                <Form>
+                                    <FormGroup controlId="commentForm.comment">
+                                        <FormControl componentClass="textarea" rows="3" placeholder={'Join the conversation by leaving a comment. For example, why did you '+this.state.stance+' this article?'} />
+                                    </FormGroup>
+                                </Form>
+                            </div>
+                        :
+                            <div>
+                                <h4>{this.state.article.title}</h4>
+                                <p>
+                                    <b>What is your take on the opinion presented in this article?</b>
+                                </p>
+                                <ButtonToolbar>
+                                    {/* Capture what button is clicked into 'response' */}
+                                    <Button bsStyle="success" onClick={() => this.handleResponse(1)}>Agree</Button>
+                                    <Button bsStyle="warning" onClick={() => this.handleResponse(0)}>Neutral</Button>
+                                    <Button bsStyle="danger" onClick={() => this.handleResponse(-1)}>Disagree</Button>
+                                </ButtonToolbar>
+                            </div>
+                        }
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleDoneClose}>Cancel</Button>
+                        {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleDoneClose}>Finish</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
                     </Modal.Footer>
                 </Modal>
                 <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
                     <Modal.Body>
-                        <h4 >{this.state.article.title}</h4>
+                        <h4>{this.state.article.title}</h4>
                         <p>
                             <b>We're sorry that something's wrong! What seems to be the problem?</b>
                         </p>
