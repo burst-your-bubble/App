@@ -3,7 +3,7 @@
   <br>
   <img src="https://github.com/burst-your-bubble/App/blob/master/static/favicon.ico" alt="Burst Your Bubble" width="200"></a>
   <br>
-  Burst Your Bubble
+  <a href="byb.tatebosler.com">Burst Your Bubble</a>
   <br>
 </h1>
 
@@ -23,22 +23,20 @@
 Inspiration for the app
 
 ## What It Does
-
 * What does it do?
 
 
 ## How We Built It
-
 How did we build this app?
 
 ## Challenges We Ran Into
-
 None lol
 
 ## Accomplishments we're proud of
-
 Loading screen
 
+## What we learnt
+Loading screen
 
 ## What's next
 Graduation?
