@@ -19,10 +19,12 @@ export function sortArticles(score, articles, topicID) {
         //far left: Distribution: 2R-2C-1L
         if (score <= -0.75)
             sorted = [].concat(L[0]).concat(R.slice(0,2)).concat(C.slice(0,2));
+        
         //liberal: Distribution: 3R-1C-1L
         else if (score > -0.75 && score < -0.25) {
             sorted = [].concat(L[0]).concat(R).concat(C[0]);
         }
+
         // central / swing
         // Randomly choose 5 of the 8 articles to display, save indices
         // to session storage so that order persists through page reload
@@ -35,10 +37,12 @@ export function sortArticles(score, articles, topicID) {
             }
             sorted = distribution.map(i => articles[i]);
         }
+
         // conservatives Distribution: 3L-1C-1R
         else if (score > 0.25 && score < 0.75) {
             sorted = [].concat(L).concat(R[0]).concat(C[0]);
         }
+
         // far right: Distribution: 2L-2C-1R
         else {
             sorted = [].concat(L.slice(0,2)).concat(R[0]).concat(C);

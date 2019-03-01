@@ -1,7 +1,7 @@
 import React from 'react';
 import { TopicBox } from '../Components/TopicBox';
 import { Loading } from '../Components/Loading';
-import { Grid, Row, Col, PageHeader, Button, Modal, ButtonToolbar, Form, FormGroup, FormControl } from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader, Button, Modal } from 'react-bootstrap';
 
 export class Home extends React.Component {
 
@@ -16,6 +16,7 @@ export class Home extends React.Component {
             topics: null,
             user_score: null,
             show: false,
+            userId: null,
         }
 
         this.componentDidMount.bind(this);
@@ -25,15 +26,14 @@ export class Home extends React.Component {
         // GET mock json data, when it comes back put it into state.
         fetch(this.jsonUrl).then(res => {
             res.json().then(data =>
-                this.setState({ loading: false, topics: data.topics, user_score: data.score })
+                this.setState({ loading: false, topics: data.topics, user_score: data.score, userId: data.userId })
             );
         });
     }
 
     handleShow() {
         this.setState({ show: true });
-    }
-
+    }    
 
     handleClose() {
         this.setState({ show: false });
@@ -41,6 +41,8 @@ export class Home extends React.Component {
     }
 
     render() {
+        let userHistory = `/history`;
+
         // Display a loading screen until the json data comes back from server
         if (this.state.loading) return <Loading />;
 
@@ -71,6 +73,7 @@ export class Home extends React.Component {
                 <PageHeader className="homeTitle">
                     <span style={{fontFamily: 'Avenir Next'}}>Burst Your Bubble</span>
                     <Button bsStyle="success" onClick={this.handleShow}>Email Feedback</Button>
+                    <Button bsStyle="primary" href={userHistory}>See History</Button>
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <Modal.Body>
                             <h4>Thanks for providing us with feedback!</h4>

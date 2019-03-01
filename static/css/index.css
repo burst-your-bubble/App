@@ -63,6 +63,20 @@ body {
     background:rgb(0, 0, 0);
 }
 
+.centerObjects{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.legend{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+
 .left{float:left; padding: 5%}
 .right{float:right; padding: 5%}
 .center{margin:0 auto;}
