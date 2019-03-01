@@ -22,9 +22,12 @@ export class Article extends React.Component {
             commentShow: false,
             stance: null,
             showSource: false,
+            reactionCommentText: null
         };
 
         this.handleResponse = this.handleResponse.bind(this);
+        this.handleCommentModalChange = this.handleCommentModalChange.bind(this);
+        this.handleCommentModalSubmit = this.handleCommentModalSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -76,6 +79,27 @@ export class Article extends React.Component {
                 stance: this.stanceText[response + 1],
                 commentShow: true
             });
+        });
+    }
+
+    handleCommentModalSubmit(event) {
+        event.preventDefault();
+
+        if (this.state.reactionCommentText) {
+            // submit comment to server
+            this.setState({
+                doneShow: false,
+                commentShow: false,
+                stance: null
+            });
+        } else {
+            window.history.back();
+        }
+    }
+
+    handleCommentModalChange(event) {
+        this.setState({
+            reactionCommentText: event.target.value
         });
     }
 
@@ -171,9 +195,9 @@ export class Article extends React.Component {
                                 <p>
                                     Your opinion has been recorded. You can now join the conversation by leaving a comment, or click "Finish without commenting" to return home.
                                 </p>
-                                <Form>
+                                <Form onSubmit={this.handleCommentModalSubmit}>
                                     <FormGroup controlId="commentForm.comment">
-                                        <FormControl componentClass="textarea" rows="3" placeholder={'Join the conversation by leaving a comment. For example, why did you '+this.state.stance+' this article?'} />
+                                        <FormControl componentClass="textarea" rows="3" placeholder={'Join the conversation by leaving a comment. For example, why did you '+this.state.stance+' this article?'} onChange={this.handleCommentModalChange} />
                                     </FormGroup>
                                 </Form>
                             </div>
@@ -193,7 +217,7 @@ export class Article extends React.Component {
                         }
                     </Modal.Body>
                     <Modal.Footer>
-                        {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleDoneClose}>Finish</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
+                        {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleCommentModalSubmit}>{this.state.reactionCommentText ? 'Finish' : 'Finish without commenting'}</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
                     </Modal.Footer>
                 </Modal>
                 <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
