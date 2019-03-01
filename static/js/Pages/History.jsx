@@ -4,6 +4,7 @@ import { Loading } from '../Components/Loading';
 import { ReadingHistory } from '../Components/ReadingHistory';
 import { ScoreGraph } from '../Components/ScoreGraph';
 import { OpinionChart } from '../Components/OpinionChart';
+import { Navigation } from '../Components/Navigation';
 
 export class History extends React.Component {
 
@@ -58,6 +59,7 @@ export class History extends React.Component {
                 <PageHeader className="homeTitle">
                     <span style={{ fontFamily: 'Avenir Next' }}>Your History</span>
                 </PageHeader>
+                <Navigation/>
                 <Grid componentClass="none">
                     <Row className="show-grid">
                         <Col sm={3} className="centerObjects">

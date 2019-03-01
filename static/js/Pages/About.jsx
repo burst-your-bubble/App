@@ -1,14 +1,17 @@
 import React from 'react';
 import { PageHeader } from 'react-bootstrap';
+import { Navigation } from '../Components/Navigation';
 
 export const About = () => {
     return (
         <div className="container">
             <PageHeader>About</PageHeader>
+            <Navigation/>
             <h4>Welcome to Burst Your Bubble!</h4>
             <p>
                 Burst Your Bubble is a web application that attempts to broaden your political awareness...
             </p>
+            <br></br>
             <h4>Special Thanks To</h4>
             <p>
                 <ul>

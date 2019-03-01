@@ -3,7 +3,7 @@
   <br>
   <img src="https://github.com/burst-your-bubble/App/blob/master/static/favicon.ico" alt="Burst Your Bubble" width="200"></a>
   <br>
-  <a href="byb.tatebosler.com">Burst Your Bubble</a>
+  <a href="http://byb.tatebosler.com">Burst Your Bubble</a>
   <br>
 </h1>
 
