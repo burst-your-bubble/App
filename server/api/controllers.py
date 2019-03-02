@@ -65,6 +65,7 @@ def add_comment(id):
     commentText = request.get_json()['text']
 
     comment = addComment(get_user(), id, commentText)
+    print(comment)
     return jsonify(comment)
 
 def get_articles_list(topicID):

@@ -93,9 +93,11 @@ export class Article extends React.Component {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: {
+                body: JSON.stringify({
                     text: this.state.reactionCommentText
-                }
+                })
+            }).then((response) => {
+                return response.json();
             }).then((comment) => {
                 this.state.article.comments.push(comment);
                 this.setState({
@@ -176,13 +178,11 @@ export class Article extends React.Component {
                         <p>
                             {text}
                         </p>
+                        <h2>Discussion</h2>
+                        <ul>
+                        {comments}
+                        </ul>
                     </Media>
-                </div>
-                <div>
-                    <h2>Discussion</h2>
-                    <ul>
-                    {comments}
-                    </ul>
                 </div>
                 <div className="footer">
                     <div className="left">
