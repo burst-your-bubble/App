@@ -63,7 +63,7 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 response: response
             })
-        }).then(() => window.history.back());
+        }).then(() => window.location.href='/home');
     }
 
     handleReporting(reportType) {
@@ -77,7 +77,7 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 reportType: reportType
             })
-        }).then(() => window.history.back());
+        }).then(() => window.location.href='/home');
     }
 
     handleBack() {
