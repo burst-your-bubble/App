@@ -9,7 +9,7 @@ export class TopicBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: false
+            expanded: this.props.expanded
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -29,6 +29,7 @@ export class TopicBox extends React.Component {
                     id={article.id}
                     read={article.read}
                     response={article.response}
+                    topicID={this.props.topicID}
                 />)
         });
         return (

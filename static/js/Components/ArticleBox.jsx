@@ -4,9 +4,17 @@ import { Media } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export class ArticleBox extends React.Component {
-    render() {
-        let url = `/article/${this.props.id}`;
+    constructor(props) {
+        super(props);
+        this.url = `/article/${this.props.id}`;
+        this.handleClick = this.handleClick.bind(this);
+    }
 
+    handleClick() {
+        sessionStorage.setItem('opentopic', this.props.topicID);
+    }
+
+    render() {
         var style = {color: '#3285F4'};
         var circleClass = "fas fa-circle";
 
@@ -27,7 +35,7 @@ export class ArticleBox extends React.Component {
                         <i className={circleClass} style={style}></i>
                     </Media.Left>
                     <Media.Body>
-                        <Media.Heading><Link className="article-box-title" to={url}>{this.props.title}</Link></Media.Heading>
+                        <Media.Heading><Link className="article-box-title" to={this.url} onClick={this.handleClick}>{this.props.title}</Link></Media.Heading>
                         <p>
                             {this.props.summary}
                         </p>
