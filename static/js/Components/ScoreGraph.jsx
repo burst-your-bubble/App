@@ -15,6 +15,7 @@ export class ScoreGraph extends React.Component {
 
         this.handleClick = this.handleClick.bind(this);
         this.componentDidMount.bind(this);
+        this.changeLabels = this.changeLabels.bind(this);
     }
 
     componentDidMount() {
@@ -35,7 +36,17 @@ export class ScoreGraph extends React.Component {
                         loading: false
                     });    
                 }
-            });
+            }).then(() => this.changeLabels());
+    }
+
+    changeLabels() {
+        // Hackily set the graph ticks to R C L
+        const ticks = document.getElementsByClassName('rv-xy-plot__axis__tick__text');
+        const stances = ['Left', 'Center', 'Right'];
+        for(let i = 0; i < ticks.length; i++) {
+            ticks[i].innerHTML = stances[i].charAt(0);
+            ticks[i].style.cssText += "font-size: 1.5rem; font-weight: bold";
+        }
     }
 
     handleClick() {
@@ -61,13 +72,17 @@ export class ScoreGraph extends React.Component {
                     </Panel.Heading>
                     <Panel.Collapse>
                         <Panel.Body>
-                            <span>0 is neutral/Positive is Right-leaning/Negative is Left-leaning</span>
                             <XYPlot height={300} width={graphWidth} yDomain={[-1,1]}>
                                 <HorizontalGridLines />
                                 <XAxis hideTicks />
-                                <YAxis title="Stance Score" tickValues={[-1,0,1]} />
-                                <LineSeries data={this.state.data} opacity={0.5} color='green' style={{ strokeWidth: 3 }} curve={'curveMonotoneX'} />
+                                <YAxis tickValues={[-1,0,1]} />
+                                <LineSeries data={this.state.data} opacity={0.5} color='green' style={{ strokeWidth: 3 }} curve={'curveMonotoneX'} />                            
                             </XYPlot>
+                            <div style={{ width: 'fit-content', margin: 'auto'}}>
+                                <span style={{margin: '0 1rem', fontWeight: 'bold'}}>R: </span>Right
+                                <span style={{margin: '0 1rem', fontWeight: 'bold'}}>C: </span>Center
+                                <span style={{margin: '0 1rem', fontWeight: 'bold'}}>L: </span>Left
+                            </div>
                         </Panel.Body>
                     </Panel.Collapse>
                 </Panel>
