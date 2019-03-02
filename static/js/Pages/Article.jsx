@@ -1,6 +1,8 @@
 import React from 'react';
 import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
+import { ReadingFooter } from '../Components/ReadingFooter';
+import { Navigation } from '../Components/Navigation';
 
 export class Article extends React.Component {
 
@@ -13,6 +15,7 @@ export class Article extends React.Component {
         this.handleReportShow = this.handleReportShow.bind(this);
         this.handleDoneClose = this.handleDoneClose.bind(this);
         this.handleReportClose = this.handleReportClose.bind(this);
+        this.handleBack = this.handleBack.bind(this);
 
         this.state = {
             loading: true,
@@ -131,6 +134,10 @@ export class Article extends React.Component {
         }).then(() => window.history.back());
     }
 
+    handleBack(){
+        window.history.back();
+    }
+
     render() {
         if (this.state.loading) return <Loading />;
 
@@ -184,20 +191,8 @@ export class Article extends React.Component {
                         </ul>
                     </Media>
                 </div>
-                <div className="footer">
-                    <div className="left">
-                        <Button bsStyle="danger" onClick={this.handleReportShow}>Report</Button>
-                    </div>
-                    <div className="center">
-                        Approximately {stats.text}
-                    </div>
-                    <div className="right">
-                        <Button bsStyle="success" onClick={this.handleDoneShow}>Done Reading</Button>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
-                </div>
+
+                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text}/>
 
                 <Modal show={this.state.doneShow || this.state.commentShow} onHide={this.handleDoneClose}>
                     <Modal.Body>

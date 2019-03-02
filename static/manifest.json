@@ -1,0 +1,15 @@
+{
+    "short_name": "BYB",
+    "name": "Burst Your Bubble",
+    "icons": [
+      {
+        "src": "/static/favicon.ico",
+        "type": "image/png",
+        "sizes": "128X128"
+      }
+    ],
+    "start_url": "/home",
+    "background_color": "#fff",
+    "display": "standalone",
+    "theme_color": "#fff"
+  }
