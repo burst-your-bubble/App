@@ -9,7 +9,7 @@ export class TopicBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: false
+            expanded: this.props.expanded
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -19,7 +19,6 @@ export class TopicBox extends React.Component {
     }
 
     render() {
-        console.log(this.props.score);
         var sorted = sortArticles(this.props.score, this.props.articles, this.props.topicID);
         var articles = sorted.map(article => {
             return (
@@ -30,6 +29,7 @@ export class TopicBox extends React.Component {
                     id={article.id}
                     read={article.read}
                     response={article.response}
+                    topicID={this.props.topicID}
                 />)
         });
         return (

@@ -63,6 +63,20 @@ body {
     background:rgb(0, 0, 0);
 }
 
+.centerObjects{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.legend{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+
 .left{float:left; padding: 5%}
 .right{float:right; padding: 5%}
 .center{margin:0 auto;}
@@ -85,7 +99,7 @@ body {
 
 .body {
     padding:10px;
-    padding-bottom:45px;   /* Height of the footer */
+    padding-bottom:45px; /* Height of the footer */
 }
  
  .modal-container {
@@ -104,7 +118,7 @@ body {
 }  
 
 .loader-container {
-    height: 100vh; /* Magic here */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -182,4 +196,10 @@ body {
 
 .panel-default>.panel-heading span {
     font-size: 2rem;
+}
+
+.indentText{
+    background-color: #FF5722;
+    padding: 1%;
+    color: #FFFFFF;
 }

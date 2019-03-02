@@ -8,7 +8,16 @@ def index():
     return render_template("index.html")
 
 @ui.route("/register")
-def registe():
+def register():
+    return render_template("index.html")
+
+@ui.route("/history")
+def history():
+    return render_template("index.html")
+
+
+@ui.route("/about")
+def about():
     return render_template("index.html")
 
 @ui.route("/home")

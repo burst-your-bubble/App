@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Checkbox, PageHeader } from 'react-bootstrap';
+import { Modal, ButtonToolbar, Button, Form, FormGroup, Col, FormControl, ControlLabel, Alert, PageHeader } from 'react-bootstrap';
 
 export class Register extends React.Component {
 
@@ -10,11 +10,21 @@ export class Register extends React.Component {
             email: '',
             password: '',
             introShow: false,
+            showAlert: false,
+            alertMessage: '',
         };
 
         this.handleNext = this.handleNext.bind(this);
         this.handleIntroShow = this.handleIntroShow.bind(this);
         this.handleIntroClose = this.handleIntroClose.bind(this);
+        this.validCredentials = this.validCredentials.bind(this);
+    }
+
+    validCredentials() {
+        if(this.getEmailValidationState()=='success' && this.getPasswordValidationState()=='success')
+            return true
+        else
+            return false
     }
 
     handleBack() {
@@ -24,14 +34,20 @@ export class Register extends React.Component {
     handleNext() {
         {/* Add the response for to database and then proceed to home */ }
         window.location.href = "/home";
-        console.log(this.state.email);
-        console.log(this.state.password);
     }
 
     handleChange(event) {
         let fieldName = event.target.name;
         let fieldVal = event.target.value;
         this.setState({ [fieldName]: fieldVal })
+
+        if(!this.validCredentials()) {
+            this.setState({showAlert: true, alertMessage: "Invalid Email or Password"});
+            return;
+        }
+        else {
+            this.setState({showAlert: false});
+        }
     }
 
     handleIntroShow() {
@@ -40,20 +56,51 @@ export class Register extends React.Component {
 
     handleIntroClose() {
         this.setState({ introShow: false });
-        var formData = new FormData()
+
+        if(!this.validCredentials()) {
+            return;
+        }
+
+        var formData = new FormData();
         formData.append("email", this.state.email);
         formData.append("password", this.state.password);
         fetch('/register', {
             body: formData,
             method: 'POST'
-        }).then(() => window.location.href = '/home');
+        })
+        .then(res => res.json())
+        .then(response => {
+            if(response.success) {
+                window.location.href = '/home';
+            }
+            else {
+                this.setState({showAlert: true, alertMessage: response.message});
+            }
+        });
+    }
+
+    getEmailValidationState() {
+        if(this.state.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+            if(this.getPasswordValidationState=='success') this.setState({formValid: true});
+            return 'success';
+        }
+        else return 'error'
+    } 
+    
+    getPasswordValidationState() {
+        if(this.state.password.length >= 6) {
+            if(this.getEmailValidationState=='success') this.setState({formValid: true});
+            return 'success';
+        }
+        else return 'error'
     }
 
     render() {
+        var alert = this.state.showAlert? <Alert bsStyle="danger">Login Failed: {this.state.alertMessage}</Alert> : null;
         return (
-            <Form action="/register" method="POST" horizontal className="container">
+            <Form horizontal className="container">
                 <PageHeader className="homeTitle">Register</PageHeader>
-                <FormGroup>
+                <FormGroup validationState={this.getEmailValidationState()}>
                     <Col componentClass={ControlLabel} sm={2}>
                         Email
                     </Col>
@@ -68,7 +115,7 @@ export class Register extends React.Component {
                     </Col>
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getPasswordValidationState()}>
                     <Col componentClass={ControlLabel} sm={2}>
                         Password
                     </Col>
@@ -92,11 +139,14 @@ export class Register extends React.Component {
                     </Col>
                 </FormGroup>
 
+                {alert}
+
                 <Modal show={this.state.introShow} onHide = {this.handleIntroClose}>
                         <Modal.Body>
                             <h4>Welcome to Burst Your Bubble!</h4>
                             <p>
                                 Thanks for trying out a whole new way of consuming news! In Burst Your Bubble, we've curated some of the most important news topics for the day. <br></br>
+                                In 3 simple steps you too can "Burst Your Bubble":<br></br>
                                 1. Within each topic, we've provided you with 5 articles from various parts of the political spectrum.<br></br>
                                 2. Read the articles, and record what you think of the opinion presented in the article<br></br>
                                 3. Keep reading and reacting, we'll update the articles we show you to keep you well informed!
