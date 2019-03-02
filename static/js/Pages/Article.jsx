@@ -77,6 +77,7 @@ export class Article extends React.Component {
                 response: response
             })
         }).then(() => {
+            this.state.article.read = true;
             this.setState({
                 doneShow: false,
                 stance: this.stanceText[response + 1],
@@ -185,10 +186,14 @@ export class Article extends React.Component {
                         <p>
                             {text}
                         </p>
-                        <h2>Discussion</h2>
-                        <ul>
-                        {comments}
-                        </ul>
+                        {this.state.article.read ?
+                            <div>
+                                <h2>Discussion</h2>
+                                <ul>
+                                {comments}
+                                </ul>
+                            </div>
+                        : null}
                     </Media>
                 </div>
 
