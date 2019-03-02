@@ -28,18 +28,20 @@ Find it at [byb.tatebosler.com](http://byb.tatebosler.com/)
 In Terminal:
 ```bash
 mkdir BurstYourBubble
+cd BurstYourBubble
 git clone https://github.com/burst-your-bubble/App.git
 ```
 
 In two terminal windows:
-One for the server build
+
+(One for the server build)
 ```bash
 cd App
 pip3 install -r requirements.txt
 python3 run.py
 ```
 
-Another for the static build
+(Another for the static build)
 ```bash
 cd App
 npm install

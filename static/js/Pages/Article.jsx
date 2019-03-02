@@ -2,7 +2,7 @@ import React from 'react';
 import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ReadingFooter } from '../Components/ReadingFooter';
-import { Navigation } from '../Components/Navigation';
+import { browserHistory } from 'react-router';
 
 export class Article extends React.Component {
 
@@ -111,7 +111,7 @@ export class Article extends React.Component {
                 });
             });
         } else {
-            window.history.back();
+            window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home');
         }
     }
 
@@ -132,11 +132,12 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 reportType: reportType
             })
-        }).then(() => window.history.back());
+        }).then(() => window.location.href = '/home');
     }
 
-    handleBack(){
-        window.history.back();
+    handleBack() {
+
+        window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home'
     }
 
     render() {
@@ -165,6 +166,17 @@ export class Article extends React.Component {
             var scrolled = (winScroll / height) * 100;
             document.getElementById("progressBar").style.width = scrolled + "%";
         }
+
+        window.history.pushState(null, null, window.location.pathname);
+
+        window.onpopstate = function (event) {
+            if (event) {
+                this.setState({ doneShow: true });
+            }
+            else {
+                history.pushState(null, null, window.location.pathname);
+            }
+        }.bind(this)
 
         return (
             <div className="container">
@@ -197,7 +209,7 @@ export class Article extends React.Component {
                     </Media>
                 </div>
 
-                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text}/>
+                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text} />
 
                 <Modal show={this.state.doneShow || this.state.commentShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
@@ -229,7 +241,10 @@ export class Article extends React.Component {
                         }
                     </Modal.Body>
                     <Modal.Footer>
-                        {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleCommentModalSubmit}>{this.state.reactionCommentText ? 'Save and finish' : 'Finish without commenting'}</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
+                        <ButtonToolbar style={{ float: "right" }}>
+                            {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleCommentModalSubmit}>{this.state.reactionCommentText ? 'Save and finish' : 'Finish without commenting'}</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
+                            <Button onClick={this.handleBack} bsStyle="primary">Not Now</Button>
+                        </ButtonToolbar>
                     </Modal.Footer>
                 </Modal>
                 <Modal show={this.state.reportShow} onHide={this.handleReportClose}>

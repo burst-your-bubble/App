@@ -31,6 +31,11 @@ export class ReadingHistory extends React.Component {
         this.setState({currentPage: currentPage});
     }
 
+    componentDidMount() {
+        // Save the /history route to go back here from the article page
+        sessionStorage.setItem('previous', '/history');
+    }
+
     render() {
         var i = (this.state.currentPage - 1) * this.PAGE_LENGTH;
         var displayedArticles = this.state.articles.slice(i, i + 10);

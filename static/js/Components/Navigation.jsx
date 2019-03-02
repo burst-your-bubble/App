@@ -75,7 +75,6 @@ export class Navigation extends React.Component {
                                     onChange={this.handleChange}
                                 />
                                 <FormControl.Feedback />
-                                <HelpBlock>Validation is based on string length.</HelpBlock>
                             </FormGroup>
                             <Button onClick={this.submitFeedback}>Submit</Button>
                         </form>
