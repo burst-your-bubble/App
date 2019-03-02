@@ -5,10 +5,7 @@ import { Navigation } from '../Components/Navigation';
 export const About = () => {
     return (
         <div className="container">
-            <PageHeader className="homeTitle">
-                <span style={{fontFamily: 'Avenir Next'}}>About</span>
-            </PageHeader>
-            <Navigation/>
+            <Navigation title="About" />
             <br></br>
             <h4>Welcome to Burst Your Bubble!</h4>
             <p>

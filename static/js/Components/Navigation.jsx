@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Grid, Row, Col, PageHeader } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 
 export class Navigation extends React.Component {
     constructor(props) {
@@ -22,14 +23,23 @@ export class Navigation extends React.Component {
     }
 
     render() {
+        let navLinkStyle = {margin: '1rem', fontSize: '2rem'};
         return (
             <div >
-                <ul>
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/history">History</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a onClick={this.handleShow} style={{cursor: "pointer"}}>Feedback</a></li>
-                </ul>
+                <PageHeader className="homeTitle">
+                    <Grid>
+                        <Row>
+                            <Col md={8}><span style={{fontFamily: 'Avenir Next'}}>{this.props.title}</span></Col>
+                            <Col md={4}>
+                                <Link style={navLinkStyle} to='/home'>Home</Link>
+                                <Link style={navLinkStyle} to='/history'>History</Link>
+                                <Link style={navLinkStyle} to='/about'>About</Link>
+                                <Link style={navLinkStyle} to='/home'>Feedback</Link>                     
+                            </Col>
+                        </Row>
+                    </Grid>
+                </PageHeader>
+
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Body>
                         <h4>Thanks for providing us with feedback!</h4>
