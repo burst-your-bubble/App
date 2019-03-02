@@ -63,7 +63,7 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 response: response
             })
-        }).then(() => window.location.href='/home');
+        }).then(() => window.location.href = '/home');
     }
 
     handleReporting(reportType) {
@@ -77,11 +77,11 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 reportType: reportType
             })
-        }).then(() => window.location.href='/home');
+        }).then(() => window.location.href = '/home');
     }
 
     handleBack() {
-        window.location.href='/home';
+        window.location.href = '/home';
     }
 
     render() {
@@ -94,22 +94,17 @@ export class Article extends React.Component {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-        window.history.pushState({page: 1}, "", "");
+        window.history.pushState(null, null, window.location.pathname);
 
-        window.onpopstate = function(event) {
-        
-          // "event" object seems to contain value only when the back button is clicked
-          // and if the pop state event fires due to clicks on a button
-          // or a link it comes up as "undefined" 
-        
-          if(event){
-              this.setState({doneShow:true});
-          }
-          else{
-            // Continue user action through link or button
-          }
+        window.onpopstate = function (event) {
+            if (event) {
+                this.setState({ doneShow: true });
+            }
+            else {
+                history.pushState(null, null, window.location.pathname);
+            }
         }.bind(this)
-        
+
         return (
             <div className="container">
                 <div className="body">
