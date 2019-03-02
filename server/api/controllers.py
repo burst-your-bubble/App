@@ -146,7 +146,6 @@ def add_comment(id):
     commentText = request.get_json()['text']
 
     comment = addComment(get_user(), id, commentText)
-    print(comment)
     return jsonify(comment)
 
 @api.route('/feedback', methods=['POST'])
@@ -191,7 +190,6 @@ def get_article(userID, articleID):
     articleJSON['comments'] = [{"id": comment.id, "author": comment.user.name, "text": comment.text} for comment in article.comments]
 
     history = get_articles_overview(articleID, userID)
-    print(history)
     articleJSON['read'] = history['read']
 
     return articleJSON
@@ -290,7 +288,6 @@ def analyze(userID):
         return
     score,scoreList = recalculate(all_history,0,session)
     graph_y = [item/10.0 for item in scoreList]
-    print(graph_y)
     return graph_y
 
 # Return the change of score once add this history
