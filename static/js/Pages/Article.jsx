@@ -1,8 +1,7 @@
 import React from 'react';
-import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ReadingFooter } from '../Components/ReadingFooter';
-import { browserHistory } from 'react-router';
 
 export class Article extends React.Component {
 
@@ -10,6 +9,7 @@ export class Article extends React.Component {
         super(props);
         this.id = props.match.params.id;
         this.jsonUrl = `/api/article/${this.id}`;
+        this.stanceText = ["disagree with", "take a neutral stance on", "agree with"];
         this.handleDoneShow = this.handleDoneShow.bind(this);
         this.handleReportShow = this.handleReportShow.bind(this);
         this.handleDoneClose = this.handleDoneClose.bind(this);
@@ -21,11 +21,16 @@ export class Article extends React.Component {
             article: null,
             doneShow: false,
             reportShow: false,
+            commentShow: false,
+            stance: null,
             showSource: false,
-            disableButtons: false
+            disableButtons: false,
+            reactionCommentText: null
         };
 
         this.handleResponse = this.handleResponse.bind(this);
+        this.handleCommentModalChange = this.handleCommentModalChange.bind(this);
+        this.handleCommentModalSubmit = this.handleCommentModalSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -38,11 +43,17 @@ export class Article extends React.Component {
     }
 
     handleDoneShow() {
-        this.setState({ doneShow: true });
+        this.setState({
+            doneShow: true,
+            commentShow: false
+        });
     }
 
     handleDoneClose() {
-        this.setState({ doneShow: false });
+        this.setState({
+            doneShow: false,
+            commentShow: false
+        });
     }
 
     handleReportShow() {
@@ -64,7 +75,49 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 response: response
             })
-        }).then(() => window.location.href = sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home');
+        }).then(() => {
+            this.state.article.read = true;
+            this.setState({
+                doneShow: false,
+                stance: this.stanceText[response + 1],
+                commentShow: true
+            });
+        });
+    }
+
+    handleCommentModalSubmit(event) {
+        event.preventDefault();
+
+        if (this.state.reactionCommentText) {
+            // submit comment to server
+            fetch(`/api/article/${this.id}/comment`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: this.state.reactionCommentText
+                })
+            }).then((response) => {
+                return response.json();
+            }).then((comment) => {
+                this.state.article.comments.push(comment);
+                this.setState({
+                    doneShow: false,
+                    commentShow: false,
+                    stance: null
+                });
+            });
+        } else {
+            window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home';
+        }
+    }
+
+    handleCommentModalChange(event) {
+        this.setState({
+            reactionCommentText: event.target.value
+        });
     }
 
     handleReporting(reportType) {
@@ -78,7 +131,7 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 reportType: reportType
             })
-        }).then(() => window.location.href='/home');
+        }).then(() => window.location.href = '/home');
     }
 
     handleBack() {
@@ -94,23 +147,48 @@ export class Article extends React.Component {
         var datePublished = new Date(this.state.article.datePublished);
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var readingTime = require('reading-time');
+        var stats = readingTime(this.state.article.text);
 
-        window.history.pushState({page: 1}, "", "");
+        const comments = this.state.article.comments.map((item, key) =>
+            <li key={item.id}>{item.text} &mdash; {item.author}</li>
+        );
 
-        window.onpopstate = function(event) {
-        
-          // "event" object seems to contain value only when the back button is clicked
-          // and if the pop state event fires due to clicks on a button
-          // or a link it comes up as "undefined" 
-        
-          if(event){
-              this.setState({doneShow:true});
-          }
-          else{
-            // Continue user action through link or button
-          }
-        }.bind(this);
-        
+        //run this onScroll
+        window.onscroll = function () { updateProgressBar() };
+
+        //updating scroll bar while scrolling
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        }
+
+        if(!this.state.article.read){
+            window.history.pushState(null, null, window.location.pathname);
+
+            window.onpopstate = function (event) {
+                if (event) {
+                    this.setState({ doneShow: true });
+                }
+                else {
+                    history.pushState(null, null, window.location.pathname);
+                }
+            }.bind(this)    
+        }
+        else{
+            window.onpopstate = function (event) {
+                if (event) {
+                    this.handleBack();
+                }
+                else {
+                    history.pushState(null, null, window.location.pathname);
+                }
+            }.bind(this)        
+        }
+
+
         return (
             <div className="container">
                 <div className="body">
@@ -131,34 +209,58 @@ export class Article extends React.Component {
                         <p>
                             {text}
                         </p>
+                        {this.state.article.read ?
+                            <div>
+                                <h2>Discussion</h2>
+                                <ul>
+                                {comments}
+                                </ul>
+                            </div>
+                        : null}
                     </Media>
                 </div>
 
                 <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text} />
 
-                <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
+                <Modal show={this.state.doneShow || this.state.commentShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
-                        <h4>{this.state.article.title}</h4>
-                        <p>
-                            <b>What is your take on the opinion presented in this article?</b>
-                        </p>
-                        <ButtonToolbar>
-                            {/* Capture what button is clicked into 'response' */}
-                            <Button disabled={this.state.disableButtons} bsStyle="success" onClick={() => this.handleResponse(1)}>Agree</Button>
-                            <Button disabled={this.state.disableButtons} bsStyle="warning" onClick={() => this.handleResponse(0)}>Neutral</Button>
-                            <Button disabled={this.state.disableButtons} bsStyle="danger" onClick={() => this.handleResponse(-1)}>Disagree</Button>
-                        </ButtonToolbar>
+                        {this.state.commentShow ?
+                            <div>
+                                <h4>Thank you!</h4>
+                                <p>
+                                    Your opinion has been recorded. You can now join the conversation by leaving a comment, or click "Finish without commenting" to return home.
+                                </p>
+                                <Form onSubmit={this.handleCommentModalSubmit}>
+                                    <FormGroup controlId="commentForm.comment">
+                                        <FormControl componentClass="textarea" rows="3" placeholder={'Join the conversation by leaving a comment. For example, why did you '+this.state.stance+' this article?'} onChange={this.handleCommentModalChange} />
+                                    </FormGroup>
+                                </Form>
+                            </div>
+                        :
+                            <div>
+                                <h4>{this.state.article.title}</h4>
+                                <p>
+                                    <b>What is your take on the opinion presented in this article?</b>
+                                </p>
+                                <ButtonToolbar>
+                                    {/* Capture what button is clicked into 'response' */}
+                                    <Button disabled={this.state.disableButtons} bsStyle="success" onClick={() => this.handleResponse(1)}>Agree</Button>
+                                    <Button disabled={this.state.disableButtons} bsStyle="warning" onClick={() => this.handleResponse(0)}>Neutral</Button>
+                                    <Button disabled={this.state.disableButtons} bsStyle="danger" onClick={() => this.handleResponse(-1)}>Disagree</Button>
+                                </ButtonToolbar>
+                            </div>
+                        }
                     </Modal.Body>
                     <Modal.Footer>
                         <ButtonToolbar style={{ float: "right" }}>
-                            <Button onClick={this.handleDoneClose}>Cancel</Button>
+                            {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleCommentModalSubmit}>{this.state.reactionCommentText ? 'Save and finish' : 'Finish without commenting'}</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
                             <Button onClick={this.handleBack} bsStyle="primary">Not Now</Button>
                         </ButtonToolbar>
                     </Modal.Footer>
                 </Modal>
                 <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
                     <Modal.Body>
-                        <h4 >{this.state.article.title}</h4>
+                        <h4>{this.state.article.title}</h4>
                         <p>
                             <b>We're sorry that something's wrong! What seems to be the problem?</b>
                         </p>

@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 
-from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey,Float
+from sqlalchemy import Column, Integer, String, DateTime, Text, CHAR, DATE, ForeignKey, Float, func
+from sqlalchemy.orm import relationship
 
 from .db import Session
 import datetime
@@ -14,6 +15,8 @@ class User(ModelBase):
     password = Column(String(length=32))
     salt = Column(String(length=32))
     score = Column(Float)
+
+    comments = relationship("Comment", back_populates="user")
 
     query = Session.query_property()
     #history = relationship('history', backref="user")
@@ -56,6 +59,8 @@ class Article(ModelBase):
     datePublished = Column(DATE)
     topicID = Column(Integer)
 
+    comments = relationship("Comment")
+
     query = Session.query_property()
 
     def to_json(self, list_view=False):
@@ -80,3 +85,17 @@ class Topic(ModelBase):
 
     def to_json(self):
         return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+
+class Comment(ModelBase):
+    __tablename__ = 'comments'
+
+    id = Column(Integer, primary_key=True)
+    articleID = Column(Integer, ForeignKey('articles.id'))
+    userID = Column(Integer, ForeignKey('users.id'))
+    parentID = Column(Integer)
+    text = Column(Text)
+    createdAt = Column(DateTime, server_default=func.sysdate())
+
+    user = relationship("User", back_populates="comments")
+
+    query = Session.query_property()
