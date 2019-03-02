@@ -22,6 +22,7 @@ export class Article extends React.Component {
             doneShow: false,
             reportShow: false,
             showSource: false,
+            disableButtons: false
         };
 
         this.handleResponse = this.handleResponse.bind(this);
@@ -53,7 +54,7 @@ export class Article extends React.Component {
     }
 
     handleResponse(response) {
-        {/* Send the response here back to home */ }
+        this.setState({disableButtons: true});
         fetch(`/api/article/${this.id}/respond`, {
             method: 'POST',
             headers: {
@@ -63,7 +64,7 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 response: response
             })
-        }).then(() => window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home');
+        }).then(() => window.location.href = sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home');
     }
 
     handleReporting(reportType) {
@@ -143,9 +144,9 @@ export class Article extends React.Component {
                         </p>
                         <ButtonToolbar>
                             {/* Capture what button is clicked into 'response' */}
-                            <Button bsStyle="success" onClick={() => this.handleResponse(1)}>Agree</Button>
-                            <Button bsStyle="warning" onClick={() => this.handleResponse(0)}>Neutral</Button>
-                            <Button bsStyle="danger" onClick={() => this.handleResponse(-1)}>Disagree</Button>
+                            <Button disabled={this.state.disableButtons} bsStyle="success" onClick={() => this.handleResponse(1)}>Agree</Button>
+                            <Button disabled={this.state.disableButtons} bsStyle="warning" onClick={() => this.handleResponse(0)}>Neutral</Button>
+                            <Button disabled={this.state.disableButtons} bsStyle="danger" onClick={() => this.handleResponse(-1)}>Disagree</Button>
                         </ButtonToolbar>
                     </Modal.Body>
                     <Modal.Footer>
