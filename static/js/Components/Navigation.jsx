@@ -23,7 +23,7 @@ export class Navigation extends React.Component {
     }
 
     render() {
-        let navLinkStyle = {margin: '1rem', fontSize: '2rem'};
+        let navLinkStyle = {margin: '1rem', fontSize: '2rem', cursor: 'pointer'};
         return (
             <div >
                 <PageHeader className="homeTitle">
@@ -34,7 +34,7 @@ export class Navigation extends React.Component {
                                 <Link style={navLinkStyle} to='/home'>Home</Link>
                                 <Link style={navLinkStyle} to='/history'>History</Link>
                                 <Link style={navLinkStyle} to='/about'>About</Link>
-                                <Link style={navLinkStyle} to='/home'>Feedback</Link>                     
+                                <a style={navLinkStyle} onClick={this.handleShow}>Feedback</a>                     
                             </Col>
                         </Row>
                     </Grid>
