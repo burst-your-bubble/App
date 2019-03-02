@@ -33,6 +33,10 @@ export class Home extends React.Component {
         // Display a loading screen until the json data comes back from server
         if (this.state.loading) return <Loading />;
 
+        if(this.state.topics.length == 0){
+            return <h4 className="loader-container"><span>We don't have any articles for you yet, please come back later!</span></h4>;
+        }
+
         const secondColumnStart = Math.floor(this.state.topics.length / 2);
 
 
