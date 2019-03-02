@@ -110,7 +110,7 @@ export class Article extends React.Component {
                 });
             });
         } else {
-            window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home');
+            window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home';
         }
     }
 
