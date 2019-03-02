@@ -56,10 +56,7 @@ export class History extends React.Component {
 
         return (
             <div className="container">
-                <PageHeader className="homeTitle">
-                    <span style={{ fontFamily: 'Avenir Next' }}>Your History</span>
-                </PageHeader>
-                <Navigation/>
+                <Navigation title="Your History"/>
                 <Grid componentClass="none">
                     <Row className="show-grid">
                         <Col sm={3} className="centerObjects">

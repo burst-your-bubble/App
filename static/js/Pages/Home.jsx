@@ -1,7 +1,7 @@
 import React from 'react';
 import { TopicBox } from '../Components/TopicBox';
 import { Loading } from '../Components/Loading';
-import { Grid, Row, Col, PageHeader, Button, Modal } from 'react-bootstrap';
+import { Grid, Row, Col} from 'react-bootstrap';
 import { Navigation } from '../Components/Navigation';
 
 export class Home extends React.Component {
@@ -54,13 +54,9 @@ export class Home extends React.Component {
                     score={this.state.user_score} />)
         });
 
-
         return (
-            <div className="container">
-                <PageHeader className="homeTitle">
-                    <span style={{fontFamily: 'Avenir Next'}}>Burst Your Bubble</span>
-                </PageHeader>
-                <Navigation />
+            <div className="container">                
+                <Navigation title="Burst Your Bubble" />
                 <Grid componentClass="none">
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}>

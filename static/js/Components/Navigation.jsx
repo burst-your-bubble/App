@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Button, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap'
+import { Modal, Button, FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col, PageHeader } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 
 export class Navigation extends React.Component {
     constructor(props) {
@@ -30,25 +31,43 @@ export class Navigation extends React.Component {
     }
 
     submitFeedback() {
-        console.log(this.state.value);
+        fetch(`/api/feedback`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                feedback: this.state.value
+            })
+        }).then(() => {window.location.href = '/home'});
+
     }
 
     render() {
+        let navLinkStyle = {margin: '1rem', fontSize: '1.5rem', cursor: "pointer"};
         return (
             <div >
-                <ul>
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/history">History</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a onClick={this.handleShow} style={{ cursor: "pointer" }}>Feedback</a></li>
-                </ul>
+                <PageHeader className="homeTitle">
+                    <Grid>
+                        <Row>
+                            <Col md={8}><span style={{fontFamily: 'Avenir Next'}}>{this.props.title}</span></Col>
+                            <Col md={4}>
+                                <Link style={navLinkStyle} to='/home'>Home</Link>
+                                <Link style={navLinkStyle} to='/history'>History</Link>
+                                <Link style={navLinkStyle} to='/about'>About</Link>
+                                <Link style={navLinkStyle} onClick={this.handleShow} to='\\'>Feedback</Link>                     
+                            </Col>
+                        </Row>
+                    </Grid>
+                </PageHeader>
+
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Body>
                         <form>
                             <FormGroup
-                                controlId="formBasicText"
-                            >
-                                <ControlLabel>Working example with validation</ControlLabel>
+                                controlId="formBasicText">
+                                <ControlLabel>Thank you for your feedback!</ControlLabel>
                                 <FormControl
                                     type="text"
                                     value={this.state.value}
@@ -58,6 +77,7 @@ export class Navigation extends React.Component {
                                 <FormControl.Feedback />
                                 <HelpBlock>Validation is based on string length.</HelpBlock>
                             </FormGroup>
+                            <Button onClick={this.submitFeedback}>Submit</Button>
                         </form>
                     </Modal.Body>
                     <Modal.Footer>

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, jsonify, abort
-from server.data.models import Article, Topic, User, History, Reports
+from server.data.models import Article, Topic, User, History, Reports, Feedback
 # from server.cache import cache
 from server.data.db import Session
 from server.config import mysql_connection_string
@@ -139,6 +139,23 @@ def report_article(id):
 
     addReport(get_user(), id, reportType)
     return str(reportType)
+
+@api.route('/feedback', methods=['POST'])
+def feedback():
+    if not user_logged_in():
+        abort(401)
+
+    feedback = request.get_json()['feedback']
+
+    addFeedback(get_user(), feedback)
+    return str(feedback)
+
+def addFeedback(userID,feedback):
+    session = Session()
+    new_feedback = Feedback(userID=userID,feedback=feedback)
+    session.add(new_feedback)
+    session.commit()
+    return feedback
 
 def get_articles_list(topicID):
     articles = Article.query.with_entities(

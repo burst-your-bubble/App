@@ -34,6 +34,12 @@ class Reports(ModelBase):
     createdAt = Column(DateTime,default=datetime.datetime.utcnow)
     query = Session.query_property()
 
+class Feedback(ModelBase):
+    __tablename__ = 'feedback'
+    userID = Column(Integer, ForeignKey('users.id'),primary_key=True)
+    feedback = Column(Text)
+    query = Session.query_property()
+
 class Article(ModelBase):
     __tablename__ = 'articles'
 
