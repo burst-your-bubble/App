@@ -36,7 +36,6 @@ export class Article extends React.Component {
         // fetch actual article data from server based on article id
         fetch(this.jsonUrl).then(res => {
             res.json().then(article => {
-                console.log(article);
                 this.setState({ article: article, loading: false });
             });
         })
@@ -165,16 +164,29 @@ export class Article extends React.Component {
             document.getElementById("progressBar").style.width = scrolled + "%";
         }
 
-        window.history.pushState(null, null, window.location.pathname);
+        if(!this.state.article.read){
+            window.history.pushState(null, null, window.location.pathname);
 
-        window.onpopstate = function (event) {
-            if (event) {
-                this.setState({ doneShow: true });
-            }
-            else {
-                history.pushState(null, null, window.location.pathname);
-            }
-        }.bind(this)
+            window.onpopstate = function (event) {
+                if (event) {
+                    this.setState({ doneShow: true });
+                }
+                else {
+                    history.pushState(null, null, window.location.pathname);
+                }
+            }.bind(this)    
+        }
+        else{
+            window.onpopstate = function (event) {
+                if (event) {
+                    this.handleBack();
+                }
+                else {
+                    history.pushState(null, null, window.location.pathname);
+                }
+            }.bind(this)        
+        }
+
 
         return (
             <div className="container">
