@@ -15,7 +15,7 @@
   <a href="#how-can-i-run-it-locally">How can I run it locally?</a> •
   <a href="#bugs-and-suggestions">Bugs and Suggestions</a> •
   <a href="#contributing">Contributing</a> •
-  <a href="#authors-and-acknowledgment">Authors and Acknowledgments</a>
+  <a href="#authors-and-acknowledgments">Authors and Acknowledgments</a>
 </p>
 
 ## What is Burst Your Bubble?
@@ -55,18 +55,18 @@ Please see the [issues](https://github.com/burst-your-bubble/App/issues) section
 If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible.
 
 ## Authors and Acknowledgments
-Computer Science Senior Thesis by
+Carleton College Computer Science Senior Thesis by
 > Tate Bosler &nbsp;&middot;&nbsp;
-> Senior, Computer Science, Economics
+> Computer Science and Economics
 
 > Ritvik Kar &nbsp;&middot;&nbsp;
-> Senior, Computer Science and Cinema & Media Studies 
+> Computer Science and Cinema & Media Studies 
 
 > Aidan White &nbsp;&middot;&nbsp;
-> Senior, Computer Science
+> Computer Science
 
 > Kaixing Wu &nbsp;&middot;&nbsp;
-> Senior, Computer Science
+> Computer Science
 
 Advisor
 > [David Musicant](https://www.cs.carleton.edu/faculty/dmusicant/) &nbsp;&middot;&nbsp;
@@ -74,5 +74,7 @@ Advisor
 
 Data Sources 
 > [NewsAPI.org](https://newsapi.org/)
+
 > [AllSides.org](https://www.allsides.com/)
+
 > [r/Politics](https://www.reddit.com/r/politics/)
