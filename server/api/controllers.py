@@ -78,7 +78,10 @@ def get_articles_list(topicID):
 
 def get_article(articleID):
     article = Article.query.filter(Article.id == articleID).first()
-    return article.to_json()
+    articleJSON = article.to_json()
+    articleJSON['comments'] = [{"id": comment.id, "author": comment.user.name, "text": comment.text} for comment in article.comments]
+
+    return articleJSON
 
 # @cache.cached(timeout=30)
 def get_topics():
