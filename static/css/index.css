@@ -99,7 +99,7 @@ body {
 
 .body {
     padding:10px;
-    padding-bottom:45px;   /* Height of the footer */
+    padding-bottom:45px; /* Height of the footer */
 }
  
  .modal-container {
@@ -118,7 +118,7 @@ body {
 }  
 
 .loader-container {
-    height: 100vh; /* Magic here */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
