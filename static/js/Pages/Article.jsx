@@ -87,6 +87,11 @@ export class Article extends React.Component {
 
         if (this.state.reactionCommentText) {
             // submit comment to server
+            this.state.article.comments.push({
+                id: 0,
+                author: 'You',
+                text: this.state.reactionCommentText
+            });
             this.setState({
                 doneShow: false,
                 commentShow: false,
@@ -217,7 +222,7 @@ export class Article extends React.Component {
                         }
                     </Modal.Body>
                     <Modal.Footer>
-                        {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleCommentModalSubmit}>{this.state.reactionCommentText ? 'Finish' : 'Finish without commenting'}</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
+                        {this.state.commentShow ? <Button bsStyle="primary" onClick={this.handleCommentModalSubmit}>{this.state.reactionCommentText ? 'Save and finish' : 'Finish without commenting'}</Button> : <Button bsStyle="default" onClick={this.handleDoneClose}>Cancel</Button>}
                     </Modal.Footer>
                 </Modal>
                 <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
