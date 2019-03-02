@@ -27,6 +27,7 @@ export class Home extends React.Component {
                 this.setState({ loading: false, topics: data.topics, user_score: data.score, userId: data.userId })
             );
         });
+        sessionStorage.removeItem('previous');
     }
 
     render() {

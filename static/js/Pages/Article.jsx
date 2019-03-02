@@ -63,7 +63,7 @@ export class Article extends React.Component {
             body: JSON.stringify({
                 response: response
             })
-        }).then(() => window.location.href='/home');
+        }).then(() => window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home');
     }
 
     handleReporting(reportType) {
@@ -81,7 +81,7 @@ export class Article extends React.Component {
     }
 
     handleBack() {
-        window.location.href='/home';
+        window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home'
     }
 
     render() {
@@ -108,7 +108,7 @@ export class Article extends React.Component {
           else{
             // Continue user action through link or button
           }
-        }.bind(this)
+        }.bind(this);
         
         return (
             <div className="container">
