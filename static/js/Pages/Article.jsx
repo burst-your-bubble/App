@@ -2,7 +2,7 @@ import React from 'react';
 import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ReadingFooter } from '../Components/ReadingFooter';
-import { Navigation } from '../Components/Navigation';
+import { browserHistory } from 'react-router';
 
 export class Article extends React.Component {
 
@@ -80,10 +80,10 @@ export class Article extends React.Component {
         }).then(() => window.history.back());
     }
 
-    handleBack(){
-        window.history.back();
+    handleBack() {
+        window.location.href='/home';
     }
-    
+
     render() {
         if (this.state.loading) return <Loading />;
 
@@ -94,6 +94,22 @@ export class Article extends React.Component {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const weekName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
+        window.history.pushState({page: 1}, "", "");
+
+        window.onpopstate = function(event) {
+        
+          // "event" object seems to contain value only when the back button is clicked
+          // and if the pop state event fires due to clicks on a button
+          // or a link it comes up as "undefined" 
+        
+          if(event){
+              this.setState({doneShow:true});
+          }
+          else{
+            // Continue user action through link or button
+          }
+        }.bind(this)
+        
         return (
             <div className="container">
                 <div className="body">
@@ -117,7 +133,7 @@ export class Article extends React.Component {
                     </Media>
                 </div>
 
-                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text}/>
+                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text} />
 
                 <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
                     <Modal.Body>
@@ -133,7 +149,10 @@ export class Article extends React.Component {
                         </ButtonToolbar>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.handleDoneClose}>Cancel</Button>
+                        <ButtonToolbar style={{ float: "right" }}>
+                            <Button onClick={this.handleDoneClose}>Cancel</Button>
+                            <Button onClick={this.handleBack} bsStyle="primary">Not Now</Button>
+                        </ButtonToolbar>
                     </Modal.Footer>
                 </Modal>
                 <Modal show={this.state.reportShow} onHide={this.handleReportClose}>
