@@ -251,7 +251,8 @@ def addResponse(userID,articleID,response):
         else:
             prev_score += response * stance
             prev_score -= prev_response * stance
-        user.score = prev_score/float(lens)
+        temp = prev_score/float(lens)
+        user.score = max(-1,min(1,temp))
     else:
     # Just add response
         if stance == 0:
@@ -260,7 +261,8 @@ def addResponse(userID,articleID,response):
             prev_score += response * stance
         new_history = History(articleID=articleID, userID=userID,response = response)
         session.add(new_history)
-        user.score = prev_score/float(lens+1)
+        temp = prev_score/float(lens+1)
+        user.score = max(-1,min(1,temp))
     # Now User response will affect article score
     if lens > experienced:
         article.rating += (response * 0.1 * user.score)
