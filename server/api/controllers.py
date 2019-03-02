@@ -35,7 +35,7 @@ def json_article(id):
     if not user_logged_in():
         abort(401)
 
-    article = get_article(id)
+    article = get_article(get_user(), id)
     return jsonify(article)
 
 
@@ -108,14 +108,14 @@ def get_articles_overview(articleID, userID):
     ).first()
 
     article = {
-            'id': article[0],
-            'title': article[1],
-            'summary': article[2],
-            'stance': article[3],
-            'url': article[4],
-            'topicID': article[5],
-            'read': True,
-            'response': int(readHistory[1])
+        'id': article[0],
+        'title': article[1],
+        'summary': article[2],
+        'stance': article[3],
+        'url': article[4],
+        'topicID': article[5],
+        'read': (readHistory is not None),
+        'response': int(readHistory[1]) if readHistory is not None else None
     }
 
     return article
@@ -187,10 +187,14 @@ def get_articles_list(topicID):
 
     return articles
 
-def get_article(articleID):
+def get_article(userID, articleID):
     article = Article.query.filter(Article.id == articleID).first()
     articleJSON = article.to_json()
     articleJSON['comments'] = [{"id": comment.id, "author": comment.user.name, "text": comment.text} for comment in article.comments]
+
+    history = get_articles_overview(articleID, userID)
+    print(history)
+    articleJSON['read'] = history['read']
 
     return articleJSON
 
