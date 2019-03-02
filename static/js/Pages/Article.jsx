@@ -87,15 +87,22 @@ export class Article extends React.Component {
 
         if (this.state.reactionCommentText) {
             // submit comment to server
-            this.state.article.comments.push({
-                id: 0,
-                author: 'You',
-                text: this.state.reactionCommentText
-            });
-            this.setState({
-                doneShow: false,
-                commentShow: false,
-                stance: null
+            fetch(`/api/article/${this.id}/comment`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: {
+                    text: this.state.reactionCommentText
+                }
+            }).then((comment) => {
+                this.state.article.comments.push(comment);
+                this.setState({
+                    doneShow: false,
+                    commentShow: false,
+                    stance: null
+                });
             });
         } else {
             window.history.back();

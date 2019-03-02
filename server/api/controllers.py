@@ -57,6 +57,16 @@ def report_article(id):
     addReport(get_user(), id, reportType)
     return str(reportType)
 
+@api.route('/article/<id>/comment', methods=['POST'])
+def add_comment(id):
+    if not user_logged_in():
+        abort(401)
+
+    commentText = request.get_json()['text']
+
+    comment = addComment(get_user(), id, commentText)
+    return jsonify(comment)
+
 def get_articles_list(topicID):
     articles = Article.query.with_entities(
         Article.id,
@@ -155,6 +165,17 @@ def addResponse(userID,articleID,response):
         article.rating += (response * 0.1 * user.score)
     session.commit()
     return user.score
+
+def addComment(userID, articleID, text):
+    session = Session()
+    user = session.query(User).filter(User.id==userID).first()
+
+    new_comment = Comment(articleID=articleID, userID=userID, text=text)
+    session.add(new_comment)
+    session.commit()
+
+    return {"id": new_comment.id, "author": user.name, "text": text}
+
 # This function use a sliding window to plot the score change of a given user
 def analyze(userID):
     session = Session()
