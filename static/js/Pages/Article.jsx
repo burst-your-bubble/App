@@ -83,7 +83,7 @@ export class Article extends React.Component {
     handleBack(){
         window.history.back();
     }
-
+    
     render() {
         if (this.state.loading) return <Loading />;
 
@@ -96,9 +96,6 @@ export class Article extends React.Component {
 
         return (
             <div className="container">
-                <ul>
-                    <li><a class="active" onClick={this.handleBack} style={{cursor: "pointer"}}>Back</a></li>
-                </ul>
                 <div className="body">
                     <Media className="article-header">
                         <Media.Left>
@@ -120,7 +117,7 @@ export class Article extends React.Component {
                     </Media>
                 </div>
 
-                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text} />
+                <ReadingFooter handleReportShow={this.handleReportShow} handleDoneShow={this.handleDoneShow} text={this.state.article.text}/>
 
                 <Modal show={this.state.doneShow} onHide={this.handleDoneClose}>
                     <Modal.Body>

@@ -11,7 +11,7 @@ export class Register extends React.Component {
             password: '',
             introShow: false,
             showAlert: false,
-            alertMessage: ''
+            alertMessage: '',
         };
 
         this.handleNext = this.handleNext.bind(this);
@@ -21,7 +21,10 @@ export class Register extends React.Component {
     }
 
     validCredentials() {
-        return (this.state.email != '' && this.state.password != '');
+        if(this.getEmailValidationState()=='success' && this.getPasswordValidationState()=='success')
+            return true
+        else
+            return false
     }
 
     handleBack() {
@@ -31,14 +34,20 @@ export class Register extends React.Component {
     handleNext() {
         {/* Add the response for to database and then proceed to home */ }
         window.location.href = "/home";
-        console.log(this.state.email);
-        console.log(this.state.password);
     }
 
     handleChange(event) {
         let fieldName = event.target.name;
         let fieldVal = event.target.value;
         this.setState({ [fieldName]: fieldVal })
+
+        if(!this.validCredentials()) {
+            this.setState({showAlert: true, alertMessage: "Invalid Email or Password"});
+            return;
+        }
+        else {
+            this.setState({showAlert: false});
+        }
     }
 
     handleIntroShow() {
@@ -49,7 +58,6 @@ export class Register extends React.Component {
         this.setState({ introShow: false });
 
         if(!this.validCredentials()) {
-            this.setState({showAlert: true, alertMessage: "Invalid Email or Password"});
             return;
         }
 
@@ -69,7 +77,22 @@ export class Register extends React.Component {
                 this.setState({showAlert: true, alertMessage: response.message});
             }
         });
+    }
 
+    getEmailValidationState() {
+        if(this.state.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+            if(this.getPasswordValidationState=='success') this.setState({formValid: true});
+            return 'success';
+        }
+        else return 'error'
+    } 
+    
+    getPasswordValidationState() {
+        if(this.state.password.length >= 6) {
+            if(this.getEmailValidationState=='success') this.setState({formValid: true});
+            return 'success';
+        }
+        else return 'error'
     }
 
     render() {
@@ -77,7 +100,7 @@ export class Register extends React.Component {
         return (
             <Form horizontal className="container">
                 <PageHeader className="homeTitle">Register</PageHeader>
-                <FormGroup>
+                <FormGroup validationState={this.getEmailValidationState()}>
                     <Col componentClass={ControlLabel} sm={2}>
                         Email
                     </Col>
@@ -92,7 +115,7 @@ export class Register extends React.Component {
                     </Col>
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup validationState={this.getPasswordValidationState()}>
                     <Col componentClass={ControlLabel} sm={2}>
                         Password
                     </Col>
