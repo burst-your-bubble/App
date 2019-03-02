@@ -2,7 +2,6 @@ import React from 'react';
 import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ReadingFooter } from '../Components/ReadingFooter';
-import { browserHistory } from 'react-router';
 
 export class Article extends React.Component {
 
@@ -81,7 +80,6 @@ export class Article extends React.Component {
     }
 
     handleBack() {
-
         window.location.href=sessionStorage.getItem('previous') ? sessionStorage.getItem('previous') : '/home'
     }
 
