@@ -286,7 +286,7 @@ def analyze(userID):
     # Only analyze the experience user
     if lens <= experienced:
         return
-    score,scoreList = recalculate(all_history,0)
+    score,scoreList = recalculate(all_history,0,session)
     graph_y = [item/10.0 for item in scoreList]
     print(graph_y)
     return graph_y
