@@ -219,6 +219,14 @@ export class Article extends React.Component {
                                 </Panel.Heading>
                                 <Panel.Body>
                                     {comments}
+                                    <hr />
+                                    <h4>Add a comment</h4>
+                                    <Form onSubmit={this.handleCommentPanelSubmit}>
+                                        <FormGroup controlId="commentPanel.comment">
+                                            <FormControl componentClass="textarea" rows="3" placeholder={'Write a comment'} onChange={this.handleCommentPanelChange} />
+                                        </FormGroup>
+                                        <Button bsStyle="primary" type="submit">Submit comment</Button>
+                                    </Form>
                                 </Panel.Body>
                             </Panel>
                         : null}
