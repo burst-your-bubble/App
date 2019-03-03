@@ -63,6 +63,26 @@ body {
     background:rgb(0, 0, 0);
 }
 
+div.article-comment {
+    border: 1px solid #333;
+    background-color: #f8f8f8;
+    border-radius: 0.25rem;
+    padding: 10px 10px 8px 10px;
+    margin-bottom: 1rem;
+}
+
+.article-comment-author {
+    font-size: 11px;
+    color: #888;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.article-comment-text {
+
+}
+
 .centerObjects{
     text-align: center;
     display: flex;
@@ -88,20 +108,20 @@ body {
     height: 8px;
     background: #000000;
   }
-  
+
 .progress-bar {
     position: fixed;
     bottom:0;
     height: 8px;
     background: #FF5722;
     width: 0%;
-}  
+}
 
 .body {
     padding:10px;
     padding-bottom:45px; /* Height of the footer */
 }
- 
+
  .modal-container {
     position: relative;
 }
@@ -115,7 +135,7 @@ body {
     border-radius: 50%;
     height: 1em;
     width: 1em;
-}  
+}
 
 .loader-container {
     height: 100vh;

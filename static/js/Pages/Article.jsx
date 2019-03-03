@@ -151,7 +151,10 @@ export class Article extends React.Component {
         var stats = readingTime(this.state.article.text);
 
         const comments = this.state.article.comments.map((item, key) =>
-            <li key={item.id}>{item.text} &mdash; {item.author}</li>
+            <div className="article-comment" key={item.id}>
+                <div className="article-comment-author">{item.author}</div>
+                <div className="article-comment-text">{item.text}</div>
+            </div>
         );
 
         //run this onScroll
@@ -175,7 +178,7 @@ export class Article extends React.Component {
                 else {
                     history.pushState(null, null, window.location.pathname);
                 }
-            }.bind(this)    
+            }.bind(this)
         }
         else{
             window.onpopstate = function (event) {
@@ -185,7 +188,7 @@ export class Article extends React.Component {
                 else {
                     history.pushState(null, null, window.location.pathname);
                 }
-            }.bind(this)        
+            }.bind(this)
         }
 
 
@@ -212,9 +215,7 @@ export class Article extends React.Component {
                         {this.state.article.read ?
                             <div>
                                 <h2>Discussion</h2>
-                                <ul>
                                 {comments}
-                                </ul>
                             </div>
                         : null}
                     </Media>
