@@ -257,7 +257,7 @@ export class Article extends React.Component {
                                 </Panel.Heading>
                                 <Panel.Body>
                                     {comments}
-                                    <hr />
+                                    {this.state.article.comments.length > 0 ? <hr /> : null}
                                     <h4>Add a comment</h4>
                                     <Form onSubmit={this.handleCommentPanelSubmit} id="comment-panel-form">
                                         <FormGroup controlId="commentPanel.comment">
