@@ -1,5 +1,5 @@
 import React from 'react';
-import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem, Form, FormGroup, FormControl } from 'react-bootstrap';
+import { Media, Button, Modal, ButtonToolbar, ListGroup, ListGroupItem, Form, FormGroup, FormControl, Panel } from 'react-bootstrap';
 import { Loading } from '../Components/Loading';
 import { ReadingFooter } from '../Components/ReadingFooter';
 
@@ -213,10 +213,14 @@ export class Article extends React.Component {
                             {text}
                         </p>
                         {this.state.article.read ?
-                            <div>
-                                <h2>Discussion</h2>
-                                {comments}
-                            </div>
+                            <Panel>
+                                <Panel.Heading>
+                                    <Panel.Title componentClass="h3">Discussion</Panel.Title>
+                                </Panel.Heading>
+                                <Panel.Body>
+                                    {comments}
+                                </Panel.Body>
+                            </Panel>
                         : null}
                     </Media>
                 </div>

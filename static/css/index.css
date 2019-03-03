@@ -63,11 +63,7 @@ body {
     background:rgb(0, 0, 0);
 }
 
-div.article-comment {
-    border: 1px solid #333;
-    background-color: #f8f8f8;
-    border-radius: 0.25rem;
-    padding: 10px 10px 8px 10px;
+.article-comment:not(:last-child) {
     margin-bottom: 1rem;
 }
 
@@ -77,10 +73,6 @@ div.article-comment {
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 3px;
-}
-
-.article-comment-text {
-
 }
 
 .centerObjects{
