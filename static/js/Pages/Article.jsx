@@ -25,12 +25,16 @@ export class Article extends React.Component {
             stance: null,
             showSource: false,
             disableButtons: false,
-            reactionCommentText: null
+            reactionCommentText: null,
+            panelCommentText: null,
         };
 
         this.handleResponse = this.handleResponse.bind(this);
         this.handleCommentModalChange = this.handleCommentModalChange.bind(this);
         this.handleCommentModalSubmit = this.handleCommentModalSubmit.bind(this);
+
+        this.handleCommentPanelChange = this.handleCommentPanelChange.bind(this);
+        this.handleCommentPanelSubmit = this.handleCommentPanelSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -118,6 +122,40 @@ export class Article extends React.Component {
         this.setState({
             reactionCommentText: event.target.value
         });
+    }
+
+    handleCommentPanelChange(event) {
+        this.setState({
+            panelCommentText: event.target.value
+        });
+    }
+
+    handleCommentPanelSubmit(event) {
+        event.preventDefault();
+
+        if (this.state.panelCommentText) {
+            // submit comment to server
+            fetch(`/api/article/${this.id}/comment`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: this.state.panelCommentText
+                })
+            }).then((response) => {
+                return response.json();
+            }).then((comment) => {
+                this.state.article.comments.push(comment);
+                this.setState({
+                    doneShow: false,
+                    commentShow: false,
+                    stance: null
+                });
+                document.getElementById("comment-panel-form").reset();
+            });
+        }
     }
 
     handleReporting(reportType) {
@@ -221,7 +259,7 @@ export class Article extends React.Component {
                                     {comments}
                                     <hr />
                                     <h4>Add a comment</h4>
-                                    <Form onSubmit={this.handleCommentPanelSubmit}>
+                                    <Form onSubmit={this.handleCommentPanelSubmit} id="comment-panel-form">
                                         <FormGroup controlId="commentPanel.comment">
                                             <FormControl componentClass="textarea" rows="3" placeholder={'Write a comment'} onChange={this.handleCommentPanelChange} />
                                         </FormGroup>
