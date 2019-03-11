@@ -74,7 +74,7 @@ def read_history(user_id):
         History.articleID, History.response
     ).filter(
         History.userID==user_id
-    ).all()
+    ).order_by(History.createdAt.desc()).all()
 
     lens = len(readHistory)
 
