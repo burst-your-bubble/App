@@ -44,7 +44,7 @@ nltk==3.3
 numpy==1.15.2
 openpyxl==2.4.8
 pandas==0.23.4
-Pillow==5.3.0
+Pillow==6.2.0
 protobuf==3.6.1
 psycopg2==2.7.1
 pydub==0.20.0
