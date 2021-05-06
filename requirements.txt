@@ -14,7 +14,7 @@ feedfinder2==0.0.4
 feedparser==5.2.1
 Flask==0.12.1
 Flask-Caching==1.4.0
-Flask-Cors==3.0.3
+Flask-Cors==3.0.9
 Flask-SQLAlchemy==2.3.2
 Flask-User==0.6.21
 gast==0.2.0
